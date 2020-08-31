@@ -1,8 +1,8 @@
-name: LiteXpansion
-description: Description
+name: HelpfulTools
+description: Tools that are helpful
 version: ${project.version}
 api-version: 1.14
-author: j3fftw
+author: FluffyBear
 depend: [Slimefun]
 softdepend: [SlimyTreeTaps]
-main: dev.j3fftw.litexpansion.LiteXpansion
+main: me.fluffybear.helpfultools.HelpfulTools
