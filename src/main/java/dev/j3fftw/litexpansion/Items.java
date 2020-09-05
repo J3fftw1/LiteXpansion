@@ -62,6 +62,12 @@ public final class Items {
         "&6Wrench"
     );
 
+    public static final SlimefunItemStack PORTABLE_CHARGER = new SlimefunItemStack(
+        "PORTABLE_CHARGER",
+        Material.BRICK,
+        "&6Portable Charger"
+    );
+
     public static final SlimefunItemStack TREETAP = new SlimefunItemStack(
         "TREETAP",
         Material.WOODEN_HOE,
