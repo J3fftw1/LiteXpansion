@@ -59,10 +59,7 @@ public final class Items {
     public static final SlimefunItemStack WRENCH = new SlimefunItemStack(
         "WRENCH",
         Material.GOLDEN_HOE,
-        "&6Wrench",
-        "",
-        "&fRight click &cCargo Nodes &fand &aCapacitors",
-        "&fto instantly break them"
+        "&6Wrench"
     );
 
     public static final SlimefunItemStack TREETAP = new SlimefunItemStack(
@@ -291,14 +288,14 @@ public final class Items {
     );
 
     public static final SlimefunItemStack RUBBER_SYNTHESIZER_MACHINE = new SlimefunItemStack(
-            "RUBBER_SYNTHESIZER_MACHINE",
-            Material.ORANGE_CONCRETE,
-            "&6Rubber Synthesizer",
-            "",
-            "&fConverts Bucket of Oil to &7Rubber",
-            "",
-            LoreBuilderDynamic.powerBuffer(RubberSynthesizer.CAPACITY),
-            LoreBuilderDynamic.powerPerTick(RubberSynthesizer.ENERGY_CONSUMPTION)
+        "RUBBER_SYNTHESIZER_MACHINE",
+        Material.ORANGE_CONCRETE,
+        "&6Rubber Synthesizer",
+        "",
+        "&fConverts Bucket of Oil to &7Rubber",
+        "",
+        LoreBuilderDynamic.powerBuffer(RubberSynthesizer.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(RubberSynthesizer.ENERGY_CONSUMPTION)
     );
 
     //// Solar panels

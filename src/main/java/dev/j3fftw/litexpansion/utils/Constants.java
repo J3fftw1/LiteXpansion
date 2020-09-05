@@ -13,7 +13,7 @@ public final class Constants {
     public static final boolean MACHINE_BREAK_REQUIRES_WRENCH = LiteXpansion.getCfg().getBoolean("need-wrench-to-break-machines");
 
     public static final NamespacedKey GLOW_ENCHANT = new NamespacedKey(LiteXpansion.getInstance(),
-            "glow_enchant");
+        "glow_enchant");
 
     private Constants() {}
 
