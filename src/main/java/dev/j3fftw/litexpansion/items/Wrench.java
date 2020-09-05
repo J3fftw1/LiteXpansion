@@ -34,14 +34,14 @@ import static org.bukkit.Bukkit.getLogger;
 
 public class Wrench extends SimpleSlimefunItem<ItemUseHandler> implements Listener {
 
-    protected static final int[] cargoSlots = { 19, 20, 21, 28, 29, 30, 37, 38, 39 };
-    protected static final String[] wrenchableBlockIds = { SlimefunItems.CARGO_INPUT_NODE.getItemId(), SlimefunItems.CARGO_OUTPUT_NODE.getItemId(), SlimefunItems.CARGO_OUTPUT_NODE_2.getItemId(), SlimefunItems.CARGO_CONNECTOR_NODE.getItemId(), SlimefunItems.SMALL_CAPACITOR.getItemId(), SlimefunItems.MEDIUM_CAPACITOR.getItemId(), SlimefunItems.LARGE_CAPACITOR.getItemId(), SlimefunItems.BIG_CAPACITOR.getItemId(), SlimefunItems.CARBONADO_EDGED_CAPACITOR.getItemId(), SlimefunItems.TRASH_CAN.getItemId() };
+    static final int[] cargoSlots = { 19, 20, 21, 28, 29, 30, 37, 38, 39 };
+    static final String[] wrenchableBlockIds = { SlimefunItems.CARGO_INPUT_NODE.getItemId(), SlimefunItems.CARGO_OUTPUT_NODE.getItemId(), SlimefunItems.CARGO_OUTPUT_NODE_2.getItemId(), SlimefunItems.CARGO_CONNECTOR_NODE.getItemId(), SlimefunItems.SMALL_CAPACITOR.getItemId(), SlimefunItems.MEDIUM_CAPACITOR.getItemId(), SlimefunItems.LARGE_CAPACITOR.getItemId(), SlimefunItems.BIG_CAPACITOR.getItemId(), SlimefunItems.CARBONADO_EDGED_CAPACITOR.getItemId(), SlimefunItems.TRASH_CAN.getItemId() };
 
     public Wrench() {
         super(Items.LITEXPANSION, Items.WRENCH, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-                Items.REFINED_IRON, SlimefunItems.REINFORCED_PLATE, Items.REFINED_IRON,
-                SlimefunItems.REINFORCED_PLATE, SlimefunItems.ALUMINUM_INGOT, SlimefunItems.REINFORCED_PLATE,
-                Items.REFINED_IRON, SlimefunItems.REINFORCED_PLATE, Items.REFINED_IRON
+                Items.REFINED_IRON, null, Items.REFINED_IRON,
+                null, Items.ADVANCED_CIRCUIT, null,
+                null, Items.ADVANCED_CIRCUIT, null
         });
 
         Bukkit.getPluginManager().registerEvents(this, LiteXpansion.getInstance());
@@ -56,37 +56,35 @@ public class Wrench extends SimpleSlimefunItem<ItemUseHandler> implements Listen
     public void onWrenchInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
 
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (SlimefunUtils.isItemSimilar(e.getItem(), Items.WRENCH, true, false)) {
-                e.setCancelled(true);
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK && SlimefunUtils.isItemSimilar(e.getItem(), Items.WRENCH, true, false)) {
+            e.setCancelled(true);
 
-                Block interactedBlock = e.getClickedBlock();
-                SlimefunItem slimefunBlock = BlockStorage.check(e.getClickedBlock());
+            Block interactedBlock = e.getClickedBlock();
+            SlimefunItem slimefunBlock = BlockStorage.check(e.getClickedBlock());
 
-                if (slimefunBlock == null) {
-                    p.sendMessage(ChatColor.RED + "Hey buddy boy this can only be used on cargo nodes and capacitors!");
-                    return;
-                }
+            if (slimefunBlock == null) {
+                p.sendMessage(ChatColor.RED + "Hey buddy boy this can only be used on cargo nodes and capacitors!");
+                return;
+            }
 
-                for (String wrenchableBlockId : wrenchableBlockIds) {
-                    if (slimefunBlock.getID() == wrenchableBlockId) {
+            for (String wrenchableBlockId : wrenchableBlockIds) {
+                if (slimefunBlock.getID() == wrenchableBlockId) {
 
-                        ItemStack slimefunBlockDrop = slimefunBlock.getItem();
+                    ItemStack slimefunBlockDrop = slimefunBlock.getItem();
 
-                        BlockStorage.clearBlockInfo(interactedBlock);
-                        interactedBlock.getLocation().getWorld().dropItemNaturally(interactedBlock.getLocation(), slimefunBlockDrop);
+                    BlockStorage.clearBlockInfo(interactedBlock);
+                    interactedBlock.getLocation().getWorld().dropItemNaturally(interactedBlock.getLocation(), slimefunBlockDrop);
 
-                        if (slimefunBlock.getID() == SlimefunItems.CARGO_INPUT_NODE.getItemId() || slimefunBlock.getID() == SlimefunItems.CARGO_OUTPUT_NODE_2.getItemId()) {
-                            for (int slot : cargoSlots) {
-                                ItemStack cargoDrop = BlockStorage.getInventory(interactedBlock).getItemInSlot(slot);
-                                if (cargoDrop != null) {
-                                    interactedBlock.getLocation().getWorld().dropItemNaturally(interactedBlock.getLocation(), cargoDrop);
-                                }
+                    if (slimefunBlock.getID() == SlimefunItems.CARGO_INPUT_NODE.getItemId() || slimefunBlock.getID() == SlimefunItems.CARGO_OUTPUT_NODE_2.getItemId()) {
+                        for (int slot : cargoSlots) {
+                            ItemStack cargoDrop = BlockStorage.getInventory(interactedBlock).getItemInSlot(slot);
+                            if (cargoDrop != null) {
+                                interactedBlock.getLocation().getWorld().dropItemNaturally(interactedBlock.getLocation(), cargoDrop);
                             }
-
                         }
-                        interactedBlock.setType(Material.AIR);
+
                     }
+                    interactedBlock.setType(Material.AIR);
                 }
             }
         }
