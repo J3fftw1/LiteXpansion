@@ -34,8 +34,8 @@ import static org.bukkit.Bukkit.getLogger;
 
 public class Wrench extends SimpleSlimefunItem<ItemUseHandler> implements Listener {
 
-    static final int[] cargoSlots = { 19, 20, 21, 28, 29, 30, 37, 38, 39 };
-    static final String[] wrenchableBlockIds = { SlimefunItems.CARGO_INPUT_NODE.getItemId(), SlimefunItems.CARGO_OUTPUT_NODE.getItemId(), SlimefunItems.CARGO_OUTPUT_NODE_2.getItemId(), SlimefunItems.CARGO_CONNECTOR_NODE.getItemId(), SlimefunItems.SMALL_CAPACITOR.getItemId(), SlimefunItems.MEDIUM_CAPACITOR.getItemId(), SlimefunItems.LARGE_CAPACITOR.getItemId(), SlimefunItems.BIG_CAPACITOR.getItemId(), SlimefunItems.CARBONADO_EDGED_CAPACITOR.getItemId(), SlimefunItems.TRASH_CAN.getItemId() };
+    private static final int[] cargoSlots = { 19, 20, 21, 28, 29, 30, 37, 38, 39 };
+    private static final String[] wrenchableBlockIds = { SlimefunItems.CARGO_INPUT_NODE.getItemId(), SlimefunItems.CARGO_OUTPUT_NODE.getItemId(), SlimefunItems.CARGO_OUTPUT_NODE_2.getItemId(), SlimefunItems.CARGO_CONNECTOR_NODE.getItemId(), SlimefunItems.SMALL_CAPACITOR.getItemId(), SlimefunItems.MEDIUM_CAPACITOR.getItemId(), SlimefunItems.LARGE_CAPACITOR.getItemId(), SlimefunItems.BIG_CAPACITOR.getItemId(), SlimefunItems.CARBONADO_EDGED_CAPACITOR.getItemId(), SlimefunItems.TRASH_CAN.getItemId() };
 
     public Wrench() {
         super(Items.LITEXPANSION, Items.WRENCH, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
@@ -68,14 +68,14 @@ public class Wrench extends SimpleSlimefunItem<ItemUseHandler> implements Listen
             }
 
             for (String wrenchableBlockId : wrenchableBlockIds) {
-                if (slimefunBlock.getID() == wrenchableBlockId) {
+                if (slimefunBlock.getID().equals(wrenchableBlockId)) {
 
                     ItemStack slimefunBlockDrop = slimefunBlock.getItem();
 
                     BlockStorage.clearBlockInfo(interactedBlock);
                     interactedBlock.getLocation().getWorld().dropItemNaturally(interactedBlock.getLocation(), slimefunBlockDrop);
 
-                    if (slimefunBlock.getID() == SlimefunItems.CARGO_INPUT_NODE.getItemId() || slimefunBlock.getID() == SlimefunItems.CARGO_OUTPUT_NODE_2.getItemId()) {
+                    if (slimefunBlock.getID().equals(SlimefunItems.CARGO_INPUT_NODE.getItemId()) || slimefunBlock.getID().equals(SlimefunItems.CARGO_OUTPUT_NODE_2.getItemId())) {
                         for (int slot : cargoSlots) {
                             ItemStack cargoDrop = BlockStorage.getInventory(interactedBlock).getItemInSlot(slot);
                             if (cargoDrop != null) {
