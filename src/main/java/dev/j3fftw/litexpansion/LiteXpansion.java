@@ -37,6 +37,10 @@ public class LiteXpansion extends JavaPlugin implements SlimefunAddon {
         if (!new File(getDataFolder(), "config.yml").exists())
             saveDefaultConfig();
 
+        if (!getConfig().contains("options.need-wrench-to-break-machines")) {
+            getConfig().set("options.need-wrench-to-break-machines", false);
+        }
+
         final Metrics metrics = new Metrics(this, 7111);
         setupCustomMetrics(metrics);
 

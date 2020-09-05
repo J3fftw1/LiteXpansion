@@ -2,6 +2,7 @@ package dev.j3fftw.litexpansion.items;
 
 import dev.j3fftw.litexpansion.Items;
 import dev.j3fftw.litexpansion.LiteXpansion;
+import dev.j3fftw.litexpansion.utils.Constants;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.core.attributes.DamageableItem;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
@@ -60,7 +61,7 @@ public class Wrench extends SimpleSlimefunItem<ItemUseHandler> implements Listen
     public void onWrenchInteract(PlayerRightClickEvent e) {
         Player p = e.getPlayer();
 
-        if (isItem(e.getItem())) {
+        if (isItem(e.getItem()) && !Constants.MACHINE_BREAK_REQUIRES_WRENCH) {
             e.cancel();
 
             Optional<Block> interactedBlock = e.getClickedBlock();
