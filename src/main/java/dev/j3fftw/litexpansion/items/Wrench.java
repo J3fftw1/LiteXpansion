@@ -2,6 +2,8 @@ package dev.j3fftw.litexpansion.items;
 
 import dev.j3fftw.litexpansion.Items;
 import dev.j3fftw.litexpansion.LiteXpansion;
+import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
+import io.github.thebusybiscuit.slimefun4.core.attributes.DamageableItem;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
@@ -16,6 +18,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -29,10 +32,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static org.bukkit.Bukkit.getLogger;
 
-public class Wrench extends SimpleSlimefunItem<ItemUseHandler> implements Listener {
+public class Wrench extends SimpleSlimefunItem<ItemUseHandler> implements Listener,DamageableItem {
 
     private static final int[] cargoSlots = { 19, 20, 21, 28, 29, 30, 37, 38, 39 };
     private static final String[] wrenchableBlockIds = { SlimefunItems.CARGO_INPUT_NODE.getItemId(), SlimefunItems.CARGO_OUTPUT_NODE.getItemId(), SlimefunItems.CARGO_OUTPUT_NODE_2.getItemId(), SlimefunItems.CARGO_CONNECTOR_NODE.getItemId(), SlimefunItems.SMALL_CAPACITOR.getItemId(), SlimefunItems.MEDIUM_CAPACITOR.getItemId(), SlimefunItems.LARGE_CAPACITOR.getItemId(), SlimefunItems.BIG_CAPACITOR.getItemId(), SlimefunItems.CARBONADO_EDGED_CAPACITOR.getItemId(), SlimefunItems.TRASH_CAN.getItemId() };
@@ -53,40 +57,46 @@ public class Wrench extends SimpleSlimefunItem<ItemUseHandler> implements Listen
     }
 
     @EventHandler
-    public void onWrenchInteract(PlayerInteractEvent e) {
+    public void onWrenchInteract(PlayerRightClickEvent e) {
         Player p = e.getPlayer();
 
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK && SlimefunUtils.isItemSimilar(e.getItem(), Items.WRENCH, true, false)) {
-            e.setCancelled(true);
+        if (isItem(e.getItem())) {
+            e.cancel();
 
-            Block interactedBlock = e.getClickedBlock();
-            SlimefunItem slimefunBlock = BlockStorage.check(e.getClickedBlock());
+            Optional<Block> interactedBlock = e.getClickedBlock();
+            Optional<SlimefunItem> slimefunBlock = e.getSlimefunBlock();
 
-            if (slimefunBlock == null) {
+            if (!slimefunBlock.isPresent()) {
                 p.sendMessage(ChatColor.RED + "Hey buddy boy this can only be used on cargo nodes and capacitors!");
                 return;
             }
 
             for (String wrenchableBlockId : wrenchableBlockIds) {
-                if (slimefunBlock.getID().equals(wrenchableBlockId)) {
+                if (slimefunBlock.get().getID().equals(wrenchableBlockId)) {
 
-                    ItemStack slimefunBlockDrop = slimefunBlock.getItem();
+                    ItemStack slimefunBlockDrop = slimefunBlock.get().getItem();
 
-                    BlockStorage.clearBlockInfo(interactedBlock);
-                    interactedBlock.getLocation().getWorld().dropItemNaturally(interactedBlock.getLocation(), slimefunBlockDrop);
+                    BlockStorage.clearBlockInfo(interactedBlock.get());
+                    interactedBlock.get().getLocation().getWorld().dropItemNaturally(interactedBlock.get().getLocation(), slimefunBlockDrop);
 
-                    if (slimefunBlock.getID().equals(SlimefunItems.CARGO_INPUT_NODE.getItemId()) || slimefunBlock.getID().equals(SlimefunItems.CARGO_OUTPUT_NODE_2.getItemId())) {
+                    if (slimefunBlock.get().getID().equals(SlimefunItems.CARGO_INPUT_NODE.getItemId()) || slimefunBlock.get().getID().equals(SlimefunItems.CARGO_OUTPUT_NODE_2.getItemId())) {
                         for (int slot : cargoSlots) {
-                            ItemStack cargoDrop = BlockStorage.getInventory(interactedBlock).getItemInSlot(slot);
+                            ItemStack cargoDrop = BlockStorage.getInventory(interactedBlock.get()).getItemInSlot(slot);
                             if (cargoDrop != null) {
-                                interactedBlock.getLocation().getWorld().dropItemNaturally(interactedBlock.getLocation(), cargoDrop);
+                                interactedBlock.get().getLocation().getWorld().dropItemNaturally(interactedBlock.get().getLocation(), cargoDrop);
                             }
                         }
 
                     }
-                    interactedBlock.setType(Material.AIR);
+                    damageItem(p, e.getItem());
+                    interactedBlock.get().setType(Material.AIR);
                 }
             }
         }
+    }
+
+    @Override
+    public boolean isDamageable() {
+        return true;
     }
 }
