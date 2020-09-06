@@ -9,6 +9,7 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.core.networks.cargo.CargoNet;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.github.thebusybiscuit.slimefun4.implementation.items.cargo.TrashCan;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -16,6 +17,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.InventoryBlock;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
+import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -64,13 +66,15 @@ public class Wrench extends SimpleSlimefunItem<ItemUseHandler> implements Listen
     @EventHandler
     public void onWrenchInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
+        Block block = e.getClickedBlock();
         // Check if player has wrench and is left clicking block
         // Can't use offhand because a player can offhand the wrench to escape the event
         if (isItem(e.getItem()) && !isItem(p.getInventory().getItemInOffHand())
             && e.getAction().toString().endsWith("_BLOCK")
+            && SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(),
+            block.getLocation(), ProtectableAction.BREAK_BLOCK)
         ) {
             e.setCancelled(true);
-            Block block = e.getClickedBlock();
             SlimefunItem slimefunBlock = BlockStorage.check(block);
 
             // Check if slimefunBlock is not a machine or a cargo component

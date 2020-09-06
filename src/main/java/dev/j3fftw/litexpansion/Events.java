@@ -7,8 +7,10 @@ import dev.j3fftw.litexpansion.utils.Constants;
 import dev.j3fftw.litexpansion.utils.Utils;
 import dev.j3fftw.litexpansion.weapons.NanoBlade;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -78,10 +80,12 @@ public class Events implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
+        Block block = e.getBlock();
         if (Constants.MACHINE_BREAK_REQUIRES_WRENCH
-            && (!Items.WRENCH.isSimilar(p.getInventory().getItemInMainHand()))
+            && (!Items.WRENCH.isSimilar(p.getInventory().getItemInMainHand())
+            && SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(),
+            block.getLocation(), ProtectableAction.BREAK_BLOCK))
         ) {
-            Block block = e.getBlock();
             SlimefunItem slimefunBlock = BlockStorage.check(block);
 
             if (slimefunBlock instanceof EnergyNetComponent) {
