@@ -17,6 +17,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * The {@link PortableCharger} is an item that can
+ * be clicked into any {@link Rechargeable} item to
+ * transfer power to it.
+ *
+ * @author FluffyBear
+ *
+ */
 public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implements Listener, Rechargeable {
 
     public PortableCharger() {
