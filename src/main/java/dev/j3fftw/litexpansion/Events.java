@@ -4,6 +4,7 @@ import dev.j3fftw.litexpansion.armor.ElectricChestplate;
 import dev.j3fftw.litexpansion.items.FoodSynthesizer;
 import dev.j3fftw.litexpansion.items.Wrench;
 import dev.j3fftw.litexpansion.utils.Constants;
+import dev.j3fftw.litexpansion.utils.Utils;
 import dev.j3fftw.litexpansion.weapons.NanoBlade;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -83,13 +84,11 @@ public class Events implements Listener {
             Block block = e.getBlock();
             SlimefunItem slimefunBlock = BlockStorage.check(block);
 
-            if (slimefunBlock instanceof EnergyNetComponent
-                && !slimefunBlock.getID().endsWith("_CAPACITOR")
-            ) {
+            if (slimefunBlock instanceof EnergyNetComponent) {
                 e.setCancelled(true);
                 Wrench.dropBlock(e, p, block, slimefunBlock, true);
-                p.sendMessage(ChatColor.RED + "You need a Wrench to break Slimefun machines!");
-                p.sendMessage(ChatColor.RED + "(Slimefun Guide > LiteXpansion > Wrench)");
+                Utils.lxPrefixMessage(p, ChatColor.RED, "You need a Wrench to break Slimefun machines!");
+                Utils.lxPrefixMessage(p, ChatColor.RED, "(Slimefun Guide > LiteXpansion > Wrench)");
             }
         }
     }

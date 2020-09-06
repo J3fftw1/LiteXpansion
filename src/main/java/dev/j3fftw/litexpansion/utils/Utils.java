@@ -59,4 +59,8 @@ public final class Utils {
             return String.valueOf((Constants.WRENCH_FAIL_CHANCE * 100));
         }
     }
+
+    public static void lxPrefixMessage(Player p, ChatColor color, String message) {
+        p.sendMessage(ChatColor.GRAY + "[LiteXpansion] " + color + message);
+    }
 }
