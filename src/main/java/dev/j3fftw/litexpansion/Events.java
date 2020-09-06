@@ -2,14 +2,27 @@ package dev.j3fftw.litexpansion;
 
 import dev.j3fftw.litexpansion.armor.ElectricChestplate;
 import dev.j3fftw.litexpansion.items.FoodSynthesizer;
+import dev.j3fftw.litexpansion.items.Wrench;
 import dev.j3fftw.litexpansion.utils.Constants;
 import dev.j3fftw.litexpansion.weapons.NanoBlade;
+import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
+import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetProvider;
+import io.github.thebusybiscuit.slimefun4.core.attributes.MachineType;
+import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNet;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.InventoryBlock;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -65,6 +78,26 @@ public class Events implements Listener {
 
         if (e.getCause() == EntityDamageEvent.DamageCause.STARVATION) {
             checkAndConsume((Player) e.getEntity(), null);
+        }
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent e) {
+        Player p = e.getPlayer();
+        if (Constants.MACHINE_BREAK_REQUIRES_WRENCH
+            && (!Items.WRENCH.isSimilar(p.getInventory().getItemInMainHand()))
+        ) {
+            Block block = e.getBlock();
+            SlimefunItem slimefunBlock = BlockStorage.check(block);
+
+            if (slimefunBlock instanceof EnergyNetComponent
+                && !slimefunBlock.getID().endsWith("_CAPACITOR")
+            ) {
+                e.setCancelled(true);
+                Wrench.dropBlock(e, p, block, slimefunBlock, true);
+                p.sendMessage(ChatColor.RED + "You need a Wrench to break Slimefun machines!");
+                p.sendMessage(ChatColor.RED + "(Slimefun Guide > LiteXpansion > Wrench)");
+            }
         }
     }
 

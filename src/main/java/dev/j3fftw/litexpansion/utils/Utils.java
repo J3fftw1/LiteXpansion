@@ -51,4 +51,12 @@ public final class Utils {
             return (1 / ((double) Constants.CUSTOM_TICKER_DELAY / Constants.SERVER_TICK_RATE) * power);
         }
     }
+
+    public static String wrenchFailureChance() {
+        if (!Constants.MACHINE_BREAK_REQUIRES_WRENCH) {
+            return "0";
+        } else {
+            return String.valueOf((Constants.WRENCH_FAIL_CHANCE * 100));
+        }
+    }
 }
