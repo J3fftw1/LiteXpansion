@@ -54,7 +54,9 @@ public class LiteXpansion extends JavaPlugin implements SlimefunAddon {
             new GitHubBuildsUpdater(this, getFile(), "J3fftw1/LiteXpansion/master").start();
         }
 
-        if (getConfig().getDouble("options.wrench-failure-chance") <= 0 || getConfig().getDouble("options.wrench-failure-chance") >= 1) {
+        if (getConfig().getDouble("options.wrench-failure-chance") <= 0
+            || getConfig().getDouble("options.wrench-failure-chance") >= 1
+        ) {
             getLogger().log(Level.SEVERE, "The wrench failure chance must be or be between 0 and 1!");
             getServer().getPluginManager().disablePlugin(this);
         }
