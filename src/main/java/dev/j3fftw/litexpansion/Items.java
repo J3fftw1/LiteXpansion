@@ -59,7 +59,7 @@ public final class Items {
     // Tools
     public static final SlimefunItemStack WRENCH = new SlimefunItemStack(
         "WRENCH",
-        Material.IRON_HOE,
+        Material.GOLDEN_HOE,
         "&6Wrench",
         "",
         "&7Click any machine, generator, capacitor,",
