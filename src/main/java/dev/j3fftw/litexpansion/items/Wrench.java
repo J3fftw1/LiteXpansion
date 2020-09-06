@@ -43,8 +43,8 @@ public class Wrench extends SimpleSlimefunItem<ItemUseHandler> implements Listen
     public Wrench() {
         super(Items.LITEXPANSION, Items.WRENCH, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
                 Items.REFINED_IRON, null, Items.REFINED_IRON,
-                null, Items.ADVANCED_CIRCUIT, null,
-                null, Items.ADVANCED_CIRCUIT, null
+                null, Items.REFINED_IRON, null,
+                null, Items.REFINED_IRON, null
         });
 
         Bukkit.getPluginManager().registerEvents(this, LiteXpansion.getInstance());
@@ -90,7 +90,6 @@ public class Wrench extends SimpleSlimefunItem<ItemUseHandler> implements Listen
             }
             damageItem(p, e.getItem());
         }
-
     }
 
     public static void dropBlock(Event e, Player p, Block block, SlimefunItem slimefunBlock, boolean failed){
