@@ -2,15 +2,14 @@ package dev.j3fftw.litexpansion.items;
 
 import dev.j3fftw.litexpansion.Items;
 import dev.j3fftw.litexpansion.LiteXpansion;
-import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
+import dev.j3fftw.litexpansion.utils.Utils;
 import io.github.thebusybiscuit.slimefun4.core.attributes.Rechargeable;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -38,14 +37,38 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
     @EventHandler
     public void onInventorySwap(InventoryClickEvent e) {
         // getCursor returns the item you clicked with, getCurrentItem returns the item that was in the slot.
-        Player p = (Player) e.getWhoClicked();
         if (isItem(e.getCursor())) {
-            p.sendMessage("You have used the charger.");
-            if (e.getCurrentItem() instanceof SlimefunItemStack) {
-                if (((SlimefunItemStack) e.getCurrentItem()).getItem() != null) {
-                    return;
+            Player p = (Player) e.getWhoClicked();
+            ItemStack chargerItem = e.getCursor();
+            Rechargeable charger = (Rechargeable) SlimefunItem.getByItem(chargerItem);
+            ItemStack deviceItem = e.getCurrentItem();
+            SlimefunItem sfItem = SlimefunItem.getByItem(deviceItem);
+
+            if (sfItem instanceof Rechargeable) {
+                Rechargeable device = (Rechargeable) sfItem;
+                float neededCharge = device.getMaxItemCharge(deviceItem) - device.getItemCharge(deviceItem);
+                float availableCharge = charger.getItemCharge(chargerItem);
+
+                if (neededCharge > 0 && availableCharge > 0) {
+
+                    if (availableCharge >= neededCharge) {
+                        charger.removeItemCharge(chargerItem, neededCharge);
+                        device.addItemCharge(deviceItem, neededCharge);
+
+                    } else {
+                        charger.removeItemCharge(chargerItem, availableCharge);
+                        device.addItemCharge(deviceItem, availableCharge);
+                    }
+
+                    availableCharge = charger.getItemCharge(chargerItem);
+                    Utils.lxPrefixMessage(p, ChatColor.GREEN, "Your item has been charged!");
+                    Utils.lxPrefixMessage(p, ChatColor.YELLOW, "Your charger has " + availableCharge + "J left.");
+
+                } else if (neededCharge == 0) {
+                    Utils.lxPrefixMessage(p, ChatColor.RED, "This item is already full!");
+
                 } else {
-                    e.setCancelled(true);
+                    Utils.lxPrefixMessage(p, ChatColor.RED, "Your charger does not have enough power!");
                 }
             }
         }
@@ -53,6 +76,6 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
 
     @Override
     public float getMaxItemCharge(ItemStack itemStack) {
-        return 10;
+        return 1000;
     }
 }

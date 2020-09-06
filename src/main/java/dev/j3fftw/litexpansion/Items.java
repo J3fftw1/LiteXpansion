@@ -65,7 +65,11 @@ public final class Items {
     public static final SlimefunItemStack PORTABLE_CHARGER = new SlimefunItemStack(
         "PORTABLE_CHARGER",
         Material.BRICK,
-        "&6Portable Charger"
+        "&6Portable Charger",
+        "",
+        "&7Drag this onto a rechargeable item to charge it!",
+        "",
+        "&c&o&8\u21E8 &e\u26A1 &70 / 1000 J"
     );
 
     public static final SlimefunItemStack TREETAP = new SlimefunItemStack(

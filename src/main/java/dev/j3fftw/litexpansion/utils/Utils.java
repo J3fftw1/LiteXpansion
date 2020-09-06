@@ -51,4 +51,8 @@ public final class Utils {
             return (1 / ((double) Constants.CUSTOM_TICKER_DELAY / Constants.SERVER_TICK_RATE) * power);
         }
     }
+
+    public static void lxPrefixMessage(Player p, ChatColor color, String message) {
+        p.sendMessage(ChatColor.GRAY + "[LiteXpansion] " + color + message);
+    }
 }
