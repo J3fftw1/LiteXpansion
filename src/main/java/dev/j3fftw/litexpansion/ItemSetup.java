@@ -2,6 +2,7 @@ package dev.j3fftw.litexpansion;
 
 import dev.j3fftw.litexpansion.items.CargoConfigurator;
 import dev.j3fftw.litexpansion.items.FoodSynthesizer;
+import dev.j3fftw.litexpansion.items.GlassCutter;
 import dev.j3fftw.litexpansion.items.MagThor;
 import dev.j3fftw.litexpansion.items.Thorium;
 import dev.j3fftw.litexpansion.items.Wrench;
@@ -28,6 +29,7 @@ final class ItemSetup {
 
     protected static final ItemSetup INSTANCE = new ItemSetup();
     private final ItemStack glass = new ItemStack(Material.GLASS);
+    private final SlimefunAddon plugin = LiteXpansion.getInstance();
     private boolean initialised;
     private final SlimefunAddon plugin = LiteXpansion.getInstance();
 
@@ -50,6 +52,7 @@ final class ItemSetup {
     private void registerTools() {
         new CargoConfigurator().register(plugin);
         new Wrench().register(plugin);
+        new GlassCutter().register(plugin);
     }
 
     private void registerMachines() {
