@@ -6,6 +6,7 @@ import dev.j3fftw.litexpansion.utils.Utils;
 import io.github.thebusybiscuit.slimefun4.core.attributes.Rechargeable;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
+import lombok.NonNull;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import org.bukkit.Bukkit;
@@ -46,11 +47,11 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
     public void onInventorySwap(InventoryClickEvent e) {
         // getCursor returns the item you clicked with, getCurrentItem returns the item that was in the slot.
         if (isItem(e.getCursor())) {
-            Player p = (Player) e.getWhoClicked();
-            ItemStack chargerItem = e.getCursor();
-            Rechargeable charger = (Rechargeable) SlimefunItem.getByItem(chargerItem);
-            ItemStack deviceItem = e.getCurrentItem();
-            SlimefunItem sfItem = SlimefunItem.getByItem(deviceItem);
+            final Player p = (Player) e.getWhoClicked();
+            final ItemStack chargerItem = e.getCursor();
+            final Rechargeable charger = (Rechargeable) SlimefunItem.getByItem(chargerItem);
+            final ItemStack deviceItem = e.getCurrentItem();
+            final SlimefunItem sfItem = SlimefunItem.getByItem(deviceItem);
 
             if (sfItem instanceof Rechargeable) {
                 Rechargeable device = (Rechargeable) sfItem;
@@ -69,20 +70,21 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
                     }
 
                     availableCharge = charger.getItemCharge(chargerItem);
-                    Utils.lxPrefixMessage(p, ChatColor.GREEN, "Your item has been charged!");
-                    Utils.lxPrefixMessage(p, ChatColor.YELLOW, "Your charger has " + availableCharge + "J left.");
+                    Utils.send(p, "&aYour item has been charged!");
+                    Utils.send(p, "&eYour charger has " + availableCharge + "J left.");
 
                 } else if (neededCharge == 0) {
-                    Utils.lxPrefixMessage(p, ChatColor.RED, "This item is already full!");
+                    Utils.send(p, "&cThis item is already full!");
 
                 } else {
-                    Utils.lxPrefixMessage(p, ChatColor.RED, "Your charger does not have enough power!");
+                    Utils.send(p, "&cYour charger does not have enough power!");
                 }
             }
         }
     }
 
     @Override
+    @NonNull
     public float getMaxItemCharge(ItemStack itemStack) {
         return 1000;
     }
