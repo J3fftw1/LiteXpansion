@@ -84,7 +84,6 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
     }
 
     @Override
-    @NonNull
     public float getMaxItemCharge(ItemStack itemStack) {
         return 1000;
     }

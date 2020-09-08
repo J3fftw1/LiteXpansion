@@ -1,6 +1,5 @@
 package dev.j3fftw.litexpansion.utils;
 
-import lombok.NonNull;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
@@ -54,7 +53,6 @@ public final class Utils {
         }
     }
 
-    @NonNull
     public static void send(Player p, String message) {
         p.sendMessage(ChatColor.GRAY + "[LiteXpansion] " + ChatColors.color(message));
     }
