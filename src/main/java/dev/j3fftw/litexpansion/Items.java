@@ -64,7 +64,7 @@ public final class Items {
         Material.BRICK,
         "&6Portable Charger",
         "",
-        "&7Drag this onto a rechargeable item to charge it!",
+        "&7Right click to open charging menu",
         "",
         "&c&o&8\u21E8 &e\u26A1 &70 / 1000 J"
     );
