@@ -149,7 +149,6 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
     @EventHandler
     public void onNonClickableClick(InventoryClickEvent e) {
         ItemStack item = e.getCurrentItem();
-        System.out.println(item);
         if (item != null && item.getType() != Material.AIR && item.getItemMeta().hasCustomModelData()
             && item.getItemMeta().getCustomModelData() == 6969) {
             e.setCancelled(true);
