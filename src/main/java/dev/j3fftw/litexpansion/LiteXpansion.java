@@ -127,6 +127,11 @@ public class LiteXpansion extends JavaPlugin implements SlimefunAddon {
             696971, "Super Hot Fire", 31)
             .addItems(Items.NANO_BLADE)
             .register();
+
+        new Research(new NamespacedKey(this, "portable_charger"),
+            696972, "Portable Charger", 20)
+            .addItems(Items.PORTABLE_CHARGER)
+            .register();
     }
 
     private void setupCustomMetrics(@Nonnull Metrics metrics) {
