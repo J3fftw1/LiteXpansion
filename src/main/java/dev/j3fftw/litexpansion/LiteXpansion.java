@@ -91,11 +91,6 @@ public class LiteXpansion extends JavaPlugin implements SlimefunAddon {
 
         // Tools
         /*
-        registerItem(Items.WRENCH, RecipeType.ENHANCED_CRAFTING_TABLE,
-            SlimefunItems.BRONZE_INGOT, null, SlimefunItems.BRONZE_INGOT,
-            null, SlimefunItems.BRONZE_INGOT, null,
-            null, SlimefunItems.BRONZE_INGOT, null
-        );
 
         registerItem(Items.TREETAP, RecipeType.ENHANCED_CRAFTING_TABLE,
             null, new ItemStack(Material.OAK_PLANKS), null,
@@ -165,6 +160,7 @@ public class LiteXpansion extends JavaPlugin implements SlimefunAddon {
         }));
     }
 
+    @Nonnull
     public JavaPlugin getJavaPlugin() {
         return this;
     }
