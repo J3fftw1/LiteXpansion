@@ -57,15 +57,16 @@ public class GlassCutter extends SimpleSlimefunItem<ItemUseHandler> implements L
 
         if (e.getAction() == Action.LEFT_CLICK_BLOCK
             && (blockType == Material.GLASS
-            || blockType == Material.GLASS_PANE
-            || blockType.name().endsWith("_GLASS")
-            || blockType.name().endsWith("_GLASS_PANE")
-        ) && isItem(e.getItem())
-            && SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), blockLocation, ProtectableAction.BREAK_BLOCK)
+
+                || blockType == Material.GLASS_PANE
+                || blockType.name().endsWith("_GLASS")
+                || blockType.name().endsWith("_GLASS_PANE")
+            ) && isItem(e.getItem())
+            && SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), blockLocation, ProtectableAction.BREAK_BLOCK) 
         ) {
             e.setCancelled(true);
 
-            SlimefunItem slimefunItem = BlockStorage.check(block);
+            final SlimefunItem slimefunItem = BlockStorage.check(block);
 
             if (slimefunItem == null && removeItemCharge(e.getItem(), 0.5F)) {
                 blockLocation.getWorld().dropItemNaturally(blockLocation,
