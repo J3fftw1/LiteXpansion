@@ -57,7 +57,6 @@ public class GlassCutter extends SimpleSlimefunItem<ItemUseHandler> implements L
 
         if (e.getAction() == Action.LEFT_CLICK_BLOCK
             && (blockType == Material.GLASS
-
                 || blockType == Material.GLASS_PANE
                 || blockType.name().endsWith("_GLASS")
                 || blockType.name().endsWith("_GLASS_PANE")

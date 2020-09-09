@@ -25,6 +25,7 @@ public final class Items {
         new CustomItem(SkullItem.fromHash("3f87fc5cbb233743a82fb0fa51fe739487f29bcc01c9026621ecefad197f4fb1"),
             "&7LiteXpansion")
     );
+    // Armor
     public static final SlimefunItemStack ELECTRIC_CHESTPLATE = new SlimefunItemStack(
         "ELECTRIC_CHESTPLATE",
         Material.LEATHER_CHESTPLATE, Color.TEAL,
@@ -34,8 +35,7 @@ public final class Items {
         "",
         "&c&o&8\u21E8 &e\u26A1 &70 / 250 J"
     );
-
-    // Armor
+    // Weapons
     public static final SlimefunItemStack NANO_BLADE = new SlimefunItemStack(
         "NANO_BLADE",
         Material.DIAMOND_SWORD,
@@ -50,15 +50,12 @@ public final class Items {
         "",
         "&c&o&8\u21E8 &e\u26A1 &70 / 500 J"
     );
-
-    // Weapon
     // Tools
     public static final SlimefunItemStack WRENCH = new SlimefunItemStack(
         "WRENCH",
         Material.GOLDEN_HOE,
         "&6Wrench"
     );
-
     public static final SlimefunItemStack PORTABLE_CHARGER = new SlimefunItemStack(
         "PORTABLE_CHARGER",
         Material.BRICK,
@@ -68,7 +65,6 @@ public final class Items {
         "",
         "&c&o&8\u21E8 &e\u26A1 &70 / 1000 J"
     );
-
     public static final SlimefunItemStack GLASS_CUTTER = new SlimefunItemStack(
         "GLASS_CUTTER",
         Material.GHAST_TEAR,
@@ -78,7 +74,6 @@ public final class Items {
         "",
         "&c&o&8\u21E8 &e\u26A1 &70 / 300 J"
     );
-  
     public static final SlimefunItemStack TREETAP = new SlimefunItemStack(
         "TREETAP",
         Material.WOODEN_HOE,
