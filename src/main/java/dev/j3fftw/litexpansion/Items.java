@@ -61,7 +61,7 @@ public final class Items {
 
     public static final SlimefunItemStack PORTABLE_CHARGER = new SlimefunItemStack(
         "PORTABLE_CHARGER",
-        Material.BRICKS,
+        Material.BRICK,
         "&6Portable Charger",
         "",
         "&7Drag this onto a rechargeable item to charge it!",
@@ -325,6 +325,7 @@ public final class Items {
     static {
         ADVANCED_CIRCUIT.addEnchantment(glowEnchant, 1);
         GLASS_CUTTER.addEnchantment(glowEnchant, 1);
+        PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
     }
 
     private Items() {}

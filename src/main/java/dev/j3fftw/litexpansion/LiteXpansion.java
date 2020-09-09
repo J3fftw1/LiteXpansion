@@ -112,8 +112,6 @@ public class LiteXpansion extends JavaPlugin implements SlimefunAddon {
         setupResearches();
         new ThoriumResource().register();
 
-        // Tick away
-        this.getServer().getScheduler().runTaskTimer(this, new PortableCharger.Ticker(), 200L, 100L);
     }
 
     @Override

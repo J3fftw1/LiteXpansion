@@ -36,10 +36,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryInteractEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -48,6 +53,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The {@link PortableCharger} is an item that can
@@ -61,9 +67,13 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
 
     private final int[] border = { 5, 6, 7, 14, 16, 23, 24, 25 };
 
-    private int powerSlot = 13;
+    private int powerSlot = 11;
 
-    int count;
+    private int chargeSlot = 15;
+
+    private BukkitTask task;
+
+    Plugin plugin = LiteXpansion.getInstance();
 
     public PortableCharger() {
         super(Items.LITEXPANSION, Items.PORTABLE_CHARGER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
@@ -83,7 +93,14 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
     @Override
     public ItemUseHandler getItemHandler() {
         return e -> {
+            e.cancel();
 
+            // Get variables
+            final Player p = e.getPlayer();
+            final ItemStack chargerItem = e.getItem();
+            final Rechargeable charger = (Rechargeable) SlimefunItem.getByItem(chargerItem);
+
+            // Create GUI
             Inventory inventory = Bukkit.createInventory(null, 27, ChatColor.GOLD + "Portable Charger");
 
             ItemStack backgroundItem = buildNonInteractable(Material.GRAY_STAINED_GLASS_PANE, null);
@@ -97,22 +114,77 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
                 inventory.setItem(slot, borderItem);
 
             inventory.setItem(powerSlot, powerItem);
-            inventory.clear(15);
+            inventory.clear(chargeSlot);
 
             e.cancel();
-            Player p = e.getPlayer();
             p.openInventory(inventory);
 
+            boolean lockCharger = true;
+
+            // Task that triggers every second
+            task = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
+                ItemStack deviceItem = inventory.getItem(chargeSlot);
+                SlimefunItem sfItem = SlimefunItem.getByItem(deviceItem);
+                if (sfItem instanceof Rechargeable && !isItem(deviceItem)) {
+                    Rechargeable device = (Rechargeable) sfItem;
+                    float neededCharge = device.getMaxItemCharge(deviceItem) - device.getItemCharge(deviceItem);
+                    float availableCharge = charger.getItemCharge(chargerItem);
+
+                    if (neededCharge > 0 && availableCharge > 0) {
+
+                        if (neededCharge >= 10 && availableCharge >= 10) {
+                            charger.removeItemCharge(chargerItem, 10);
+                            device.addItemCharge(deviceItem, 10);
+
+                        } else if (neededCharge < availableCharge) {
+                            charger.removeItemCharge(chargerItem, neededCharge);
+                            device.addItemCharge(deviceItem, neededCharge);
+                        } else {
+                            charger.removeItemCharge(chargerItem, availableCharge);
+                            device.addItemCharge(deviceItem, availableCharge);
+                        }
+
+                    } else if (neededCharge == 0) {
+                        Utils.send(p, "&cThis item is already full!");
+
+                    } else {
+                        Utils.send(p, "&cYour charger does not have enough power!");
+                    }
+                    p.sendMessage("Tick");
+                }
+
+                // Check if GUI is no longer open
+                if (p.getOpenInventory().getType() != InventoryType.CHEST) {
+                    task.cancel();
+
+                    ItemStack forgottenItem = inventory.getItem(chargeSlot);
+
+                    // Check if player left an item inside
+                    if (forgottenItem != null) {
+                        Utils.send(p, "&cHey! You left something in the charger! Dropping it now...");
+                        p.getWorld().dropItemNaturally(p.getLocation(), forgottenItem);
+                    }
+
+                }
+            }, 0L, 20L);
 
         };
     }
 
+
     @EventHandler
     public void onNonClickableClick(InventoryClickEvent e) {
-        item = e.getCurrentItem();
-        if (item.getItemMeta().hasCustomModelData()
+        ItemStack item = e.getCurrentItem();
+        if (item != null && item.getItemMeta().hasCustomModelData()
             && item.getItemMeta().getCustomModelData() == 6969) {
             e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onChargerClick(InventoryClickEvent e) {
+        if (isItem(e.getCursor()) &&  = true) {
+
         }
     }
 
@@ -185,7 +257,8 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
     }
 
     public void updateSlot(Inventory inventory, int slot, String name, String... lore) {
-        ItemMeta slotMeta = inventory.getItem(slot).getItemMeta();
+        ItemStack item = inventory.getItem(slot);
+        ItemMeta slotMeta = item.getItemMeta();
         if (name != null) {
             slotMeta.setDisplayName(ChatColors.color(name));
         } else {
@@ -203,6 +276,9 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
             }
             slotMeta.setLore(lines);
         }
+        item.setItemMeta(slotMeta);
+        inventory.setItem(slot, item);
+        System.out.println(item);
     }
 
     @Override
