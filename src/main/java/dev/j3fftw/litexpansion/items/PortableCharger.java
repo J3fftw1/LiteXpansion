@@ -149,7 +149,8 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
     @EventHandler
     public void onNonClickableClick(InventoryClickEvent e) {
         ItemStack item = e.getCurrentItem();
-        if (item != null && item.getItemMeta().hasCustomModelData()
+        System.out.println(item);
+        if (item != null && item.getType() != Material.AIR && item.getItemMeta().hasCustomModelData()
             && item.getItemMeta().getCustomModelData() == 6969) {
             e.setCancelled(true);
         }
@@ -161,7 +162,8 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
     public void onChargerClick(InventoryClickEvent e) {
         ItemStack item = e.getCurrentItem();
         Player p = (Player) e.getWhoClicked();
-        if (isItem(item) && p.getOpenInventory().getTopInventory().getItem(powerSlot).
+        if (isItem(item) && p.getOpenInventory().getTopInventory().getItem(powerSlot) != null
+            && p.getOpenInventory().getTopInventory().getItem(powerSlot).
             getItemMeta().getDisplayName().contains("Power Remaining")) {
             e.setCancelled(true);
         }
