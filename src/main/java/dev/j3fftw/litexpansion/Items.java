@@ -63,7 +63,7 @@ public final class Items {
         "",
         "&7Right click to open charging menu",
         "",
-        "&c&o&8\u21E8 &e\u26A1 &70 / 1000 J"
+        LoreBuilder.powerCharged(0, 1000)
     );
     public static final SlimefunItemStack GLASS_CUTTER = new SlimefunItemStack(
         "GLASS_CUTTER",

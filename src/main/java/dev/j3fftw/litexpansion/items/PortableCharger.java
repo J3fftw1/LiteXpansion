@@ -37,14 +37,10 @@ import java.util.List;
 public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implements Listener, Rechargeable {
 
     private final int[] border = { 5, 6, 7, 14, 16, 23, 24, 25 };
-
     private final int powerSlot = 11;
-
     private final int chargeSlot = 15;
-
     private final int chargeSpeed = 20;
-
-    Plugin plugin = LiteXpansion.getInstance();
+    private final Plugin plugin = LiteXpansion.getInstance();
 
     public PortableCharger() {
         super(Items.LITEXPANSION, Items.PORTABLE_CHARGER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
@@ -129,7 +125,7 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
                     }
 
                     // Check if GUI is no longer open
-                    if (p.getOpenInventory().getTopInventory() != inventory) {
+                    if (!inventory.getViewers().contains(p)) {
                         cancel();
 
                         ItemStack forgottenItem = inventory.getItem(chargeSlot);
