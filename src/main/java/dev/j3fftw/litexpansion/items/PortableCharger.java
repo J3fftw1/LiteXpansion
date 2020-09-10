@@ -11,6 +11,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -39,7 +40,7 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
     private final int[] border = { 5, 6, 7, 14, 16, 23, 24, 25 };
     private final int powerSlot = 11;
     private final int chargeSlot = 15;
-    private final int chargeSpeed = 20;
+    private final int chargeSpeed = 50;
     private final Plugin plugin = LiteXpansion.getInstance();
 
     public PortableCharger() {
@@ -97,7 +98,10 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
                         float availableCharge = charger.getItemCharge(chargerItem);
 
                         // Three different scenarios
-                        if (neededCharge > 0 && availableCharge > 0) {
+                        if (p.getGameMode() == GameMode.CREATIVE && neededCharge > 0) {
+                            device.setItemCharge(deviceItem, device.getMaxItemCharge(deviceItem));
+
+                        } else if (neededCharge > 0 && availableCharge > 0) {
 
                             if (neededCharge >= chargeSpeed && availableCharge >= chargeSpeed) {
                                 charger.removeItemCharge(chargerItem, chargeSpeed);
