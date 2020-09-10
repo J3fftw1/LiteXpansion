@@ -5,6 +5,7 @@ import dev.j3fftw.litexpansion.LiteXpansion;
 import dev.j3fftw.litexpansion.utils.Utils;
 import io.github.thebusybiscuit.slimefun4.core.attributes.Rechargeable;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -45,9 +46,9 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
 
     public PortableCharger() {
         super(Items.LITEXPANSION, Items.PORTABLE_CHARGER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            Items.REFINED_IRON, null, Items.REFINED_IRON,
-            null, Items.ADVANCED_CIRCUIT, null,
-            null, Items.ADVANCED_CIRCUIT, null
+            Items.COPPER_CABLE, Items.REFINED_IRON, Items.COPPER_CABLE,
+            Items.REFINED_IRON, SlimefunItems.MEDIUM_CAPACITOR, Items.REFINED_IRON,
+            Items.REFINED_IRON, Items.ADVANCED_CIRCUIT, Items.REFINED_IRON
         });
 
         Bukkit.getPluginManager().registerEvents(this, LiteXpansion.getInstance());
