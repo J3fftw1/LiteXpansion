@@ -4,6 +4,7 @@ import dev.j3fftw.litexpansion.machine.AdvancedSolarPanel;
 import dev.j3fftw.litexpansion.machine.MassFabricator;
 import dev.j3fftw.litexpansion.machine.RubberSynthesizer;
 import dev.j3fftw.litexpansion.machine.ScrapMachine;
+import dev.j3fftw.litexpansion.machine.WaterSprinkler;
 import dev.j3fftw.litexpansion.utils.Constants;
 import dev.j3fftw.litexpansion.utils.LoreBuilderDynamic;
 import io.github.thebusybiscuit.slimefun4.core.attributes.Radioactivity;
@@ -275,6 +276,16 @@ public final class Items {
         "",
         LoreBuilderDynamic.powerBuffer(RubberSynthesizer.CAPACITY),
         LoreBuilderDynamic.powerPerTick(RubberSynthesizer.ENERGY_CONSUMPTION)
+    );
+    public static final SlimefunItemStack WATER_SPRINKER = new SlimefunItemStack(
+        "WATER_SPRINKLER",
+        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDZiMTNkNjlkMTkyOWRjZjhlZGY5OWYzOTAxNDE1MjE3YzZhNTY3ZDNhNmVhZDEyZjc1YTRkZTNlZDgzNWU4NSJ9fX0",
+        "&eWater Sprinkler",
+        "",
+        "&fSprinkly sprinkly",
+        "",
+        LoreBuilderDynamic.powerBuffer(WaterSprinkler.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(WaterSprinkler.ENERGY_CONSUMPTION)
     );
     //// Solar panels
     public static final SlimefunItemStack ADVANCED_SOLAR_PANEL = new SlimefunItemStack(
