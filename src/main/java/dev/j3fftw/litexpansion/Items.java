@@ -72,6 +72,11 @@ public final class Items {
         Material.WOODEN_HOE,
         "&7Treetap"
     );
+    public static final SlimefunItemStack WATERING_CAN = new SlimefunItemStack(
+        "WATERING_CAN",
+        Material.BUCKET,
+        "&6Watering Can"
+    );
     public static final SlimefunItemStack CARGO_CONFIGURATOR = new SlimefunItemStack(
         "CARGO_CONFIGURATOR",
         Material.COMPASS,
