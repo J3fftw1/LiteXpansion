@@ -67,6 +67,19 @@ public final class Items {
         "",
         "&c&o&8\u21E8 &e\u26A1 &70 / 300 J"
     );
+    public static final SlimefunItemStack WATERING_CAN = new SlimefunItemStack(
+        "WATERING_CAN",
+        Material.BUCKET,
+        "&bWatering Can",
+        "",
+        "&fWaters Plants",
+        "",
+        "&7> &eRight click &7a full cauldron to fill",
+        "&7your watering can.",
+        "&7> &eRight click &7a plant to speed up growth.",
+        "",
+        "&aUses Left: &e0"
+    );
     public static final SlimefunItemStack TREETAP = new SlimefunItemStack(
         "TREETAP",
         Material.WOODEN_HOE,
