@@ -69,7 +69,7 @@ public final class Items {
     );
     public static final SlimefunItemStack WATERING_CAN = new SlimefunItemStack(
         "WATERING_CAN",
-        Material.BUCKET,
+        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDk1YWI4ZmVmODc3MWYxODcyODZjYjQxYmU4OWI5NWI0Y2MwYmIwZTQ4ZmVhNzNmYjhhNGExNDI3ODU5ZGVkYyJ9fX0=",
         "&bWatering Can",
         "",
         "&fWaters Plants",
