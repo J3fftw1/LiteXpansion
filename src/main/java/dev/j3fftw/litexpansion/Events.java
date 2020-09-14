@@ -2,18 +2,27 @@ package dev.j3fftw.litexpansion;
 
 import dev.j3fftw.litexpansion.armor.ElectricChestplate;
 import dev.j3fftw.litexpansion.items.FoodSynthesizer;
+import dev.j3fftw.litexpansion.items.WateringCan;
 import dev.j3fftw.litexpansion.utils.Constants;
 import dev.j3fftw.litexpansion.weapons.NanoBlade;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class Events implements Listener {
 
@@ -65,6 +74,34 @@ public class Events implements Listener {
 
         if (e.getCause() == EntityDamageEvent.DamageCause.STARVATION) {
             checkAndConsume((Player) e.getEntity(), null);
+        }
+    }
+
+    @EventHandler
+    public void onWateringCanSplash(PlayerInteractEntityEvent e) {
+        e.setCancelled(true);
+        Player p = e.getPlayer();
+        ItemStack item = p.getInventory().getItemInMainHand();
+        WateringCan wateringCan = (WateringCan) Items.WATERING_CAN.getItem();
+        if (wateringCan.isItem(item)) {
+            Entity target = e.getRightClicked();
+            if (target instanceof Player) {
+                ((Player) target).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 3, 1));
+                WateringCan.updateUses(p, item, 3);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onWateringCanEmpty(PlayerInteractEvent e) {
+        Player p = e.getPlayer();
+        ItemStack item = e.getItem();
+        WateringCan wateringCan = (WateringCan) Items.WATERING_CAN.getItem();
+        if ((e.getAction() == Action.LEFT_CLICK_AIR
+            || e.getAction() == Action.LEFT_CLICK_BLOCK)
+            && wateringCan.isItem(item)) {
+            e.setCancelled(true);
+            WateringCan.updateUses(p, item, 3);
         }
     }
 

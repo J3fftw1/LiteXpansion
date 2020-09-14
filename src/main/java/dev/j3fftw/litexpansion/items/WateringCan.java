@@ -3,57 +3,45 @@ package dev.j3fftw.litexpansion.items;
 import dev.j3fftw.litexpansion.Items;
 import dev.j3fftw.litexpansion.LiteXpansion;
 import dev.j3fftw.litexpansion.utils.Utils;
-import io.github.thebusybiscuit.slimefun4.api.items.ItemState;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
-import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
-import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.FluidCollisionMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
+import org.bukkit.Tag;
 import org.bukkit.TreeType;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Skull;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockFertilizeEvent;
-import org.bukkit.event.player.PlayerBucketEvent;
-import org.bukkit.event.world.StructureGrowEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.Cauldron;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.RayTraceResult;
-import org.bukkit.util.Vector;
 
-import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 import static java.lang.String.valueOf;
 
 public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
-    private static final int USE_INDEX = 7;
+    private static final int USE_INDEX = 8;
     private static final int MAX_USES = 9;
     private static final NamespacedKey usageKey = new NamespacedKey(LiteXpansion.getInstance(), "watering_can_usage");
 
     public WateringCan() {
         super(Items.LITEXPANSION, Items.WATERING_CAN, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             Items.REFINED_IRON, null, Items.REFINED_IRON,
-            Items.REFINED_IRON, null, Items.REFINED_IRON,
+            Items.REFINED_IRON, new ItemStack(Material.BUCKET), Items.REFINED_IRON,
             null, Items.REFINED_IRON, null
         });
     }
@@ -69,27 +57,15 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
             if (rayResult != null) {
 
                 Block b = rayResult.getHitBlock();
+                Location blockLocation = b.getLocation();
                 ItemStack item = e.getItem();
-                ItemMeta meta = item.getItemMeta();
-                List<String> lore = meta.getLore();
                 BlockData blockData = b.getBlockData();
-                int usesLeft = meta.getPersistentDataContainer().getOrDefault(usageKey, PersistentDataType.INTEGER, 0);
-
 
                 // Fill if it hits water
                 if (b.getType() == Material.WATER) {
-
-                    item.setType(Material.WATER_BUCKET);
-                    usesLeft = MAX_USES;
-                    lore.set(USE_INDEX, ChatColors.color("&aUses Left: &e" + usesLeft));
-                    Utils.send(p, "&aYou have filled your Watering Can");
+                    updateUses(p, item, 2);
 
                 } else {
-
-                    if (usesLeft == 0) {
-                        Utils.send(p, "&cYou need to refill your Watering Can!");
-                        return;
-                    }
 
                     if (b.getType() == Material.SUGAR_CANE) {
 
@@ -110,8 +86,9 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
                         if (above.getType() == Material.AIR) {
 
+                            if (!updateUses(p, item, 1))
+                                return;
                             above.setType(Material.SUGAR_CANE);
-                            usesLeft--;
 
                         } else {
                             Utils.send(p, "&cThe sugar cane is obstructed!");
@@ -123,16 +100,15 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
                         int currentAge = crop.getAge();
                         int maxAge = crop.getMaximumAge();
 
-                        if (currentAge < maxAge) {
+                        if (currentAge < maxAge && updateUses(p, item, 1)) {
                             crop.setAge(currentAge + 1);
-                            usesLeft--;
-
                         } else {
                             Utils.send(p, "&cThis crop is already ready for harvest!");
+                            return;
                         }
 
                         b.setBlockData(blockData);
-                    } else if (b.getType().toString().endsWith("SAPLING")) {
+                    } else if (Tag.SAPLINGS.isTagged(b.getType())) {
 
                         if (BlockStorage.check(b) != null) {
                             Utils.send(p, "&cSorry, this is a Slimefun plant!");
@@ -141,7 +117,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
                             TreeType treeType = TreeType.TREE;
                             String parseSapling = b.getType().toString()
-                                .replace("Material.", "").replace("_SAPLING", "");
+                                .replace("_SAPLING", "");
 
                             if (!parseSapling.equals("OAK")) {
                                 if (parseSapling.equals("JUNGLE")){
@@ -150,23 +126,65 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
                                 treeType = TreeType.valueOf(parseSapling);
                             }
 
+                            if (!updateUses(p, item, 1))
+                                return;
                             b.setType(Material.AIR);
-                            b.getLocation().getWorld().generateTree(b.getLocation(), treeType);
-                            usesLeft--;
+                            blockLocation.getWorld().generateTree(blockLocation, treeType);
                         }
-                    }
-
-                    lore.set(USE_INDEX, ChatColors.color("&aUses Left: &e" + usesLeft));
-
-                    if (usesLeft == 0) {
-                        item.setType(Material.BUCKET);
                     }
                 }
 
-                meta.setLore(lore);
-                meta.getPersistentDataContainer().set(usageKey, PersistentDataType.INTEGER, usesLeft);
-                item.setItemMeta(meta);
             }
         };
+    }
+
+    public static boolean updateUses(Player p, ItemStack item, int updateType) {
+
+        ItemMeta meta = item.getItemMeta();
+        List<String> lore = meta.getLore();
+        int usesLeft = meta.getPersistentDataContainer().getOrDefault(usageKey, PersistentDataType.INTEGER, 0);
+
+        if (updateType == 1) {
+
+            if (usesLeft == 0) {
+                Utils.send(p, "&cYou need to refill your Watering Can!");
+                return false;
+            }
+            p.playSound(p.getLocation(), Sound.ENTITY_DROWNED_AMBIENT_WATER, 0.5F, 1F);
+            usesLeft--;
+
+        } else if (updateType == 2){
+            item.setType(Material.POTION);
+            p.playSound(p.getLocation(), Sound.ENTITY_DROWNED_DEATH_WATER, 0.5F, 1F);
+            Utils.send(p, "&aYou have filled your Watering Can");
+            usesLeft = MAX_USES;
+            // Need to get this again because material changed
+            PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
+            potionMeta.setColor(Color.AQUA);
+            item.setItemMeta(potionMeta);
+            meta = item.getItemMeta();
+            meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+
+        } else if (updateType == 3) {
+            if (usesLeft == 0) {
+                Utils.send(p, "&cYou need to refill your Watering Can!");
+                return false;
+            }
+            usesLeft = 0;
+            p.playSound(p.getLocation(), Sound.ITEM_BUCKET_EMPTY, 0.5F, 1F);;
+        } else {
+            p.sendMessage("Error");
+        }
+
+        lore.set(USE_INDEX, ChatColors.color("&aUses Left: &e" + usesLeft));
+        meta.setLore(lore);
+        meta.getPersistentDataContainer().set(usageKey, PersistentDataType.INTEGER, usesLeft);
+        item.setItemMeta(meta);
+
+        if (usesLeft == 0) {
+            item.setType(Material.GLASS_BOTTLE);
+        }
+
+        return true;
     }
 }

@@ -69,14 +69,15 @@ public final class Items {
     );
     public static final SlimefunItemStack WATERING_CAN = new SlimefunItemStack(
         "WATERING_CAN",
-        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDk1YWI4ZmVmODc3MWYxODcyODZjYjQxYmU4OWI5NWI0Y2MwYmIwZTQ4ZmVhNzNmYjhhNGExNDI3ODU5ZGVkYyJ9fX0=",
+        Material.GLASS_BOTTLE,
         "&bWatering Can",
         "",
         "&fWaters Plants",
         "",
-        "&7> &eRight click &7a full cauldron to fill",
-        "&7your watering can.",
-        "&7> &eRight click &7a plant to speed up growth.",
+        "&7> &eRight Click &7a water to fill your watering can",
+        "&7> &eRight Click &7a plant to speed up growth.",
+        "&7> &eRight Click &7a player to slow them down",
+        "&7> &eLeft Click &7to empty",
         "",
         "&aUses Left: &e0"
     );
