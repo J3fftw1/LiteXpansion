@@ -9,6 +9,7 @@ import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import org.bukkit.Color;
+import org.bukkit.Effect;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,6 +31,7 @@ import org.bukkit.util.RayTraceResult;
 
 import java.util.List;
 
+import static java.lang.StrictMath.random;
 import static java.lang.String.valueOf;
 
 public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
@@ -115,21 +117,26 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
                         } else {
 
-                            TreeType treeType = TreeType.TREE;
-                            String parseSapling = b.getType().toString()
-                                .replace("_SAPLING", "");
+                            double random = Math.random();
+                            if (random < 0.2) {
 
-                            if (!parseSapling.equals("OAK")) {
-                                if (parseSapling.equals("JUNGLE")){
-                                    parseSapling = "SMALL_JUNGLE";
+                                TreeType treeType = TreeType.TREE;
+                                String parseSapling = b.getType().toString()
+                                    .replace("_SAPLING", "");
+
+                                if (!parseSapling.equals("OAK")) {
+                                    if (parseSapling.equals("JUNGLE")) {
+                                        parseSapling = "SMALL_JUNGLE";
+                                    }
+                                    treeType = TreeType.valueOf(parseSapling);
                                 }
-                                treeType = TreeType.valueOf(parseSapling);
-                            }
 
-                            if (!updateUses(p, item, 1))
-                                return;
-                            b.setType(Material.AIR);
-                            blockLocation.getWorld().generateTree(blockLocation, treeType);
+                                if (!updateUses(p, item, 1))
+                                    return;
+                                b.setType(Material.AIR);
+                                blockLocation.getWorld().generateTree(blockLocation, treeType);
+                            }
+                            blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
                         }
                     }
                 }
@@ -180,6 +187,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
         meta.setLore(lore);
         meta.getPersistentDataContainer().set(usageKey, PersistentDataType.INTEGER, usesLeft);
         item.setItemMeta(meta);
+        Utils.send(p, "&eYou have "+ usesLeft + " uses left");
 
         if (usesLeft == 0) {
             item.setType(Material.GLASS_BOTTLE);

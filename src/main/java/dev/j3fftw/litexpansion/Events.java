@@ -4,8 +4,10 @@ import dev.j3fftw.litexpansion.armor.ElectricChestplate;
 import dev.j3fftw.litexpansion.items.FoodSynthesizer;
 import dev.j3fftw.litexpansion.items.WateringCan;
 import dev.j3fftw.litexpansion.utils.Constants;
+import dev.j3fftw.litexpansion.utils.Utils;
 import dev.j3fftw.litexpansion.weapons.NanoBlade;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -83,27 +85,32 @@ public class Events implements Listener {
         Player p = e.getPlayer();
         ItemStack item = p.getInventory().getItemInMainHand();
         WateringCan wateringCan = (WateringCan) Items.WATERING_CAN.getItem();
+
+        // For some reason player interact events trigger twice, probably after a method returns false
         if (wateringCan.isItem(item)) {
             Entity target = e.getRightClicked();
-            if (target instanceof Player) {
-                ((Player) target).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 3, 1));
-                WateringCan.updateUses(p, item, 3);
+            if (target instanceof Player && WateringCan.updateUses(p, item, 3)) {
+                Utils.send(p, "&bSplash!");
+                ((Player) target).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60, 1));
             }
         }
     }
 
+    /*
+    // This thing kinda weird and triggering on right clicks no fun
     @EventHandler
     public void onWateringCanEmpty(PlayerInteractEvent e) {
         Player p = e.getPlayer();
         ItemStack item = e.getItem();
         WateringCan wateringCan = (WateringCan) Items.WATERING_CAN.getItem();
-        if ((e.getAction() == Action.LEFT_CLICK_AIR
-            || e.getAction() == Action.LEFT_CLICK_BLOCK)
+        if (e.getAction() == Action.LEFT_CLICK_AIR
             && wateringCan.isItem(item)) {
             e.setCancelled(true);
             WateringCan.updateUses(p, item, 3);
         }
     }
+
+     */
 
     public void checkAndConsume(Player p, FoodLevelChangeEvent e) {
         FoodSynthesizer foodSynth = (FoodSynthesizer) Items.FOOD_SYNTHESIZER.getItem();
