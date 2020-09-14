@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -35,6 +36,21 @@ public class LiteXpansion extends JavaPlugin implements SlimefunAddon {
 
         if (!new File(getDataFolder(), "config.yml").exists())
             saveDefaultConfig();
+
+        if (!getConfig().contains("options.sugar-cane-watering-success-chance")) {
+            getConfig().set("options.sugar-cane-watering-success-chance", 0.4);
+            saveConfig();
+        }
+
+        if (!getConfig().contains("options.crop-watering-success-chance")) {
+            getConfig().set("options.crop-watering-success-chance", 0.4);
+            saveConfig();
+        }
+
+        if (!getConfig().contains("options.tree-watering-success-chance")) {
+            getConfig().set("options.tree-watering-success-chance", 0.4);
+            saveConfig();
+        }
 
         final Metrics metrics = new Metrics(this, 7111);
         setupCustomMetrics(metrics);
@@ -169,5 +185,9 @@ public class LiteXpansion extends JavaPlugin implements SlimefunAddon {
 
     public static LiteXpansion getInstance() {
         return instance;
+    }
+
+    public static FileConfiguration getCfg() {
+        return instance.getConfig();
     }
 }

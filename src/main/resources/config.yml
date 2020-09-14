@@ -1,2 +1,5 @@
 options:
   auto-update: true
+  sugar-cane-watering-success-chance: 0.4
+  crop-watering-success-chance: 0.4
+  tree-watering-success-chance: 0.4

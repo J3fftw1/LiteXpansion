@@ -2,6 +2,7 @@ package dev.j3fftw.litexpansion.items;
 
 import dev.j3fftw.litexpansion.Items;
 import dev.j3fftw.litexpansion.LiteXpansion;
+import dev.j3fftw.litexpansion.utils.Constants;
 import dev.j3fftw.litexpansion.utils.Utils;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
@@ -14,6 +15,7 @@ import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.Tag;
 import org.bukkit.TreeType;
@@ -31,13 +33,10 @@ import org.bukkit.util.RayTraceResult;
 
 import java.util.List;
 
-import static java.lang.StrictMath.random;
-import static java.lang.String.valueOf;
-
 public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
     private static final int USE_INDEX = 8;
-    private static final int MAX_USES = 9;
+    private static final int MAX_USES = 10;
     private static final NamespacedKey usageKey = new NamespacedKey(LiteXpansion.getInstance(), "watering_can_usage");
 
     public WateringCan() {
@@ -90,9 +89,14 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
                             if (!updateUses(p, item, 1))
                                 return;
-                            above.setType(Material.SUGAR_CANE);
+                            blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
+                            double random = Math.random();
+                            if (random <= Constants.SUGAR_CANE_WATERING_SUCCESS_CHANCE) {
+                                above.setType(Material.SUGAR_CANE);
+                                blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
+                            }
 
-                        } else {
+                            } else {
                             Utils.send(p, "&cThe sugar cane is obstructed!");
                         }
 
@@ -103,7 +107,13 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
                         int maxAge = crop.getMaximumAge();
 
                         if (currentAge < maxAge && updateUses(p, item, 1)) {
-                            crop.setAge(currentAge + 1);
+                            blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
+                            double random = Math.random();
+                            if (random <= Constants.CROP_WATERING_SUCCESS_CHANCE) {
+                                crop.setAge(currentAge + 1);
+                                blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
+                            }
+
                         } else {
                             Utils.send(p, "&cThis crop is already ready for harvest!");
                             return;
@@ -117,8 +127,11 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
                         } else {
 
+                            if (!updateUses(p, item, 1))
+                                return;
+                            blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
                             double random = Math.random();
-                            if (random < 0.2) {
+                            if (random <= Constants.TREE_WATERING_SUCCESS_CHANCE) {
 
                                 TreeType treeType = TreeType.TREE;
                                 String parseSapling = b.getType().toString()
@@ -131,12 +144,10 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
                                     treeType = TreeType.valueOf(parseSapling);
                                 }
 
-                                if (!updateUses(p, item, 1))
-                                    return;
                                 b.setType(Material.AIR);
                                 blockLocation.getWorld().generateTree(blockLocation, treeType);
+                                blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
                             }
-                            blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
                         }
                     }
                 }
