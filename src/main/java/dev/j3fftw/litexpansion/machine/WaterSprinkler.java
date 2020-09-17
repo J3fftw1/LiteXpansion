@@ -1,40 +1,69 @@
 package dev.j3fftw.litexpansion.machine;
 
 import dev.j3fftw.litexpansion.Items;
-import io.github.thebusybiscuit.slimefun4.core.attributes.RecipeDisplayItem;
+import dev.j3fftw.litexpansion.LiteXpansion;
+import dev.j3fftw.litexpansion.utils.Utils;
+import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
+import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineRecipe;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.InventoryBlock;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
+import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Ageable;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import static io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems.ADVANCED_CIRCUIT_BOARD;
-import static io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems.REINFORCED_PLATE;
+public class WaterSprinkler extends SlimefunItem implements InventoryBlock, EnergyNetComponent {
 
-public class WaterSprinkler extends AContainer implements RecipeDisplayItem {
+    public static final RecipeType RECIPE_TYPE = new RecipeType(
+        new NamespacedKey(LiteXpansion.getInstance(), "water_sprinkler"), Items.WATER_SPRINKER
+    );
 
-    public static final int ENERGY_CONSUMPTION = 32;
-    public static final int CAPACITY = 126;
+    public static final int ENERGY_CONSUMPTION = 100;
+    public static final int CAPACITY = 450;
+
+    private static final int INPUT_SLOT = 11;
+    private static final int OUTPUT_SLOT = 15;
+    private static final int PROGRESS_SLOT = 13;
+    private static final int PROGRESS_AMOUNT = 10; // Divide by 2 for seconds it takes
+
+    private static final Map<BlockPosition, Integer> progress = new HashMap<>();
+
+    private static final CustomItem progressItem = new CustomItem(Material.WATER_BUCKET, "&7Progress");
 
     public WaterSprinkler() {
         super(Items.LITEXPANSION, Items.WATER_SPRINKER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            REINFORCED_PLATE, ADVANCED_CIRCUIT_BOARD, REINFORCED_PLATE,
-            ADVANCED_CIRCUIT_BOARD, Items.MACHINE_BLOCK, ADVANCED_CIRCUIT_BOARD,
-            REINFORCED_PLATE, ADVANCED_CIRCUIT_BOARD, REINFORCED_PLATE
+            SlimefunItems.ADVANCED_CIRCUIT_BOARD, SlimefunItems.REINFORCED_PLATE, SlimefunItems.ADVANCED_CIRCUIT_BOARD,
+            SlimefunItems.REINFORCED_PLATE, Items.MACHINE_BLOCK, SlimefunItems.REINFORCED_PLATE,
+            SlimefunItems.ADVANCED_CIRCUIT_BOARD, SlimefunItems.REINFORCED_PLATE, SlimefunItems.ADVANCED_CIRCUIT_BOARD
+        });
+        setupInv();
+    }
+
+    private void setupInv() {
+        createPreset(this, "&bWater Sprinkler", blockMenuPreset -> {
+            for (int i = 0; i < 27; i++)
+                blockMenuPreset.addItem(i, ChestMenuUtils.getBackground(), ChestMenuUtils.getEmptyClickHandler());
+
+            blockMenuPreset.addItem(INPUT_SLOT, null, (player, i, itemStack, clickAction) -> true);
+            Utils.putOutputSlot(blockMenuPreset, OUTPUT_SLOT);
+
+            blockMenuPreset.addItem(PROGRESS_SLOT, new CustomItem(Material.DEAD_BUSH, "&7Progress"));
         });
     }
 
@@ -51,45 +80,75 @@ public class WaterSprinkler extends AContainer implements RecipeDisplayItem {
         });
     }
 
-    public void tick(@Nonnull Block b) {
-        if (!AContainer.progress.isEmpty()) {
-            System.out.println("PROCESSING");
+    private void tick(@Nonnull Block b) {
+        @Nullable final BlockMenu inv = BlockStorage.getInventory(b);
+        if (inv == null) return;
+
+        @Nullable final ItemStack input = inv.getItemInSlot(INPUT_SLOT);
+        @Nullable final ItemStack output = inv.getItemInSlot(OUTPUT_SLOT);
+        if (input == null || input.getType() != Material.WATER_BUCKET
+            || (output != null
+            && (output.getAmount() == output.getMaxStackSize()
+            || output.getType() != Material.BUCKET))
+        ) return;
+
+        final BlockPosition pos = new BlockPosition(b.getWorld(), b.getX(), b.getY(), b.getZ());
+        int currentProgress = progress.getOrDefault(pos, -1);
+
+        // Process first tick - remove an input and put it in map.
+        if (currentProgress == -1 && takePower(b)) {
+            progress.put(pos, 0);
+            return;
+        }
+
+        // No progress and no input item, no tick needed. Or if there was no power (but can be processed)
+        if (currentProgress == -1 || !takePower(b)) return;
+
+        if (currentProgress == 0) {
+            if (inv.getItemInSlot(INPUT_SLOT).getType() == Material.AIR) {
+                return;
+            }
+            inv.consumeItem(INPUT_SLOT);
+        }
+
+        if (currentProgress == PROGRESS_AMOUNT) {
+            if (output != null && output.getAmount() > 0)
+                output.setAmount(output.getAmount() + 1);
+            else {
+                inv.replaceExistingItem(OUTPUT_SLOT, new ItemStack(Material.BUCKET));
+            }
+
+
+           /*// Watering
+            if (b.getRelative(BlockFace.NORTH).getType() == Material.WHEAT) {
+                Ageable wheat = (Ageable) b.getRelative(BlockFace.NORTH);
+                int currentAge = wheat.getAge();
+                int maxAge = wheat.getMaximumAge();
+                if (currentAge < maxAge) {
+                    currentAge++;
+                    wheat.setAge(currentAge);
+                }
+            }*/
+
+            progress.remove(pos);
+            ChestMenuUtils.updateProgressbar(inv, PROGRESS_SLOT, PROGRESS_AMOUNT, PROGRESS_AMOUNT, progressItem);
+        } else {
+            progress.put(pos, ++currentProgress);
+            ChestMenuUtils.updateProgressbar(inv, PROGRESS_SLOT, PROGRESS_AMOUNT - currentProgress, PROGRESS_AMOUNT,
+                progressItem);
         }
     }
 
-    @Override
-    protected void registerDefaultRecipes() {
-
-        registerRecipe(8, new ItemStack[] {new ItemStack(Material.WATER_BUCKET)},
-            new ItemStack[] {new ItemStack(Material.BUCKET)});
-
+    private boolean takePower(@Nonnull Block b) {
+        if (getCharge(b.getLocation()) < ENERGY_CONSUMPTION) return false;
+        removeCharge(b.getLocation(), ENERGY_CONSUMPTION);
+        return true;
     }
 
+    @Nonnull
     @Override
-    public List<ItemStack> getDisplayRecipes() {
-        List<ItemStack> displayRecipes = new ArrayList<>(recipes.size() * 2);
-
-        for (MachineRecipe recipe : recipes) {
-            displayRecipes.add(recipe.getInput()[0]);
-            displayRecipes.add(recipe.getOutput()[recipe.getOutput().length - 1]);
-        }
-
-        return displayRecipes;
-    }
-
-    @Override
-    public ItemStack getProgressBar() {
-        return new ItemStack(Material.WATER_BUCKET);
-    }
-
-    @Override
-    public String getInventoryTitle() {
-        return "&bWater Sprinkler";
-    }
-
-    @Override
-    public String getMachineIdentifier() {
-        return "WATER_SPRINKLER";
+    public EnergyNetComponentType getEnergyComponentType() {
+        return EnergyNetComponentType.CONSUMER;
     }
 
     @Override
@@ -98,12 +157,12 @@ public class WaterSprinkler extends AContainer implements RecipeDisplayItem {
     }
 
     @Override
-    public int getEnergyConsumption() {
-        return ENERGY_CONSUMPTION;
+    public int[] getInputSlots() {
+        return new int[] {INPUT_SLOT};
     }
 
     @Override
-    public int getSpeed() {
-        return 1;
+    public int[] getOutputSlots() {
+        return new int[] {OUTPUT_SLOT};
     }
 }
