@@ -54,7 +54,7 @@ public class WaterSprinkler extends AbstractGrowthAccelerator {
                 Items.REFINED_IRON, SlimefunItems.MEDIUM_CAPACITOR, Items.REFINED_IRON
             });
 
-        createPreset(this, Items.WATER_SPRINKER.getImmutableMeta().getDisplayName().orElse("&eWater Sprinkler"),
+        createPreset(this, Items.WATER_SPRINKER.getImmutableMeta().getDisplayName().orElse("&bWater Sprinkler"),
             blockMenuPreset -> {
                 for (int i = 0; i < 9; i++)
                     blockMenuPreset.addItem(i, ChestMenuUtils.getBackground(), ChestMenuUtils.getEmptyClickHandler());
@@ -68,6 +68,7 @@ public class WaterSprinkler extends AbstractGrowthAccelerator {
         crops.add(Material.NETHER_WART);
         crops.add(Material.BEETROOTS);
         crops.add(Material.COCOA);
+        crops.add(Material.SUGAR_CANE);
 
         if (SlimefunPlugin.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_14)) {
             crops.add(Material.SWEET_BERRY_BUSH);
@@ -123,16 +124,27 @@ public class WaterSprinkler extends AbstractGrowthAccelerator {
     }
 
     private void grow(Block crop) {
-        Ageable ageable = (Ageable) crop.getBlockData();
 
         double random = Math.random();
         if (Constants.SPRINKLER_SUCCESS_CHANCE >= random) {
-            if (ageable.getAge() < ageable.getMaximumAge()) {
 
-                ageable.setAge(ageable.getAge() + 1);
-                crop.setBlockData(ageable);
+            if (crop.getType() == Material.SUGAR_CANE) {
+                for ( int i = 1 ; i < 3 ; i++) {
+                    Block above = crop.getRelative(BlockFace.UP, i);
+                    if (above.getType().isAir()) {
+                        above.setType(Material.SUGAR_CANE);
+                        break;
+                    }
+                }
+            } else {
+                Ageable ageable = (Ageable) crop.getBlockData();
+                if (ageable.getAge() < ageable.getMaximumAge()) {
 
-                crop.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, crop.getLocation().add(0.5D, 0.5D, 0.5D), 4, 0.1F, 0.1F, 0.1F);
+                    ageable.setAge(ageable.getAge() + 1);
+                    crop.setBlockData(ageable);
+
+                    crop.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, crop.getLocation().add(0.5D, 0.5D, 0.5D), 4, 0.1F, 0.1F, 0.1F);
+                }
             }
         }
     }

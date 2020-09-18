@@ -274,10 +274,11 @@ public final class Items {
     );
     public static final SlimefunItemStack WATER_SPRINKER = new SlimefunItemStack(
         "WATER_SPRINKLER",
-        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDZiMTNkNjlkMTkyOWRjZjhlZGY5OWYzOTAxNDE1MjE3YzZhNTY3ZDNhNmVhZDEyZjc1YTRkZTNlZDgzNWU4NSJ9fX0",
-        "&eWater Sprinkler",
+        new CustomItem(SkullItem.fromHash("d6b13d69d1929dcf8edf99f3901415217c6a567d3a6ead12f75a4de3ed835e85"),
+            "Water Sprinkler"),
+        "&bWater Sprinkler",
         "",
-        "&fSprinkly sprinkly",
+        "&7Sprinkly sprinkly",
         "",
         LoreBuilderDynamic.powerBuffer(WaterSprinkler.CAPACITY),
         LoreBuilderDynamic.powerPerTick(WaterSprinkler.ENERGY_CONSUMPTION)
