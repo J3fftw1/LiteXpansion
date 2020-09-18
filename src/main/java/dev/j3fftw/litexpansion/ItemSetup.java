@@ -7,6 +7,7 @@ import dev.j3fftw.litexpansion.items.MagThor;
 import dev.j3fftw.litexpansion.items.Thorium;
 import dev.j3fftw.litexpansion.machine.AdvancedSolarPanel;
 import dev.j3fftw.litexpansion.machine.MassFabricator;
+import dev.j3fftw.litexpansion.machine.MetalForge;
 import dev.j3fftw.litexpansion.machine.RefinedSmeltery;
 import dev.j3fftw.litexpansion.machine.RubberSynthesizer;
 import dev.j3fftw.litexpansion.machine.ScrapMachine;
@@ -54,11 +55,12 @@ final class ItemSetup {
     }
 
     private void registerMachines() {
-        new FoodSynthesizer().register(LiteXpansion.getInstance());
-        new ScrapMachine().register(LiteXpansion.getInstance());
-        new MassFabricator().register(LiteXpansion.getInstance());
-        new RefinedSmeltery().register(LiteXpansion.getInstance());
+        new FoodSynthesizer().register(plugin);
+        new ScrapMachine().register(plugin);
+        new MassFabricator().register(plugin);
+        new RefinedSmeltery().register(plugin);
         new WaterSprinkler().register(plugin);
+        new MetalForge().register(plugin);
     }
 
     //Disable when SlimyTreeTaps exists
@@ -66,7 +68,7 @@ final class ItemSetup {
         if (!Bukkit.getServer().getPluginManager().isPluginEnabled("SlimyTreeTaps")) {
             //Rubber
             registerNonPlaceableItem(Items.RUBBER, RubberSynthesizer.RECIPE_TYPE, SlimefunItems.OIL_BUCKET);
-            new RubberSynthesizer().register(LiteXpansion.getInstance());
+            new RubberSynthesizer().register(plugin);
         }
     }
 
@@ -77,7 +79,7 @@ final class ItemSetup {
         registerNonPlaceableItem(Items.ADVANCED_ALLOY, RecipeType.COMPRESSOR, Items.MIXED_METAL_INGOT);
 
         // Mixed Metal Ingot
-        registerItem(Items.MIXED_METAL_INGOT, RecipeType.ENHANCED_CRAFTING_TABLE,
+        registerItem(Items.MIXED_METAL_INGOT, MetalForge.RECIPE_TYPE,
             Items.REFINED_IRON, Items.REFINED_IRON, Items.REFINED_IRON,
             SlimefunItems.BRONZE_INGOT, SlimefunItems.BRONZE_INGOT, SlimefunItems.BRONZE_INGOT,
             SlimefunItems.TIN_INGOT, SlimefunItems.TIN_INGOT, SlimefunItems.TIN_INGOT
@@ -91,21 +93,21 @@ final class ItemSetup {
         );
 
         // Machine block
-        registerItem(Items.MACHINE_BLOCK, RecipeType.ENHANCED_CRAFTING_TABLE,
+        registerItem(Items.MACHINE_BLOCK, MetalForge.RECIPE_TYPE,
             Items.REFINED_IRON, Items.REFINED_IRON, Items.REFINED_IRON,
             Items.REFINED_IRON, null, Items.REFINED_IRON,
             Items.REFINED_IRON, Items.REFINED_IRON, Items.REFINED_IRON
         );
 
         // Advanced Machine Block
-        registerItem(Items.ADVANCED_MACHINE_BLOCK, RecipeType.ENHANCED_CRAFTING_TABLE,
+        registerItem(Items.ADVANCED_MACHINE_BLOCK, MetalForge.RECIPE_TYPE,
             null, Items.ADVANCED_ALLOY, null,
             Items.CARBON_PLATE, Items.MACHINE_BLOCK, Items.CARBON_PLATE,
             null, Items.CARBON_PLATE, null
         );
 
         // Copper cable
-        registerNonPlaceableItem(Items.UNINSULATED_COPPER_CABLE, RecipeType.ENHANCED_CRAFTING_TABLE,
+        registerNonPlaceableItem(Items.UNINSULATED_COPPER_CABLE, MetalForge.RECIPE_TYPE,
             SlimefunItems.COPPER_INGOT, SlimefunItems.COPPER_INGOT, SlimefunItems.COPPER_INGOT
         );
 
@@ -129,7 +131,7 @@ final class ItemSetup {
         );
 
         // Refined crap
-        registerNonPlaceableItem(Items.REFINED_IRON, RefinedSmeltery.REFINED_SMELTERY_RECIPE,
+        registerNonPlaceableItem(Items.REFINED_IRON, RefinedSmeltery.RECIPE_TYPE,
             new ItemStack(Material.IRON_INGOT));
         registerRecipe(Items.REFINED_IRON, Items.MACHINE_BLOCK);
 
@@ -147,7 +149,7 @@ final class ItemSetup {
             null, Items.UU_MATTER, null,
             Items.UU_MATTER, Items.UU_MATTER, Items.UU_MATTER
         );
-        registerItem(Items.IRIDIUM_PLATE, RecipeType.ENHANCED_CRAFTING_TABLE,
+        registerNonPlaceableItem(Items.IRIDIUM_PLATE, MetalForge.RECIPE_TYPE,
             Items.IRIDIUM, Items.ADVANCED_ALLOY, Items.IRIDIUM,
             Items.ADVANCED_ALLOY, new ItemStack(Material.DIAMOND), Items.ADVANCED_ALLOY,
             Items.IRIDIUM, Items.ADVANCED_ALLOY, Items.IRIDIUM
