@@ -1,154 +1,81 @@
 package dev.j3fftw.litexpansion.machine;
 
-import dev.j3fftw.litexpansion.Items;
-import dev.j3fftw.litexpansion.LiteXpansion;
-import dev.j3fftw.litexpansion.utils.Utils;
-import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
-import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.InventoryBlock;
-import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
-import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
+import java.util.EnumSet;
+import java.util.Set;
+
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
+import dev.j3fftw.litexpansion.Items;
+import dev.j3fftw.litexpansion.utils.Constants;
+import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.items.electric.machines.AbstractGrowthAccelerator;
+import io.github.thebusybiscuit.slimefun4.implementation.items.electric.machines.CropGrowthAccelerator;
+import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
+import me.mrCookieSlime.Slimefun.Lists.RecipeType;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
+import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
-public class WaterSprinkler extends SlimefunItem implements InventoryBlock, EnergyNetComponent {
+/**
+ * The {@link WaterSprinkler} speeds up the growth of nearby crops
+ * when water is under the machine
+ * Essentially a modified {@link CropGrowthAccelerator}
+ *
+ * @author FluffyBear
+ */
+public class WaterSprinkler extends AbstractGrowthAccelerator {
 
-    public static final RecipeType RECIPE_TYPE = new RecipeType(
-        new NamespacedKey(LiteXpansion.getInstance(), "water_sprinkler"), Items.WATER_SPRINKER
+    private final Set<Material> crops = EnumSet.noneOf(Material.class);
+    public static final int ENERGY_CONSUMPTION = 16;
+    public static final int CAPACITY = 64;
+    private static final int RADIUS = 2;
+    private static final int PROGRESS_SLOT = 4;
+    private static final CustomItem noWaterItem = new CustomItem(Material.BUCKET,
+        "&cNo water found",
+        "",
+        "&cPlease place water under the sprinkler!"
+    );
+    private static final CustomItem waterFoundItem = new CustomItem(Material.WATER_BUCKET,
+        "&bWater detected"
     );
 
-    public static final int ENERGY_CONSUMPTION = 100;
-    public static final int CAPACITY = 450;
-
-    private static final int INPUT_SLOT = 11;
-    private static final int OUTPUT_SLOT = 15;
-    private static final int PROGRESS_SLOT = 13;
-    private static final int PROGRESS_AMOUNT = 10; // Divide by 2 for seconds it takes
-
-    private static final Map<BlockPosition, Integer> progress = new HashMap<>();
-
-    private static final CustomItem progressItem = new CustomItem(Material.WATER_BUCKET, "&7Progress");
-
     public WaterSprinkler() {
-        super(Items.LITEXPANSION, Items.WATER_SPRINKER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            SlimefunItems.ADVANCED_CIRCUIT_BOARD, SlimefunItems.REINFORCED_PLATE, SlimefunItems.ADVANCED_CIRCUIT_BOARD,
-            SlimefunItems.REINFORCED_PLATE, Items.MACHINE_BLOCK, SlimefunItems.REINFORCED_PLATE,
-            SlimefunItems.ADVANCED_CIRCUIT_BOARD, SlimefunItems.REINFORCED_PLATE, SlimefunItems.ADVANCED_CIRCUIT_BOARD
-        });
-        setupInv();
-    }
+        super(Items.LITEXPANSION, Items.WATER_SPRINKER, RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[] {
+                Items.REFINED_IRON, SlimefunItems.ELECTRIC_MOTOR, Items.REFINED_IRON,
+                new ItemStack(Material.BUCKET), Items.MACHINE_BLOCK, new ItemStack(Material.BUCKET),
+                Items.REFINED_IRON, SlimefunItems.MEDIUM_CAPACITOR, Items.REFINED_IRON
+            });
 
-    private void setupInv() {
-        createPreset(this, "&bWater Sprinkler", blockMenuPreset -> {
-            for (int i = 0; i < 27; i++)
-                blockMenuPreset.addItem(i, ChestMenuUtils.getBackground(), ChestMenuUtils.getEmptyClickHandler());
+        createPreset(this, Items.WATER_SPRINKER.getImmutableMeta().getDisplayName().orElse("&eWater Sprinkler"),
+            blockMenuPreset -> {
+                for (int i = 0; i < 9; i++)
+                    blockMenuPreset.addItem(i, ChestMenuUtils.getBackground(), ChestMenuUtils.getEmptyClickHandler());
 
-            blockMenuPreset.addItem(INPUT_SLOT, null, (player, i, itemStack, clickAction) -> true);
-            Utils.putOutputSlot(blockMenuPreset, OUTPUT_SLOT);
+                blockMenuPreset.addItem(PROGRESS_SLOT, noWaterItem);
+            });
 
-            blockMenuPreset.addItem(PROGRESS_SLOT, new CustomItem(Material.DEAD_BUSH, "&7Progress"));
-        });
-    }
+        crops.add(Material.WHEAT);
+        crops.add(Material.POTATOES);
+        crops.add(Material.CARROTS);
+        crops.add(Material.NETHER_WART);
+        crops.add(Material.BEETROOTS);
+        crops.add(Material.COCOA);
 
-    @Override
-    public void preRegister() {
-        this.addItemHandler(new BlockTicker() {
-            public void tick(Block b, SlimefunItem sf, Config data) {
-                WaterSprinkler.this.tick(b);
-            }
-
-            public boolean isSynchronized() {
-                return false;
-            }
-        });
-    }
-
-    private void tick(@Nonnull Block b) {
-        @Nullable final BlockMenu inv = BlockStorage.getInventory(b);
-        if (inv == null) return;
-
-        @Nullable final ItemStack input = inv.getItemInSlot(INPUT_SLOT);
-        @Nullable final ItemStack output = inv.getItemInSlot(OUTPUT_SLOT);
-        if (input == null || input.getType() != Material.WATER_BUCKET
-            || (output != null
-            && (output.getAmount() == output.getMaxStackSize()
-            || output.getType() != Material.BUCKET))
-        ) return;
-
-        final BlockPosition pos = new BlockPosition(b.getWorld(), b.getX(), b.getY(), b.getZ());
-        int currentProgress = progress.getOrDefault(pos, -1);
-
-        // Process first tick - remove an input and put it in map.
-        if (currentProgress == -1 && takePower(b)) {
-            progress.put(pos, 0);
-            return;
-        }
-
-        // No progress and no input item, no tick needed. Or if there was no power (but can be processed)
-        if (currentProgress == -1 || !takePower(b)) return;
-
-        if (currentProgress == 0) {
-            if (inv.getItemInSlot(INPUT_SLOT).getType() == Material.AIR) {
-                return;
-            }
-            inv.consumeItem(INPUT_SLOT);
-        }
-
-        if (currentProgress == PROGRESS_AMOUNT) {
-            if (output != null && output.getAmount() > 0)
-                output.setAmount(output.getAmount() + 1);
-            else {
-                inv.replaceExistingItem(OUTPUT_SLOT, new ItemStack(Material.BUCKET));
-            }
-
-
-           /*// Watering
-            if (b.getRelative(BlockFace.NORTH).getType() == Material.WHEAT) {
-                Ageable wheat = (Ageable) b.getRelative(BlockFace.NORTH);
-                int currentAge = wheat.getAge();
-                int maxAge = wheat.getMaximumAge();
-                if (currentAge < maxAge) {
-                    currentAge++;
-                    wheat.setAge(currentAge);
-                }
-            }*/
-
-            progress.remove(pos);
-            ChestMenuUtils.updateProgressbar(inv, PROGRESS_SLOT, PROGRESS_AMOUNT, PROGRESS_AMOUNT, progressItem);
-        } else {
-            progress.put(pos, ++currentProgress);
-            ChestMenuUtils.updateProgressbar(inv, PROGRESS_SLOT, PROGRESS_AMOUNT - currentProgress, PROGRESS_AMOUNT,
-                progressItem);
+        if (SlimefunPlugin.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_14)) {
+            crops.add(Material.SWEET_BERRY_BUSH);
         }
     }
 
-    private boolean takePower(@Nonnull Block b) {
-        if (getCharge(b.getLocation()) < ENERGY_CONSUMPTION) return false;
-        removeCharge(b.getLocation(), ENERGY_CONSUMPTION);
-        return true;
-    }
-
-    @Nonnull
-    @Override
-    public EnergyNetComponentType getEnergyComponentType() {
-        return EnergyNetComponentType.CONSUMER;
+    public int getEnergyConsumption() {
+        return ENERGY_CONSUMPTION;
     }
 
     @Override
@@ -156,13 +83,58 @@ public class WaterSprinkler extends SlimefunItem implements InventoryBlock, Ener
         return CAPACITY;
     }
 
-    @Override
+    public int getRadius() {
+        return RADIUS;
+    }
+
     public int[] getInputSlots() {
-        return new int[] {INPUT_SLOT};
+        return new int[0];
+    }
+
+    public int[] getOutputSlots() {
+        return new int[0];
     }
 
     @Override
-    public int[] getOutputSlots() {
-        return new int[] {OUTPUT_SLOT};
+    protected void tick(Block b) {
+        BlockMenu inv = BlockStorage.getInventory(b);
+
+        if (b.getRelative(BlockFace.DOWN).getType() == Material.WATER) {
+            inv.replaceExistingItem(PROGRESS_SLOT, waterFoundItem);
+        } else {
+            inv.replaceExistingItem(PROGRESS_SLOT, noWaterItem);
+            return;
+        }
+
+        if (getCharge(b.getLocation()) >= getEnergyConsumption()) {
+            for (int x = -getRadius(); x <= getRadius(); x++) {
+                for (int z = -getRadius(); z <= getRadius(); z++) {
+                    Block block = b.getRelative(x, 0, z);
+
+                    if (Constants.SPRINKLER_PARTICLES)
+                    block.getWorld().spawnParticle(Particle.WATER_SPLASH, block.getLocation().add(0.5D, 0.5D, 0.5D), 4, 0.1F, 0.1F, 0.1F);
+
+                    if (crops.contains(block.getType())) {
+                        grow(block);
+                    }
+                }
+            }
+        }
     }
+
+    private void grow(Block crop) {
+        Ageable ageable = (Ageable) crop.getBlockData();
+
+        double random = Math.random();
+        if (Constants.SPRINKLER_SUCCESS_CHANCE >= random) {
+            if (ageable.getAge() < ageable.getMaximumAge()) {
+
+                ageable.setAge(ageable.getAge() + 1);
+                crop.setBlockData(ageable);
+
+                crop.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, crop.getLocation().add(0.5D, 0.5D, 0.5D), 4, 0.1F, 0.1F, 0.1F);
+            }
+        }
+    }
+
 }

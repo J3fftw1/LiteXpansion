@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -35,6 +36,16 @@ public class LiteXpansion extends JavaPlugin implements SlimefunAddon {
 
         if (!new File(getDataFolder(), "config.yml").exists())
             saveDefaultConfig();
+
+        if (!getConfig().contains("sprinkler.success-chance")) {
+            getConfig().set("sprinkler.success-chance", 0.5);
+            saveConfig();
+        }
+
+        if (!getConfig().contains("sprinkler.particles")) {
+            getConfig().set("sprinkler.particles", true);
+            saveConfig();
+        }
 
         final Metrics metrics = new Metrics(this, 7111);
         setupCustomMetrics(metrics);
@@ -169,5 +180,9 @@ public class LiteXpansion extends JavaPlugin implements SlimefunAddon {
 
     public static LiteXpansion getInstance() {
         return instance;
+    }
+
+    public static FileConfiguration getCfg() {
+        return instance.getConfig();
     }
 }

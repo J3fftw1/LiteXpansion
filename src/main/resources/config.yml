@@ -1,2 +1,5 @@
 options:
   auto-update: true
+sprinkler:
+  success-chance: 0.5
+  particles: true
