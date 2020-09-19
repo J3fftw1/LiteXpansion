@@ -56,7 +56,7 @@ final class ItemSetup {
 
     private void registerMachines() {
         new FoodSynthesizer().register(plugin);
-        new ScrapMachine().register(plugin);
+        new Recycler().register(plugin);
         new MassFabricator().register(plugin);
         new RefinedSmeltery().register(plugin);
         new WaterSprinkler().register(plugin);
