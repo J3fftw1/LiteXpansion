@@ -10,8 +10,8 @@ import dev.j3fftw.litexpansion.machine.MassFabricator;
 import dev.j3fftw.litexpansion.machine.MetalForge;
 import dev.j3fftw.litexpansion.machine.RefinedSmeltery;
 import dev.j3fftw.litexpansion.machine.RubberSynthesizer;
-import dev.j3fftw.litexpansion.machine.ScrapMachine;
 import dev.j3fftw.litexpansion.machine.WaterSprinkler;
+import dev.j3fftw.litexpansion.machine.Recycler;
 import dev.j3fftw.litexpansion.weapons.NanoBlade;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
@@ -141,7 +141,7 @@ final class ItemSetup {
     }
 
     private void registerEndgameItems() {
-        registerNonPlaceableItem(Items.SCRAP, ScrapMachine.RECIPE_TYPE, new CustomItem(Material.COBBLESTONE,
+        registerNonPlaceableItem(Items.SCRAP, Recycler.RECIPE_TYPE, new CustomItem(Material.COBBLESTONE,
             "&7Any Item!"));
         registerNonPlaceableItem(Items.UU_MATTER, MassFabricator.RECIPE_TYPE, Items.SCRAP);
         registerNonPlaceableItem(Items.IRIDIUM, RecipeType.ENHANCED_CRAFTING_TABLE,
