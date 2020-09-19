@@ -2,8 +2,8 @@ package dev.j3fftw.litexpansion.items;
 
 import dev.j3fftw.litexpansion.Items;
 import dev.j3fftw.litexpansion.LiteXpansion;
-import dev.j3fftw.litexpansion.utils.Constants;
 import dev.j3fftw.litexpansion.utils.Utils;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -32,8 +32,13 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.RayTraceResult;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
+
+    public static final ItemSetting<Double> sugarCaneSuccessChance = new ItemSetting<>("sugar-cane=success-chance", 0.3);
+    public static final ItemSetting<Double> cropSuccessChance = new ItemSetting<>("crop=success-chance", 0.3);
+    public static final ItemSetting<Double> treeSuccessChance = new ItemSetting<>("tree=success-chance", 0.3);
 
     private static final int USE_INDEX = 8;
     private static final int MAX_USES = 10;
@@ -90,8 +95,8 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
                         if (!updateUses(p, item, 1))
                             return;
                         blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
-                        double random = Math.random();
-                        if (random <= Constants.SUGAR_CANE_WATERING_SUCCESS_CHANCE) {
+                        double random = ThreadLocalRandom.current().nextDouble();
+                        if (random <= sugarCaneSuccessChance.getValue()) {
                             above.setType(Material.SUGAR_CANE);
                             blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
                         }
@@ -109,8 +114,8 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
                     if (currentAge < maxAge && updateUses(p, item, 1)) {
                         blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
-                        double random = Math.random();
-                        if (random <= Constants.CROP_WATERING_SUCCESS_CHANCE) {
+                        double random = ThreadLocalRandom.current().nextDouble();
+                        if (random <= cropSuccessChance.getValue()) {
                             crop.setAge(currentAge + 1);
                             blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
                         }
@@ -133,8 +138,8 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
                         if (!updateUses(p, item, 1))
                             return;
                         blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
-                        double random = Math.random();
-                        if (random <= Constants.TREE_WATERING_SUCCESS_CHANCE) {
+                        double random = ThreadLocalRandom.current().nextDouble();
+                        if (random <= treeSuccessChance.getValue()) {
 
                             b.setType(Material.AIR);
                             blockLocation.getWorld().generateTree(blockLocation, getTreeFromSapling(b));

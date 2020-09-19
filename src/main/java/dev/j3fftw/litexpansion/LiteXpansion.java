@@ -1,6 +1,7 @@
 package dev.j3fftw.litexpansion;
 
 import dev.j3fftw.litexpansion.armor.ElectricChestplate;
+import dev.j3fftw.litexpansion.items.WateringCan;
 import dev.j3fftw.litexpansion.resources.ThoriumResource;
 import dev.j3fftw.litexpansion.utils.Constants;
 import dev.j3fftw.litexpansion.uumatter.UUMatter;
@@ -36,21 +37,6 @@ public class LiteXpansion extends JavaPlugin implements SlimefunAddon {
 
         if (!new File(getDataFolder(), "config.yml").exists())
             saveDefaultConfig();
-
-        if (!getConfig().contains("options.sugar-cane-watering-success-chance")) {
-            getConfig().set("options.sugar-cane-watering-success-chance", 0.4);
-            saveConfig();
-        }
-
-        if (!getConfig().contains("options.crop-watering-success-chance")) {
-            getConfig().set("options.crop-watering-success-chance", 0.4);
-            saveConfig();
-        }
-
-        if (!getConfig().contains("options.tree-watering-success-chance")) {
-            getConfig().set("options.tree-watering-success-chance", 0.4);
-            saveConfig();
-        }
 
         final Metrics metrics = new Metrics(this, 7111);
         setupCustomMetrics(metrics);
@@ -121,6 +107,21 @@ public class LiteXpansion extends JavaPlugin implements SlimefunAddon {
 
         setupResearches();
         new ThoriumResource().register();
+
+        if (WateringCan.sugarCaneSuccessChance.getValue() < 0 || WateringCan.sugarCaneSuccessChance.getValue() > 1) {
+            getLogger().warning("Water Sprinkler success chance has to be between 0-1, resetting to default (0.5)");
+            WateringCan.sugarCaneSuccessChance.update(0.3);
+        }
+
+        if (WateringCan.cropSuccessChance.getValue() < 0 || WateringCan.cropSuccessChance.getValue() > 1) {
+            getLogger().warning("Water Sprinkler success chance has to be between 0-1, resetting to default (0.5)");
+            WateringCan.cropSuccessChance.update(0.3);
+        }
+
+        if (WateringCan.treeSuccessChance.getValue() < 0 || WateringCan.treeSuccessChance.getValue() > 1) {
+            getLogger().warning("Water Sprinkler success chance has to be between 0-1, resetting to default (0.5)");
+            WateringCan.treeSuccessChance.update(0.3);
+        }
     }
 
     @Override
