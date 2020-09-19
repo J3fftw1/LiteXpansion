@@ -36,9 +36,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
-    public static final ItemSetting<Double> sugarCaneSuccessChance = new ItemSetting<>("sugar-cane=success-chance", 0.3);
-    public static final ItemSetting<Double> cropSuccessChance = new ItemSetting<>("crop=success-chance", 0.3);
-    public static final ItemSetting<Double> treeSuccessChance = new ItemSetting<>("tree=success-chance", 0.3);
+    public static final ItemSetting<Double> sugarCaneSuccessChance = new ItemSetting<>("sugar-cane-success-chance", 0.3);
+    public static final ItemSetting<Double> cropSuccessChance = new ItemSetting<>("crop-success-chance", 0.3);
+    public static final ItemSetting<Double> treeSuccessChance = new ItemSetting<>("tree-success-chance", 0.3);
 
     private static final int USE_INDEX = 8;
     private static final int MAX_USES = 10;
@@ -51,6 +51,10 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
             Items.REFINED_IRON, new ItemStack(Material.BUCKET), Items.REFINED_IRON,
             null, Items.REFINED_IRON, null
         });
+
+        addItemSetting(sugarCaneSuccessChance);
+        addItemSetting(cropSuccessChance);
+        addItemSetting(treeSuccessChance);
     }
 
     @Override
