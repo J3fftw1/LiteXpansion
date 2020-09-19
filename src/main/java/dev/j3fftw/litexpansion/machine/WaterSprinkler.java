@@ -3,6 +3,7 @@ package dev.j3fftw.litexpansion.machine;
 import java.util.concurrent.ThreadLocalRandom;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -32,7 +33,7 @@ import javax.annotation.Nonnull;
  */
 public class WaterSprinkler extends AbstractGrowthAccelerator {
 
-    private final ItemSetting<Double> success_chance = new ItemSetting<>("success-chance", 0.5);
+    public static final ItemSetting<Double> successChance = new ItemSetting<>("success-chance", 0.5);
     private final ItemSetting<Boolean> particles = new ItemSetting<>("particles", true);
 
     public static final int ENERGY_CONSUMPTION = 16;
@@ -64,7 +65,7 @@ public class WaterSprinkler extends AbstractGrowthAccelerator {
                 blockMenuPreset.addItem(PROGRESS_SLOT, noWaterItem);
             });
 
-        addItemSetting(success_chance);
+        addItemSetting(successChance);
         addItemSetting(particles);
     }
 
@@ -126,7 +127,7 @@ public class WaterSprinkler extends AbstractGrowthAccelerator {
     private void grow(@Nonnull Block crop) {
 
         final double random = ThreadLocalRandom.current().nextDouble();
-        if (success_chance.getValue() >= random) {
+        if (successChance.getValue() >= random) {
             if (crop.getType() == Material.SUGAR_CANE) {
                 for ( int i = 1 ; i < 3 ; i++) {
                     final Block above = crop.getRelative(BlockFace.UP, i);
