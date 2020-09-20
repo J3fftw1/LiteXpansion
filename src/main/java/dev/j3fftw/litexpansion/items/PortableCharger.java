@@ -38,15 +38,15 @@ import java.util.List;
  */
 public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implements Listener, Rechargeable {
 
-    private final int[] border = { 5, 6, 7, 14, 16, 23, 24, 25 };
-    private final int powerSlot = 11;
-    private final int chargeSlot = 15;
-    private final int chargeSpeed = 50;
+    private final int[] BORDER = { 5, 6, 7, 14, 16, 23, 24, 25 };
+    private final int POWER_SLOT = 11;
+    private final int CHARGE_SLOT = 15;
+    private final float CHARGE_SPEED = 50;
     private final Plugin plugin = LiteXpansion.getInstance();
 
     public PortableCharger() {
         super(Items.LITEXPANSION, Items.PORTABLE_CHARGER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            Items.COPPER_CABLE, Items.REFINED_IRON, Items.COPPER_CABLE,
+            Items.REFINED_IRON, Items.COPPER_CABLE, Items.REFINED_IRON,
             Items.REFINED_IRON, SlimefunItems.MEDIUM_CAPACITOR, Items.REFINED_IRON,
             Items.REFINED_IRON, Items.ADVANCED_CIRCUIT, Items.REFINED_IRON
         });
@@ -75,20 +75,20 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
             for (int i = 0; i < 27; i++)
                 inventory.setItem(i, backgroundItem);
 
-            for (int slot : border)
+            for (int slot : BORDER)
                 inventory.setItem(slot, borderItem);
 
-            inventory.setItem(powerSlot, powerItem);
-            updateSlot(inventory, powerSlot, "&6&lPower Remaining",
+            inventory.setItem(POWER_SLOT, powerItem);
+            updateSlot(inventory, POWER_SLOT, "&6&lPower Remaining",
                 "&e" + charger.getItemCharge(chargerItem) + "J");
-            inventory.clear(chargeSlot);
+            inventory.clear(CHARGE_SLOT);
             p.openInventory(inventory);
 
             // Task that triggers every second
             new BukkitRunnable(){
                 public void run() {
 
-                    ItemStack deviceItem = inventory.getItem(chargeSlot);
+                    ItemStack deviceItem = inventory.getItem(CHARGE_SLOT);
                     SlimefunItem sfItem = SlimefunItem.getByItem(deviceItem);
 
                     if (sfItem instanceof Rechargeable && !isItem(deviceItem)) {
@@ -104,17 +104,15 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
 
                         } else if (neededCharge > 0 && availableCharge > 0) {
 
-                            if (neededCharge >= chargeSpeed && availableCharge >= chargeSpeed) {
-                                charger.removeItemCharge(chargerItem, chargeSpeed);
-                                device.addItemCharge(deviceItem, chargeSpeed);
+                            if (neededCharge >= CHARGE_SPEED && availableCharge >= CHARGE_SPEED) {
+                                transferCharge(charger, chargerItem, device, deviceItem, CHARGE_SPEED);
 
                             } else if (neededCharge < availableCharge) {
-                                charger.removeItemCharge(chargerItem, neededCharge);
-                                device.addItemCharge(deviceItem, neededCharge);
+                                transferCharge(charger, chargerItem, device, deviceItem, neededCharge);
 
                             } else {
-                                charger.removeItemCharge(chargerItem, availableCharge);
-                                device.addItemCharge(deviceItem, availableCharge);
+                                transferCharge(charger, chargerItem, device, deviceItem, availableCharge);
+
                             }
 
                         } else if (neededCharge == 0) {
@@ -125,7 +123,7 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
                         }
 
                         // The name of the powerItem NEEDS to be "Portable Charger" to cancel event
-                        updateSlot(inventory, powerSlot, "&6&lPower Remaining",
+                        updateSlot(inventory, POWER_SLOT, "&6&lPower Remaining",
                             "&e" + charger.getItemCharge(chargerItem) + "J");
                     }
 
@@ -133,7 +131,7 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
                     if (!inventory.getViewers().contains(p)) {
                         cancel();
 
-                        ItemStack forgottenItem = inventory.getItem(chargeSlot);
+                        ItemStack forgottenItem = inventory.getItem(CHARGE_SLOT);
 
                         // Check if player left an item inside
                         if (forgottenItem != null) {
@@ -162,8 +160,8 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
     public void onChargerClick(InventoryClickEvent e) {
         ItemStack item = e.getCurrentItem();
         Player p = (Player) e.getWhoClicked();
-        if (isItem(item) && p.getOpenInventory().getTopInventory().getItem(powerSlot) != null
-            && p.getOpenInventory().getTopInventory().getItem(powerSlot).
+        if (isItem(item) && p.getOpenInventory().getTopInventory().getItem(POWER_SLOT) != null
+            && p.getOpenInventory().getTopInventory().getItem(POWER_SLOT).
             getItemMeta().getDisplayName().contains("Power Remaining")) {
             e.setCancelled(true);
         }
@@ -216,6 +214,11 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
         }
         item.setItemMeta(slotMeta);
         inventory.setItem(slot, item);
+    }
+
+    public void transferCharge(Rechargeable charger, ItemStack chargerItem, Rechargeable device, ItemStack deviceItem, float charge) {
+        charger.removeItemCharge(chargerItem, charge);
+        device.addItemCharge(deviceItem, charge);
     }
 
     @Override
