@@ -36,12 +36,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
+    public static final ItemSetting<Integer> maxUses = new ItemSetting<>("max-uses", 10);
     public static final ItemSetting<Double> sugarCaneSuccessChance = new ItemSetting<>("sugar-cane-success-chance", 0.3);
     public static final ItemSetting<Double> cropSuccessChance = new ItemSetting<>("crop-success-chance", 0.3);
     public static final ItemSetting<Double> treeSuccessChance = new ItemSetting<>("tree-success-chance", 0.3);
 
     private static final int USE_INDEX = 8;
-    private static final int MAX_USES = 10;
     private static final int MAX_SUGAR_GROW_HEIGHT = 5;
     private static final NamespacedKey usageKey = new NamespacedKey(LiteXpansion.getInstance(), "watering_can_usage");
 
@@ -174,7 +174,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
             item.setType(Material.POTION);
             p.playSound(p.getLocation(), Sound.ENTITY_DROWNED_DEATH_WATER, 0.5F, 1F);
             Utils.send(p, "&aYou have filled your Watering Can");
-            usesLeft = MAX_USES;
+            usesLeft = maxUses.getValue();
             // Need to get this again because material changed
             PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
             potionMeta.setColor(Color.AQUA);
