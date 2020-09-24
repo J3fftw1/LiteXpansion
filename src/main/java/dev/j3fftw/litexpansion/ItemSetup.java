@@ -172,7 +172,7 @@ final class ItemSetup {
 
     private void registerSolarPanels() {
         new AdvancedSolarPanel(AdvancedSolarPanel.Type.BASIC).register(plugin);
-	    new AdvancedSolarPanel(AdvancedSolarPanel.Type.LOW_VOLTAGE).register(plugin);
+        new AdvancedSolarPanel(AdvancedSolarPanel.Type.LOW_VOLTAGE).register(plugin);
         new AdvancedSolarPanel(AdvancedSolarPanel.Type.MEDIUM_VOLTAGE).register(plugin);
         new AdvancedSolarPanel(AdvancedSolarPanel.Type.HIGH_VOLTAGE).register(plugin);
         new AdvancedSolarPanel(AdvancedSolarPanel.Type.ADVANCED).register(plugin);
