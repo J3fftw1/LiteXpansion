@@ -275,12 +275,42 @@ public final class Items {
     public static final SlimefunItemStack BASIC_SOLAR_PANEL = new SlimefunItemStack(
         "BASIC_SOLAR_PANEL",
         Material.BLUE_GLAZED_TERRACOTTA,
-        "&c&lBasic Solar Panel",
+        "&3&lBasic Solar Panel",
         "&9Works at Night",
         "",
         LoreBuilderDynamic.powerBuffer(AdvancedSolarPanel.BASIC_STORAGE),
         LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.BASIC_DAY_RATE) + " (Day)",
         LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.BASIC_NIGHT_RATE) + " (Night)"
+    );
+    public static final SlimefunItemStack LV_SOLAR_PANEL = new SlimefunItemStack(
+        "LV_SOLAR_PANEL",
+        Material.RED_GLAZED_TERRACOTTA,
+        "&c&lLow Voltage Solar Panel",
+        "&9Works at Night",
+        "",
+        LoreBuilderDynamic.powerBuffer(AdvancedSolarPanel.LV_STORAGE),
+        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.LV_DAY_RATE) + " (Day)",
+        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.LV_NIGHT_RATE) + " (Night)"
+    );
+    public static final SlimefunItemStack MV_SOLAR_PANEL = new SlimefunItemStack(
+        "MV_SOLAR_PANEL",
+        Material.ORANGE_GLAZED_TERRACOTTA,
+        "&6&lMedium Voltage Solar Panel",
+        "&9Works at Night",
+        "",
+        LoreBuilderDynamic.powerBuffer(AdvancedSolarPanel.MV_STORAGE),
+        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.MV_DAY_RATE) + " (Day)",
+        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.MV_NIGHT_RATE) + " (Night)"
+    );
+    public static final SlimefunItemStack HV_SOLAR_PANEL = new SlimefunItemStack(
+        "HV_SOLAR_PANEL",
+        Material.YELLOW_GLAZED_TERRACOTTA,
+        "&e&lHigh Voltage Solar Panel",
+        "&9Works at Night",
+        "",
+        LoreBuilderDynamic.powerBuffer(AdvancedSolarPanel.HV_STORAGE),
+        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.HV_DAY_RATE) + " (Day)",
+        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.HV_NIGHT_RATE) + " (Night)"
     );
     public static final SlimefunItemStack ADVANCED_SOLAR_PANEL = new SlimefunItemStack(
         "ADVANCED_SOLAR_PANEL",
