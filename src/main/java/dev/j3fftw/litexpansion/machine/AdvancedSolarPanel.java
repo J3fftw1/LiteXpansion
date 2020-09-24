@@ -34,31 +34,24 @@ public class AdvancedSolarPanel extends SlimefunItem implements InventoryBlock, 
     );
     public static int BASIC_DAY_RATE = 10;
     public static int BASIC_NIGHT_RATE = 1;
-    public static int BASIC_OUTPUT = 0;
     public static int BASIC_STORAGE = 10_000;
     public static int LOW_VOLTAGE_DAY_RATE = 100;
     public static int LOW_VOLTAGE_NIGHT_RATE = 10;
-    public static int LOW_VOLTAGE_OUTPUT = 0;
     public static int LOW_VOLTAGE_STORAGE = 25_000;
     public static int MEDIUM_VOLTAGE_DAY_RATE = 200;
     public static int MEDIUM_VOLTAGE_NIGHT_RATE = 25;
-    public static int MEDIUM_VOLTAGE_OUTPUT = 0;
     public static int MEDIUM_VOLTAGE_STORAGE = 50_000;
     public static int HIGH_VOLTAGE_DAY_RATE = 400;
     public static int HIGH_VOLTAGE_NIGHT_RATE = 50;
-    public static int HIGH_VOLTAGE_OUTPUT = 0;
     public static int HIGH_VOLTAGE_STORAGE = 100_000;
     public static int ADVANCED_DAY_RATE = 800;
     public static int ADVANCED_NIGHT_RATE = 100;
-    public static int ADVANCED_OUTPUT = 0;
     public static int ADVANCED_STORAGE = 320_000;
     public static int HYBRID_DAY_RATE = 6_400;
     public static int HYBRID_NIGHT_RATE = 800;
-    public static int HYBRID_OUTPUT = 0;
     public static int HYBRID_STORAGE = 1_000_000;
     public static int ULTIMATE_DAY_RATE = 51_200;
     public static int ULTIMATE_NIGHT_RATE = 6_400;
-    public static int ULTIMATE_OUTPUT = 0;
     public static int ULTIMATE_STORAGE = 10_000_000;
     private final Type type;
 
@@ -157,46 +150,39 @@ public class AdvancedSolarPanel extends SlimefunItem implements InventoryBlock, 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public enum Type {
 
-        BASIC(Items.BASIC_SOLAR_PANEL, BASIC_DAY_RATE, BASIC_NIGHT_RATE, BASIC_OUTPUT,
-            BASIC_STORAGE, new ItemStack[] {
+        BASIC(Items.BASIC_SOLAR_PANEL, BASIC_DAY_RATE, BASIC_NIGHT_RATE, BASIC_STORAGE, new ItemStack[] {
             Items.CARBON_PLATE, Items.CARBON_PLATE, Items.CARBON_PLATE,
             Items.REINFORCED_GLASS, Items.REINFORCED_GLASS, Items.REINFORCED_GLASS,
             SlimefunItems.BASIC_CIRCUIT_BOARD, Items.MACHINE_BLOCK, SlimefunItems.BASIC_CIRCUIT_BOARD
         }),
-	    LOW_VOLTAGE(Items.LOW_VOLTAGE_SOLAR_PANEL, LOW_VOLTAGE_DAY_RATE, LOW_VOLTAGE_NIGHT_RATE, LOW_VOLTAGE_OUTPUT,
-            LOW_VOLTAGE_STORAGE, new ItemStack[] {
+	    LOW_VOLTAGE(Items.LOW_VOLTAGE_SOLAR_PANEL, LOW_VOLTAGE_DAY_RATE, LOW_VOLTAGE_NIGHT_RATE, LOW_VOLTAGE_STORAGE, new ItemStack[] {
             Items.REINFORCED_GLASS, Items.REINFORCED_GLASS, Items.REINFORCED_GLASS,
             Items.ADVANCED_ALLOY, Items.BASIC_SOLAR_PANEL, Items.ADVANCED_ALLOY,
             SlimefunItems.ADVANCED_CIRCUIT_BOARD, Items.ADVANCED_MACHINE_BLOCK, SlimefunItems.ADVANCED_CIRCUIT_BOARD
         }),
-	    MEDIUM_VOLTAGE(Items.MEDIUM_VOLTAGE_SOLAR_PANEL, MEDIUM_VOLTAGE_DAY_RATE, MEDIUM_VOLTAGE_NIGHT_RATE, MEDIUM_VOLTAGE_OUTPUT,
-            MEDIUM_VOLTAGE_STORAGE, new ItemStack[] {
+	    MEDIUM_VOLTAGE(Items.MEDIUM_VOLTAGE_SOLAR_PANEL, MEDIUM_VOLTAGE_DAY_RATE, MEDIUM_VOLTAGE_NIGHT_RATE, MEDIUM_VOLTAGE_STORAGE, new ItemStack[] {
             Items.REINFORCED_GLASS, Items.REINFORCED_GLASS, Items.REINFORCED_GLASS,
             Items.ADVANCED_ALLOY, Items.LOW_VOLTAGE_SOLAR_PANEL, Items.ADVANCED_ALLOY,
             SlimefunItems.ADVANCED_CIRCUIT_BOARD, Items.ADVANCED_MACHINE_BLOCK, SlimefunItems.ADVANCED_CIRCUIT_BOARD
         }),
-	    HIGH_VOLTAGE(Items.HIGH_VOLTAGE_SOLAR_PANEL, HIGH_VOLTAGE_DAY_RATE, HIGH_VOLTAGE_NIGHT_RATE, HIGH_VOLTAGE_OUTPUT,
-            HIGH_VOLTAGE_STORAGE, new ItemStack[] {
+	    HIGH_VOLTAGE(Items.HIGH_VOLTAGE_SOLAR_PANEL, HIGH_VOLTAGE_DAY_RATE, HIGH_VOLTAGE_NIGHT_RATE, HIGH_VOLTAGE_STORAGE, new ItemStack[] {
             Items.REINFORCED_GLASS, Items.REINFORCED_GLASS, Items.REINFORCED_GLASS,
             Items.ADVANCED_ALLOY, Items.MEDIUM_VOLTAGE_SOLAR_PANEL, Items.ADVANCED_ALLOY,
             SlimefunItems.ADVANCED_CIRCUIT_BOARD, Items.ADVANCED_MACHINE_BLOCK, SlimefunItems.ADVANCED_CIRCUIT_BOARD
         }),
-        ADVANCED(Items.ADVANCED_SOLAR_PANEL, ADVANCED_DAY_RATE, ADVANCED_NIGHT_RATE, ADVANCED_OUTPUT,
-            ADVANCED_STORAGE, new ItemStack[] {
+        ADVANCED(Items.ADVANCED_SOLAR_PANEL, ADVANCED_DAY_RATE, ADVANCED_NIGHT_RATE, ADVANCED_STORAGE, new ItemStack[] {
             Items.REINFORCED_GLASS, Items.REINFORCED_GLASS, Items.REINFORCED_GLASS,
             Items.ADVANCED_ALLOY, Items.HIGH_VOLTAGE_SOLAR_PANEL, Items.ADVANCED_ALLOY,
             SlimefunItems.ADVANCED_CIRCUIT_BOARD, Items.ADVANCED_MACHINE_BLOCK, SlimefunItems.ADVANCED_CIRCUIT_BOARD
         }),
 
-        HYBRID(Items.HYBRID_SOLAR_PANEL, HYBRID_DAY_RATE, HYBRID_NIGHT_RATE, HYBRID_OUTPUT, HYBRID_STORAGE,
-            new ItemStack[] {
+        HYBRID(Items.HYBRID_SOLAR_PANEL, HYBRID_DAY_RATE, HYBRID_NIGHT_RATE, HYBRID_STORAGE, new ItemStack[] {
                 Items.CARBON_PLATE, new ItemStack(Material.LAPIS_BLOCK), Items.CARBON_PLATE,
                 Items.IRIDIUM_PLATE, Items.ADVANCED_MACHINE_BLOCK, Items.IRIDIUM_PLATE,
                 SlimefunItems.ADVANCED_CIRCUIT_BOARD, Items.IRIDIUM_PLATE, SlimefunItems.ADVANCED_CIRCUIT_BOARD
             }),
 
-        ULTIMATE(Items.ULTIMATE_SOLAR_PANEL, ULTIMATE_DAY_RATE, ULTIMATE_NIGHT_RATE, ULTIMATE_OUTPUT,
-            ULTIMATE_STORAGE, new ItemStack[] {
+        ULTIMATE(Items.ULTIMATE_SOLAR_PANEL, ULTIMATE_DAY_RATE, ULTIMATE_NIGHT_RATE, ULTIMATE_STORAGE, new ItemStack[] {
             Items.HYBRID_SOLAR_PANEL, Items.HYBRID_SOLAR_PANEL, Items.HYBRID_SOLAR_PANEL,
             Items.HYBRID_SOLAR_PANEL, SlimefunItems.ADVANCED_CIRCUIT_BOARD, Items.HYBRID_SOLAR_PANEL,
             Items.HYBRID_SOLAR_PANEL, Items.HYBRID_SOLAR_PANEL, Items.HYBRID_SOLAR_PANEL,
