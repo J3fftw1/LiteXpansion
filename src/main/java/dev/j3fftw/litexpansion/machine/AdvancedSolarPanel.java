@@ -192,7 +192,6 @@ public class AdvancedSolarPanel extends SlimefunItem implements InventoryBlock, 
         private final SlimefunItemStack item;
         private final int dayGenerationRate;
         private final int nightGenerationRate;
-        private final int output;
         private final int storage;
 
         @Nonnull
