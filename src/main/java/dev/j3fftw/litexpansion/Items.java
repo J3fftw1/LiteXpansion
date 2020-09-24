@@ -272,6 +272,16 @@ public final class Items {
         LoreBuilderDynamic.powerPerTick(RubberSynthesizer.ENERGY_CONSUMPTION)
     );
     //// Solar panels
+    public static final SlimefunItemStack BASIC_SOLAR_PANEL = new SlimefunItemStack(
+        "ADVANCED_SOLAR_PANEL",
+        Material.BLUE_GLAZED_TERRACOTTA,
+        "&c&lBasic Solar Panel",
+        "&9Works at Night",
+        "",
+        LoreBuilderDynamic.powerBuffer(AdvancedSolarPanel.BASIC_STORAGE),
+        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.BASIC_DAY_RATE) + " (Day)",
+        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.BASIC_NIGHT_RATE) + " (Night)"
+    );
     public static final SlimefunItemStack ADVANCED_SOLAR_PANEL = new SlimefunItemStack(
         "ADVANCED_SOLAR_PANEL",
         Material.BLACK_GLAZED_TERRACOTTA,
