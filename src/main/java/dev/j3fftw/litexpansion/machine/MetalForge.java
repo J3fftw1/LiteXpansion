@@ -31,7 +31,10 @@ public class MetalForge extends MultiBlockMachine {
         new NamespacedKey(LiteXpansion.getInstance(), "metal_forge"),
         Items.METAL_FORGE,
         "",
-        "&7Used to Forge Metals"
+        "&7Used to Forge Metals",
+        "",
+        "&lUses up the diamond",
+        "block when operating"
     );
 
     private static final ItemStack anvil = new ItemStack(Material.ANVIL);
