@@ -100,7 +100,7 @@ public class LiteXpansion extends JavaPlugin implements SlimefunAddon {
 
         new Research(new NamespacedKey(this, "the_better_panel"),
             696973, "These are the better panels", 45)
-            .addItems(Items.ADVANCED_SOLAR_PANEL, Items.ULTIMATE_SOLAR_PANEL, Items.HYBRID_SOLAR_PANEL)
+            .addItems(Items.BASIC_SOLAR_PANEL, Items.ADVANCED_SOLAR_PANEL, Items.ULTIMATE_SOLAR_PANEL, Items.HYBRID_SOLAR_PANEL)
             .register();
 
         new Research(new NamespacedKey(this, "does_this_even_matter"),
