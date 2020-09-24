@@ -32,8 +32,12 @@ public class AdvancedSolarPanel extends SlimefunItem implements InventoryBlock, 
     private static final CustomItem generatingItem = new CustomItem(Material.ORANGE_STAINED_GLASS_PANE,
         "&cNot Generating..."
     );
-    public static int ADVANCED_DAY_RATE = 360;
-    public static int ADVANCED_NIGHT_RATE = 45;
+    public static int BASIC_DAY_RATE = 10;
+    public static int BASIC_NIGHT_RATE = 1;
+    public static int BASIC_OUTPUT = 10;
+    public static int BASIC_STORAGE = 10_000;
+    public static int ADVANCED_DAY_RATE = 80;
+    public static int ADVANCED_NIGHT_RATE = 10;
     public static int ADVANCED_OUTPUT = 320;
     public static int ADVANCED_STORAGE = 320_000;
     public static int HYBRID_DAY_RATE = 640;
@@ -141,10 +145,16 @@ public class AdvancedSolarPanel extends SlimefunItem implements InventoryBlock, 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public enum Type {
 
+        BASIC(Items.BASIC_SOLAR_PANEL, BASIC_DAY_RATE, BASIC_NIGHT_RATE, BASIC_OUTPUT,
+            BASIC_STORAGE, new ItemStack[] {
+            Items.REINFORCED_GLASS, Items.REINFORCED_GLASS, Items.REINFORCED_GLASS,
+            Items.ADVANCED_ALLOY, Items.ADVANCED_ALLOY, Items.ADVANCED_ALLOY,
+            SlimefunItems.ADVANCED_CIRCUIT_BOARD, Items.ADVANCED_MACHINE_BLOCK, SlimefunItems.ADVANCED_CIRCUIT_BOARD
+        }),
         ADVANCED(Items.ADVANCED_SOLAR_PANEL, ADVANCED_DAY_RATE, ADVANCED_NIGHT_RATE, ADVANCED_OUTPUT,
             ADVANCED_STORAGE, new ItemStack[] {
             Items.REINFORCED_GLASS, Items.REINFORCED_GLASS, Items.REINFORCED_GLASS,
-            Items.ADVANCED_ALLOY, SlimefunItems.SOLAR_GENERATOR_4, Items.ADVANCED_ALLOY,
+            Items.ADVANCED_ALLOY, Items.BASIC_SOLAR_PANEL, Items.ADVANCED_ALLOY,
             SlimefunItems.ADVANCED_CIRCUIT_BOARD, Items.ADVANCED_MACHINE_BLOCK, SlimefunItems.ADVANCED_CIRCUIT_BOARD
         }),
 
