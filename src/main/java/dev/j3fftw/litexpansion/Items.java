@@ -312,7 +312,10 @@ public final class Items {
     public static final SlimefunItemStack METAL_FORGE = new SlimefunItemStack(
         "METAL_FORGE",
         Material.DISPENSER,
-        "&7Metal Forge"
+        "&7Metal Forge",
+        "",
+        "&lUses up the diamond",
+        "block when operated."
     );
 
     private static final Enchantment glowEnchant = Enchantment.getByKey(Constants.GLOW_ENCHANT);
