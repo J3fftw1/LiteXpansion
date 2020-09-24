@@ -273,7 +273,7 @@ public final class Items {
     );
     //// Solar panels
     public static final SlimefunItemStack BASIC_SOLAR_PANEL = new SlimefunItemStack(
-        "ADVANCED_SOLAR_PANEL",
+        "BASIC_SOLAR_PANEL",
         Material.BLUE_GLAZED_TERRACOTTA,
         "&c&lBasic Solar Panel",
         "&9Works at Night",
