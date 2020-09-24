@@ -282,35 +282,35 @@ public final class Items {
         LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.BASIC_DAY_RATE) + " (Day)",
         LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.BASIC_NIGHT_RATE) + " (Night)"
     );
-    public static final SlimefunItemStack LV_SOLAR_PANEL = new SlimefunItemStack(
-        "LV_SOLAR_PANEL",
+    public static final SlimefunItemStack LOW_VOLTAGE_SOLAR_PANEL = new SlimefunItemStack(
+        "LOW_VOLTAGE_SOLAR_PANEL",
         Material.RED_GLAZED_TERRACOTTA,
         "&c&lLow Voltage Solar Panel",
         "&9Works at Night",
         "",
-        LoreBuilderDynamic.powerBuffer(AdvancedSolarPanel.LV_STORAGE),
-        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.LV_DAY_RATE) + " (Day)",
-        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.LV_NIGHT_RATE) + " (Night)"
+        LoreBuilderDynamic.powerBuffer(AdvancedSolarPanel.LOW_VOLTAGE_STORAGE),
+        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.LOW_VOLTAGE_DAY_RATE) + " (Day)",
+        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.LOW_VOLTAGE_NIGHT_RATE) + " (Night)"
     );
-    public static final SlimefunItemStack MV_SOLAR_PANEL = new SlimefunItemStack(
-        "MV_SOLAR_PANEL",
+    public static final SlimefunItemStack MEDIUM_VOLTAGE_SOLAR_PANEL = new SlimefunItemStack(
+        "MEDIUM_VOLTAGE_SOLAR_PANEL",
         Material.ORANGE_GLAZED_TERRACOTTA,
         "&6&lMedium Voltage Solar Panel",
         "&9Works at Night",
         "",
-        LoreBuilderDynamic.powerBuffer(AdvancedSolarPanel.MV_STORAGE),
-        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.MV_DAY_RATE) + " (Day)",
-        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.MV_NIGHT_RATE) + " (Night)"
+        LoreBuilderDynamic.powerBuffer(AdvancedSolarPanel.MEDIUM_VOLTAGE_STORAGE),
+        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.MEDIUM_VOLTAGE_DAY_RATE) + " (Day)",
+        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.MEDIUM_VOLTAGE_NIGHT_RATE) + " (Night)"
     );
-    public static final SlimefunItemStack HV_SOLAR_PANEL = new SlimefunItemStack(
-        "HV_SOLAR_PANEL",
+    public static final SlimefunItemStack HIGH_VOLTAGE_SOLAR_PANEL = new SlimefunItemStack(
+        "HIGH_VOLTAGE_SOLAR_PANEL",
         Material.YELLOW_GLAZED_TERRACOTTA,
         "&e&lHigh Voltage Solar Panel",
         "&9Works at Night",
         "",
-        LoreBuilderDynamic.powerBuffer(AdvancedSolarPanel.HV_STORAGE),
-        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.HV_DAY_RATE) + " (Day)",
-        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.HV_NIGHT_RATE) + " (Night)"
+        LoreBuilderDynamic.powerBuffer(AdvancedSolarPanel.HIGH_VOLTAGE_STORAGE),
+        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.HIGH_VOLTAGE_DAY_RATE) + " (Day)",
+        LoreBuilderDynamic.powerPerTick(AdvancedSolarPanel.HIGH_VOLTAGE_NIGHT_RATE) + " (Night)"
     );
     public static final SlimefunItemStack ADVANCED_SOLAR_PANEL = new SlimefunItemStack(
         "ADVANCED_SOLAR_PANEL",
