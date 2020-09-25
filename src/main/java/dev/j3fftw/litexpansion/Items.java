@@ -277,6 +277,7 @@ public final class Items {
         "BASIC_SOLAR_PANEL",
         Material.BLUE_GLAZED_TERRACOTTA,
         "&3&lBasic Solar Panel",
+        "&6Only works during the day",
         "",
         LoreBuilderDynamic.powerBuffer(BasicSolarPanel.BASIC_STORAGE),
         LoreBuilderDynamic.powerPerTick(BasicSolarPanel.BASIC_DAY_RATE) + " (Day)"
@@ -285,6 +286,7 @@ public final class Items {
         "LOW_VOLTAGE_SOLAR_PANEL",
         Material.RED_GLAZED_TERRACOTTA,
         "&c&lLow Voltage Solar Panel",
+        "&6Only works during the day",
         "",
         LoreBuilderDynamic.powerBuffer(BasicSolarPanel.LOW_VOLTAGE_STORAGE),
         LoreBuilderDynamic.powerPerTick(BasicSolarPanel.LOW_VOLTAGE_DAY_RATE) + " (Day)"
@@ -293,6 +295,7 @@ public final class Items {
         "MEDIUM_VOLTAGE_SOLAR_PANEL",
         Material.ORANGE_GLAZED_TERRACOTTA,
         "&6&lMedium Voltage Solar Panel",
+        "&6Only works during the day",
         "",
         LoreBuilderDynamic.powerBuffer(BasicSolarPanel.MEDIUM_VOLTAGE_STORAGE),
         LoreBuilderDynamic.powerPerTick(BasicSolarPanel.MEDIUM_VOLTAGE_DAY_RATE) + " (Day)"
@@ -301,6 +304,7 @@ public final class Items {
         "HIGH_VOLTAGE_SOLAR_PANEL",
         Material.YELLOW_GLAZED_TERRACOTTA,
         "&e&lHigh Voltage Solar Panel",
+        "&6Only works during the day",
         "",
         LoreBuilderDynamic.powerBuffer(BasicSolarPanel.HIGH_VOLTAGE_STORAGE),
         LoreBuilderDynamic.powerPerTick(BasicSolarPanel.HIGH_VOLTAGE_DAY_RATE) + " (Day)"

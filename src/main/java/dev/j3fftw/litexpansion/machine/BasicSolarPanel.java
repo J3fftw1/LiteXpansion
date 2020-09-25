@@ -70,6 +70,8 @@ public class BasicSolarPanel extends SlimefunItem implements InventoryBlock, Ene
             generationType = "&cNether &e(Day)";
         } else if (rate == this.type.getDayGenerationRate()) {
             generationType = "&aOverworld &e(Day)";
+        } else {
+            generationType = "&aNot Generating";
         }
 
         if (inv.toInventory() != null && !inv.toInventory().getViewers().isEmpty()) {
