@@ -40,9 +40,9 @@ public class BasicSolarPanel extends SlimefunItem implements InventoryBlock, Ene
     public static int MEDIUM_VOLTAGE_STORAGE = 50_000;
     public static int HIGH_VOLTAGE_DAY_RATE = 400;
     public static int HIGH_VOLTAGE_STORAGE = 100_000;
-    private final Basic type;
+    private final Type type;
 
-    public BasicSolarPanel(Basic type) {
+    public BasicSolarPanel(Type type) {
         super(Items.LITEXPANSION, type.getItem(), RecipeType.ENHANCED_CRAFTING_TABLE, type.getRecipe());
         this.type = type;
 
@@ -133,7 +133,7 @@ public class BasicSolarPanel extends SlimefunItem implements InventoryBlock, Ene
 
     @Getter
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public enum Basic {
+    public enum Type {
 
         BASIC(Items.BASIC_SOLAR_PANEL, BASIC_DAY_RATE, BASIC_STORAGE, new ItemStack[] {
                 Items.CARBON_PLATE, Items.CARBON_PLATE, Items.CARBON_PLATE,
