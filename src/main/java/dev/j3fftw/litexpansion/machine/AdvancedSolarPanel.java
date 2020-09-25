@@ -36,13 +36,13 @@ public class AdvancedSolarPanel extends SlimefunItem implements InventoryBlock, 
     public static int BASIC_NIGHT_RATE = 0;
     public static int BASIC_STORAGE = 10_000;
     public static int LOW_VOLTAGE_DAY_RATE = 100;
-    public static int LOW_VOLTAGE_NIGHT_RATE = 0
+    public static int LOW_VOLTAGE_NIGHT_RATE = 0;
     public static int LOW_VOLTAGE_STORAGE = 25_000;
     public static int MEDIUM_VOLTAGE_DAY_RATE = 200;
-    public static int MEDIUM_VOLTAGE_NIGHT_RATE = 0
+    public static int MEDIUM_VOLTAGE_NIGHT_RATE = 0;
     public static int MEDIUM_VOLTAGE_STORAGE = 50_000;
     public static int HIGH_VOLTAGE_DAY_RATE = 400;
-    public static int HIGH_VOLTAGE_NIGHT_RATE = 0
+    public static int HIGH_VOLTAGE_NIGHT_RATE = 0;
     public static int HIGH_VOLTAGE_STORAGE = 100_000;
     public static int ADVANCED_DAY_RATE = 800;
     public static int ADVANCED_NIGHT_RATE = 100;
