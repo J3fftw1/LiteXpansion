@@ -146,40 +146,26 @@ public class AdvancedSolarPanel extends SlimefunItem implements InventoryBlock, 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public enum Type {
 
-        BASIC(Items.BASIC_SOLAR_PANEL, BASIC_DAY_RATE, BASIC_STORAGE, new ItemStack[] {
+        BASIC(Items.BASIC_SOLAR_PANEL, BASIC_DAY_RATE, , BASIC_STORAGE, new ItemStack[] {
             Items.CARBON_PLATE, Items.CARBON_PLATE, Items.CARBON_PLATE,
             Items.REINFORCED_GLASS, Items.REINFORCED_GLASS, Items.REINFORCED_GLASS,
             Items.ELECTRONIC_CIRCUIT, Items.MACHINE_BLOCK, Items.ELECTRONIC_CIRCUIT
         }),
-	    LOW_VOLTAGE(Items.LOW_VOLTAGE_SOLAR_PANEL, LOW_VOLTAGE_DAY_RATE, LOW_VOLTAGE_STORAGE, new ItemStack[] {
+	    LOW_VOLTAGE(Items.LOW_VOLTAGE_SOLAR_PANEL, LOW_VOLTAGE_DAY_RATE, , LOW_VOLTAGE_STORAGE, new ItemStack[] {
             Items.REINFORCED_GLASS, Items.REINFORCED_GLASS, Items.REINFORCED_GLASS,
             Items.ADVANCED_ALLOY, Items.BASIC_SOLAR_PANEL, Items.ADVANCED_ALLOY,
             Items.ADVANCED_CIRCUIT, Items.ADVANCED_MACHINE_BLOCK, Items.ADVANCED_CIRCUIT
         }),
-	    MEDIUM_VOLTAGE(Items.MEDIUM_VOLTAGE_SOLAR_PANEL, MEDIUM_VOLTAGE_DAY_RATE, MEDIUM_VOLTAGE_STORAGE, new ItemStack[] {
+	    MEDIUM_VOLTAGE(Items.MEDIUM_VOLTAGE_SOLAR_PANEL, MEDIUM_VOLTAGE_DAY_RATE, , MEDIUM_VOLTAGE_STORAGE, new ItemStack[] {
             Items.REINFORCED_GLASS, Items.REINFORCED_GLASS, Items.REINFORCED_GLASS,
             Items.ADVANCED_ALLOY, Items.LOW_VOLTAGE_SOLAR_PANEL, Items.ADVANCED_ALLOY,
             Items.ADVANCED_CIRCUIT, Items.ADVANCED_MACHINE_BLOCK, Items.ADVANCED_CIRCUIT
         }),
-	    HIGH_VOLTAGE(Items.HIGH_VOLTAGE_SOLAR_PANEL, HIGH_VOLTAGE_DAY_RATE, HIGH_VOLTAGE_STORAGE, new ItemStack[] {
+	    HIGH_VOLTAGE(Items.HIGH_VOLTAGE_SOLAR_PANEL, HIGH_VOLTAGE_DAY_RATE, , HIGH_VOLTAGE_STORAGE, new ItemStack[] {
             Items.REINFORCED_GLASS, Items.REINFORCED_GLASS, Items.REINFORCED_GLASS,
             SlimefunItems.REINFORCED_PLATE, Items.MEDIUM_VOLTAGE_SOLAR_PANEL, SlimefunItems.REINFORCED_PLATE,
             Items.ADVANCED_CIRCUIT, Items.ADVANCED_MACHINE_BLOCK, Items.ADVANCED_CIRCUIT
         }),
-
-        @Nonnull
-        private final SlimefunItemStack item;
-        private final int dayGenerationRate;
-        private final int storage;
-
-        @Nonnull
-        private final ItemStack[] recipe;
-	}
-	
-    @Getter
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public enum Type {
-
         ADVANCED(Items.ADVANCED_SOLAR_PANEL, ADVANCED_DAY_RATE, ADVANCED_NIGHT_RATE, ADVANCED_STORAGE, new ItemStack[] {
             Items.REINFORCED_GLASS, Items.REINFORCED_GLASS, Items.REINFORCED_GLASS,
             Items.ADVANCED_ALLOY, Items.HIGH_VOLTAGE_SOLAR_PANEL, Items.ADVANCED_ALLOY,
