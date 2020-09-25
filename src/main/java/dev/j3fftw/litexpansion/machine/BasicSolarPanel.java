@@ -66,12 +66,10 @@ public class BasicSolarPanel extends SlimefunItem implements InventoryBlock, Ene
 
         String generationType = "&4Unknown";
 
-        if (l.getWorld().getEnvironment() == World.Environment.NETHER) {
-            generationType = "&cNether &e(Day)";
-        } else if (rate == this.type.getDayGenerationRate()) {
+        if (rate == this.type.getDayGenerationRate()) {
             generationType = "&aOverworld &e(Day)";
         } else {
-            generationType = "&aNot Generating";
+            generationType = "&4Not Generating";
         }
 
         if (inv.toInventory() != null && !inv.toInventory().getViewers().isEmpty()) {
@@ -97,7 +95,7 @@ public class BasicSolarPanel extends SlimefunItem implements InventoryBlock, Ene
     }
 
     private int getGeneratingAmount(@Nonnull Block b, @Nonnull World world) {
-        if (world.getEnvironment() == World.Environment.NETHER) return this.type.getDayGenerationRate();
+        if (world.getEnvironment() == World.Environment.NETHER) return 0;
         if (world.getEnvironment() == World.Environment.THE_END) return 0;
 
         // Note: You need to get the block above for the light check, the block itself is always 0
