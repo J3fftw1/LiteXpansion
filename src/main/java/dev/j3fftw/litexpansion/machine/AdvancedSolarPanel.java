@@ -33,16 +33,12 @@ public class AdvancedSolarPanel extends SlimefunItem implements InventoryBlock, 
         "&cNot Generating..."
     );
     public static int BASIC_DAY_RATE = 10;
-    public static int BASIC_NIGHT_RATE = 0;
     public static int BASIC_STORAGE = 10_000;
     public static int LOW_VOLTAGE_DAY_RATE = 100;
-    public static int LOW_VOLTAGE_NIGHT_RATE = 0;
     public static int LOW_VOLTAGE_STORAGE = 25_000;
     public static int MEDIUM_VOLTAGE_DAY_RATE = 200;
-    public static int MEDIUM_VOLTAGE_NIGHT_RATE = 0;
     public static int MEDIUM_VOLTAGE_STORAGE = 50_000;
     public static int HIGH_VOLTAGE_DAY_RATE = 400;
-    public static int HIGH_VOLTAGE_NIGHT_RATE = 0;
     public static int HIGH_VOLTAGE_STORAGE = 100_000;
     public static int ADVANCED_DAY_RATE = 800;
     public static int ADVANCED_NIGHT_RATE = 100;
@@ -150,22 +146,22 @@ public class AdvancedSolarPanel extends SlimefunItem implements InventoryBlock, 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public enum Type {
 
-        BASIC(Items.BASIC_SOLAR_PANEL, 10, 1, 10_000, new ItemStack[] {
+        BASIC(Items.BASIC_SOLAR_PANEL, BASIC_DAY_RATE, 0, BASIC_STORAGE, new ItemStack[] {
             Items.CARBON_PLATE, Items.CARBON_PLATE, Items.CARBON_PLATE,
             Items.REINFORCED_GLASS, Items.REINFORCED_GLASS, Items.REINFORCED_GLASS,
             Items.ELECTRONIC_CIRCUIT, Items.MACHINE_BLOCK, Items.ELECTRONIC_CIRCUIT
         }),
-	    LOW_VOLTAGE(Items.LOW_VOLTAGE_SOLAR_PANEL, LOW_VOLTAGE_DAY_RATE, LOW_VOLTAGE_NIGHT_RATE, LOW_VOLTAGE_STORAGE, new ItemStack[] {
+	    LOW_VOLTAGE(Items.LOW_VOLTAGE_SOLAR_PANEL, LOW_VOLTAGE_DAY_RATE, 0, LOW_VOLTAGE_STORAGE, new ItemStack[] {
             Items.REINFORCED_GLASS, Items.REINFORCED_GLASS, Items.REINFORCED_GLASS,
             Items.ADVANCED_ALLOY, Items.BASIC_SOLAR_PANEL, Items.ADVANCED_ALLOY,
             Items.ADVANCED_CIRCUIT, Items.ADVANCED_MACHINE_BLOCK, Items.ADVANCED_CIRCUIT
         }),
-	    MEDIUM_VOLTAGE(Items.MEDIUM_VOLTAGE_SOLAR_PANEL, MEDIUM_VOLTAGE_DAY_RATE, MEDIUM_VOLTAGE_NIGHT_RATE, MEDIUM_VOLTAGE_STORAGE, new ItemStack[] {
+	    MEDIUM_VOLTAGE(Items.MEDIUM_VOLTAGE_SOLAR_PANEL, MEDIUM_VOLTAGE_DAY_RATE, 0, MEDIUM_VOLTAGE_STORAGE, new ItemStack[] {
             Items.REINFORCED_GLASS, Items.REINFORCED_GLASS, Items.REINFORCED_GLASS,
             Items.ADVANCED_ALLOY, Items.LOW_VOLTAGE_SOLAR_PANEL, Items.ADVANCED_ALLOY,
             Items.ADVANCED_CIRCUIT, Items.ADVANCED_MACHINE_BLOCK, Items.ADVANCED_CIRCUIT
         }),
-	    HIGH_VOLTAGE(Items.HIGH_VOLTAGE_SOLAR_PANEL, HIGH_VOLTAGE_DAY_RATE, HIGH_VOLTAGE_NIGHT_RATE, HIGH_VOLTAGE_STORAGE, new ItemStack[] {
+	    HIGH_VOLTAGE(Items.HIGH_VOLTAGE_SOLAR_PANEL, HIGH_VOLTAGE_DAY_RATE, 0, HIGH_VOLTAGE_STORAGE, new ItemStack[] {
             Items.REINFORCED_GLASS, Items.REINFORCED_GLASS, Items.REINFORCED_GLASS,
             SlimefunItems.REINFORCED_PLATE, Items.MEDIUM_VOLTAGE_SOLAR_PANEL, SlimefunItems.REINFORCED_PLATE,
             Items.ADVANCED_CIRCUIT, Items.ADVANCED_MACHINE_BLOCK, Items.ADVANCED_CIRCUIT
