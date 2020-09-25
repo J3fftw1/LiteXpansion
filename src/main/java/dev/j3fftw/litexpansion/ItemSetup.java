@@ -5,12 +5,7 @@ import dev.j3fftw.litexpansion.items.FoodSynthesizer;
 import dev.j3fftw.litexpansion.items.GlassCutter;
 import dev.j3fftw.litexpansion.items.MagThor;
 import dev.j3fftw.litexpansion.items.Thorium;
-import dev.j3fftw.litexpansion.machine.AdvancedSolarPanel;
-import dev.j3fftw.litexpansion.machine.MassFabricator;
-import dev.j3fftw.litexpansion.machine.MetalForge;
-import dev.j3fftw.litexpansion.machine.RefinedSmeltery;
-import dev.j3fftw.litexpansion.machine.RubberSynthesizer;
-import dev.j3fftw.litexpansion.machine.Recycler;
+import dev.j3fftw.litexpansion.machine.*;
 import dev.j3fftw.litexpansion.weapons.NanoBlade;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
@@ -171,10 +166,10 @@ final class ItemSetup {
     }
 
     private void registerSolarPanels() {
-        new AdvancedSolarPanel(AdvancedSolarPanel.Type.BASIC).register(plugin);
-        new AdvancedSolarPanel(AdvancedSolarPanel.Type.LOW_VOLTAGE).register(plugin);
-        new AdvancedSolarPanel(AdvancedSolarPanel.Type.MEDIUM_VOLTAGE).register(plugin);
-        new AdvancedSolarPanel(AdvancedSolarPanel.Type.HIGH_VOLTAGE).register(plugin);
+        new BasicSolarPanel(BasicSolarPanel.Basic.BASIC).register(plugin);
+        new BasicSolarPanel(BasicSolarPanel.Basic.LOW_VOLTAGE).register(plugin);
+        new BasicSolarPanel(BasicSolarPanel.Basic.MEDIUM_VOLTAGE).register(plugin);
+        new BasicSolarPanel(BasicSolarPanel.Basic.HIGH_VOLTAGE).register(plugin);
         new AdvancedSolarPanel(AdvancedSolarPanel.Type.ADVANCED).register(plugin);
         new AdvancedSolarPanel(AdvancedSolarPanel.Type.HYBRID).register(plugin);
         new AdvancedSolarPanel(AdvancedSolarPanel.Type.ULTIMATE).register(plugin);
