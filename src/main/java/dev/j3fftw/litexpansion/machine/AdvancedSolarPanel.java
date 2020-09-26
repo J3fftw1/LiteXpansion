@@ -32,14 +32,6 @@ public class AdvancedSolarPanel extends SlimefunItem implements InventoryBlock, 
     private static final CustomItem generatingItem = new CustomItem(Material.ORANGE_STAINED_GLASS_PANE,
         "&cNot Generating..."
     );
-    public static int BASIC_DAY_RATE = 10;
-    public static int BASIC_STORAGE = 10_000;
-    public static int LOW_VOLTAGE_DAY_RATE = 100;
-    public static int LOW_VOLTAGE_STORAGE = 25_000;
-    public static int MEDIUM_VOLTAGE_DAY_RATE = 200;
-    public static int MEDIUM_VOLTAGE_STORAGE = 50_000;
-    public static int HIGH_VOLTAGE_DAY_RATE = 400;
-    public static int HIGH_VOLTAGE_STORAGE = 100_000;
     public static int ADVANCED_DAY_RATE = 800;
     public static int ADVANCED_NIGHT_RATE = 100;
     public static int ADVANCED_STORAGE = 320_000;
