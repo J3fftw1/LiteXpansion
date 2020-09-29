@@ -34,11 +34,11 @@ public class BasicSolarPanel extends SlimefunItem implements InventoryBlock, Ene
     );
     public static int BASIC_DAY_RATE = 10;
     public static int BASIC_STORAGE = 10_000;
-    public static int LOW_VOLTAGE_DAY_RATE = 100;
+    public static int LOW_VOLTAGE_DAY_RATE = 50;
     public static int LOW_VOLTAGE_STORAGE = 25_000;
-    public static int MEDIUM_VOLTAGE_DAY_RATE = 200;
+    public static int MEDIUM_VOLTAGE_DAY_RATE = 100;
     public static int MEDIUM_VOLTAGE_STORAGE = 50_000;
-    public static int HIGH_VOLTAGE_DAY_RATE = 400;
+    public static int HIGH_VOLTAGE_DAY_RATE = 200;
     public static int HIGH_VOLTAGE_STORAGE = 100_000;
     private final Type type;
     private static final ItemStack glass = new ItemStack(Material.GLASS);
