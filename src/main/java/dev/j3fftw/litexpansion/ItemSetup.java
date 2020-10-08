@@ -6,6 +6,7 @@ import dev.j3fftw.litexpansion.items.GlassCutter;
 import dev.j3fftw.litexpansion.items.MagThor;
 import dev.j3fftw.litexpansion.items.Thorium;
 import dev.j3fftw.litexpansion.machine.BasicSolarPanel;
+import dev.j3fftw.litexpansion.items.Wrench;
 import dev.j3fftw.litexpansion.machine.AdvancedSolarPanel;
 import dev.j3fftw.litexpansion.machine.MassFabricator;
 import dev.j3fftw.litexpansion.machine.MetalForge;
@@ -28,7 +29,7 @@ import javax.annotation.Nonnull;
 
 final class ItemSetup {
 
-    protected static final ItemSetup INSTANCE = new ItemSetup();
+    static final ItemSetup INSTANCE = new ItemSetup();
     private final ItemStack glass = new ItemStack(Material.GLASS);
     private final SlimefunAddon plugin = LiteXpansion.getInstance();
     private boolean initialised;
@@ -52,6 +53,7 @@ final class ItemSetup {
     private void registerTools() {
         new CargoConfigurator().register(plugin);
         new GlassCutter().register(plugin);
+        // new Wrench().register(plugin);
     }
 
     private void registerMachines() {

@@ -1,6 +1,7 @@
 package dev.j3fftw.litexpansion;
 
 import dev.j3fftw.litexpansion.armor.ElectricChestplate;
+import dev.j3fftw.litexpansion.items.Wrench;
 import dev.j3fftw.litexpansion.resources.ThoriumResource;
 import dev.j3fftw.litexpansion.utils.Constants;
 import dev.j3fftw.litexpansion.uumatter.UUMatter;
@@ -15,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -55,10 +57,10 @@ public class LiteXpansion extends JavaPlugin implements SlimefunAddon {
         } catch (IllegalAccessException | NoSuchFieldException ignored) {
             getLogger().warning("Failed to register enchantment. Seems the 'acceptingNew' field changed monkaS");
         }
-        Enchantment.registerEnchantment(new GlowEnchant(Constants.GLOW_ENCHANT));
 
-        // Category
-        Items.LITEXPANSION.register();
+        Enchantment.registerEnchantment(new GlowEnchant(Constants.GLOW_ENCHANT, new String[] {
+                "ADVANCED_CIRCUIT", "NANO_BLADE", "GLASS_CUTTER"
+        }));
 
         ItemSetup.INSTANCE.init();
 
@@ -69,6 +71,13 @@ public class LiteXpansion extends JavaPlugin implements SlimefunAddon {
 
         setupResearches();
         new ThoriumResource().register();
+
+        if (Wrench.wrenchFailChance.getValue() < 0
+            || Wrench.wrenchFailChance.getValue() > 1
+        ) {
+            getLogger().log(Level.SEVERE, "The wrench failure chance must be or be between 0 and 1!");
+            getServer().getPluginManager().disablePlugin(this);
+        }
     }
 
     @Override
@@ -197,5 +206,9 @@ public class LiteXpansion extends JavaPlugin implements SlimefunAddon {
 
     public static LiteXpansion getInstance() {
         return instance;
+    }
+
+    public static FileConfiguration getCfg() {
+        return instance.getConfig();
     }
 }
