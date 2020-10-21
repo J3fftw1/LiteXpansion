@@ -29,13 +29,11 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerDamageDeal(EntityDamageByEntityEvent e) {
-        if (e.getDamager() instanceof Player) {
+      if (e.getDamager() instanceof Player) {
             Player p = (Player) e.getDamager();
             ItemStack itemInHand = p.getInventory().getItemInMainHand();
             final NanoBlade nanoBlade = (NanoBlade) SlimefunItem.getByID(Items.NANO_BLADE.getItemId());
-            if (nanoBlade.isItem(itemInHand)
-                && itemInHand.containsEnchantment(Enchantment.getByKey(Constants.GLOW_ENCHANT))
-                && nanoBlade.removeItemCharge(itemInHand, 10)
+            if (nanoBlade.isItem(itemInHand) && itemInHand.containsEnchantment(Enchantment.getByKey(Constants.GLOW_ENCHANT)) && nanoBlade.removeItemCharge(itemInHand, 10)
             ) {
                 e.setDamage(e.getDamage() * 1.75);
             }
