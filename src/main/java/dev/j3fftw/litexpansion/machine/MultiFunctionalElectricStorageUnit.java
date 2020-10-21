@@ -1,9 +1,12 @@
 package dev.j3fftw.litexpansion.machine;
 
 import dev.j3fftw.litexpansion.Items;
+
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.items.electric.Capacitor;
+
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
+
 import org.bukkit.inventory.ItemStack;
 
 public class MultiFunctionalElectricStorageUnit extends Capacitor {

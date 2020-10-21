@@ -2,6 +2,7 @@ package dev.j3fftw.litexpansion.utils;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
+
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
