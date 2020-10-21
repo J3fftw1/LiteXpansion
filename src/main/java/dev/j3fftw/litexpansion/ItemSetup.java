@@ -161,7 +161,7 @@ final class ItemSetup {
             rubberItem, Items.UNINSULATED_GOLD_CABLE
         );
 
-        registerNonPlaceableItem(Items.IRON_PLATE, MetalForge.RECIPE_TYPE, new ItemStack(Material.IRON_INGOT));
+      registerNonPlaceableItem(Items.IRON_PLATE, MetalForge.RECIPE_TYPE, new ItemStack(Material.IRON_INGOT));
         registerNonPlaceableItem(Items.DIAMOND_PLATE, MetalForge.RECIPE_TYPE, new ItemStack(Material.DIAMOND));
         registerNonPlaceableItem(Items.THORIUM_PLATE, MetalForge.RECIPE_TYPE, Items.THORIUM);
 
