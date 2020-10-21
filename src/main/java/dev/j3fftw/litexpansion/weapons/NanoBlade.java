@@ -19,12 +19,15 @@ import javax.annotation.Nonnull;
 public class NanoBlade extends SimpleSlimefunItem<ItemUseHandler> implements Rechargeable {
 
     public NanoBlade() {
-        super(Items.LITEXPANSION, Items.NANO_BLADE, MetalForge.RECIPE_TYPE, new ItemStack[] {
-                null, Items.MAG_THOR, null,
-                null, Items.MAG_THOR, null,
-                null, SlimefunItems.ADVANCED_CIRCUIT_BOARD, null
-            }
-        );
+        super(
+                Items.LITEXPANSION,
+                Items.NANO_BLADE,
+                MetalForge.RECIPE_TYPE,
+                new ItemStack[] {
+                    null, Items.MAG_THOR, null,
+                    null, Items.MAG_THOR, null,
+                    null, SlimefunItems.ADVANCED_CIRCUIT_BOARD, null
+                });
     }
 
     @Override
@@ -41,9 +44,11 @@ public class NanoBlade extends SimpleSlimefunItem<ItemUseHandler> implements Rec
 
             if (!nanoBladeMeta.removeEnchant(enchantment)) {
                 nanoBladeMeta.addEnchant(enchantment, 1, false);
-                nanoBladeMeta.setDisplayName(ChatColor.DARK_GREEN + "Nano Blade" + ChatColor.GREEN + " (On)");
+                nanoBladeMeta.setDisplayName(
+                        ChatColor.DARK_GREEN + "Nano Blade" + ChatColor.GREEN + " (On)");
             } else {
-                nanoBladeMeta.setDisplayName(ChatColor.DARK_GREEN + "Nano Blade" + ChatColor.RED + " (Off)");
+                nanoBladeMeta.setDisplayName(
+                        ChatColor.DARK_GREEN + "Nano Blade" + ChatColor.RED + " (Off)");
             }
             event.getItem().setItemMeta(nanoBladeMeta);
         };

@@ -33,15 +33,22 @@ import javax.annotation.Nonnull;
 
 public class CargoConfigurator extends SimpleSlimefunItem<ItemUseHandler> implements Listener {
 
-    private static final NamespacedKey CARGO_BLOCK = new NamespacedKey(LiteXpansion.getInstance(), "cargo_block");
-    private static final NamespacedKey CARGO_CONFIG = new NamespacedKey(LiteXpansion.getInstance(), "cargo_config");
+    private static final NamespacedKey CARGO_BLOCK =
+            new NamespacedKey(LiteXpansion.getInstance(), "cargo_block");
+    private static final NamespacedKey CARGO_CONFIG =
+            new NamespacedKey(LiteXpansion.getInstance(), "cargo_config");
 
     public CargoConfigurator() {
-        super(Items.LITEXPANSION, Items.CARGO_CONFIGURATOR, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            Items.REFINED_IRON, SlimefunItems.REINFORCED_PLATE, Items.REFINED_IRON,
-            SlimefunItems.REINFORCED_PLATE, SlimefunItems.CARGO_MANAGER, SlimefunItems.REINFORCED_PLATE,
-            Items.REFINED_IRON, SlimefunItems.REINFORCED_PLATE, Items.REFINED_IRON
-        });
+        super(
+                Items.LITEXPANSION,
+                Items.CARGO_CONFIGURATOR,
+                RecipeType.ENHANCED_CRAFTING_TABLE,
+                new ItemStack[] {
+                    Items.REFINED_IRON, SlimefunItems.REINFORCED_PLATE, Items.REFINED_IRON,
+                    SlimefunItems.REINFORCED_PLATE, SlimefunItems.CARGO_MANAGER,
+                            SlimefunItems.REINFORCED_PLATE,
+                    Items.REFINED_IRON, SlimefunItems.REINFORCED_PLATE, Items.REFINED_IRON
+                });
 
         Bukkit.getPluginManager().registerEvents(this, LiteXpansion.getInstance());
     }
@@ -66,21 +73,20 @@ public class CargoConfigurator extends SimpleSlimefunItem<ItemUseHandler> implem
 
         final ItemMeta meta = clickedItem.getItemMeta();
 
-        final List<String> defaultLore = Items.CARGO_CONFIGURATOR.getImmutableMeta().getLore()
-            .orElse(new ArrayList<>());
+        final List<String> defaultLore =
+                Items.CARGO_CONFIGURATOR.getImmutableMeta().getLore().orElse(new ArrayList<>());
         final List<String> lore = meta.hasLore() ? meta.getLore() : defaultLore;
 
         // Clear the config and lore
         if ((e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
-            && e.getPlayer().isSneaking()
-        ) {
+                && e.getPlayer().isSneaking()) {
             clearConfig(e.getPlayer(), clickedItem, meta, defaultLore, lore);
             e.setCancelled(true);
             return;
         }
 
         if ((e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.LEFT_CLICK_BLOCK)
-            || e.getClickedBlock() == null) {
+                || e.getClickedBlock() == null) {
             return;
         }
 
@@ -93,9 +99,8 @@ public class CargoConfigurator extends SimpleSlimefunItem<ItemUseHandler> implem
 
         final String blockId = block.getId();
         if (!blockId.equals(SlimefunItems.CARGO_INPUT_NODE.getItemId())
-            && !blockId.equals(SlimefunItems.CARGO_OUTPUT_NODE.getItemId())
-            && !blockId.equals(SlimefunItems.CARGO_OUTPUT_NODE_2.getItemId())
-        ) {
+                && !blockId.equals(SlimefunItems.CARGO_OUTPUT_NODE.getItemId())
+                && !blockId.equals(SlimefunItems.CARGO_OUTPUT_NODE_2.getItemId())) {
             return;
         }
 
@@ -107,9 +112,12 @@ public class CargoConfigurator extends SimpleSlimefunItem<ItemUseHandler> implem
         clickedItem.setItemMeta(meta);
     }
 
-    private void clearConfig(@Nonnull Player player, @Nonnull ItemStack itemStack, @Nonnull ItemMeta meta,
-                             @Nonnull List<String> defaultLore, @Nonnull List<String> lore
-    ) {
+    private void clearConfig(
+            @Nonnull Player player,
+            @Nonnull ItemStack itemStack,
+            @Nonnull ItemMeta meta,
+            @Nonnull List<String> defaultLore,
+            @Nonnull List<String> lore) {
         PersistentDataAPI.remove(meta, CARGO_BLOCK);
         PersistentDataAPI.remove(meta, CARGO_CONFIG);
         player.sendMessage(ChatColor.RED + "Cleared node configuration!");
@@ -124,9 +132,13 @@ public class CargoConfigurator extends SimpleSlimefunItem<ItemUseHandler> implem
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void runActions(@Nonnull PlayerInteractEvent e, @Nonnull ItemStack clickedItemStack, @Nonnull ItemMeta meta,
-                            @Nonnull String blockId, @Nonnull List<String> lore, @Nonnull List<String> defaultLore
-    ) {
+    private void runActions(
+            @Nonnull PlayerInteractEvent e,
+            @Nonnull ItemStack clickedItemStack,
+            @Nonnull ItemMeta meta,
+            @Nonnull String blockId,
+            @Nonnull List<String> lore,
+            @Nonnull List<String> defaultLore) {
         if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
             final String copiedBlock = PersistentDataAPI.getString(meta, CARGO_BLOCK);
             final String config = PersistentDataAPI.getString(meta, CARGO_CONFIG);
@@ -136,26 +148,34 @@ public class CargoConfigurator extends SimpleSlimefunItem<ItemUseHandler> implem
             }
 
             if (!copiedBlock.equals(blockId)) {
-                e.getPlayer().sendMessage(ChatColor.RED + "You can't apply the config to this node!");
+                e.getPlayer()
+                        .sendMessage(ChatColor.RED + "You can't apply the config to this node!");
                 return;
             }
 
             BlockStorage.setBlockInfo(e.getClickedBlock(), config, true);
-            BlockStorage.getStorage(e.getClickedBlock().getWorld()).reloadInventory(e.getClickedBlock().getLocation());
+            BlockStorage.getStorage(e.getClickedBlock().getWorld())
+                    .reloadInventory(e.getClickedBlock().getLocation());
             e.getPlayer().sendMessage(ChatColor.GREEN + "Applied configuration!");
         } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             PersistentDataAPI.setString(meta, CARGO_BLOCK, blockId);
-            PersistentDataAPI.setString(meta, CARGO_CONFIG, BlockStorage.getBlockInfoAsJson(e.getClickedBlock()));
+            PersistentDataAPI.setString(
+                    meta, CARGO_CONFIG, BlockStorage.getBlockInfoAsJson(e.getClickedBlock()));
 
             // Has the copied part
             if (lore.size() == defaultLore.size() + 2) {
                 lore.clear();
                 lore.addAll(defaultLore);
             }
-            lore.addAll(Arrays.asList("", ChatColor.GRAY + "> Copied "
-                + ChatColor.RESET + clickedItemStack.getItemMeta().getDisplayName()
-                + ChatColor.GRAY + " config!"
-            ));
+            lore.addAll(
+                    Arrays.asList(
+                            "",
+                            ChatColor.GRAY
+                                    + "> Copied "
+                                    + ChatColor.RESET
+                                    + clickedItemStack.getItemMeta().getDisplayName()
+                                    + ChatColor.GRAY
+                                    + " config!"));
             e.getPlayer().sendMessage(ChatColor.GREEN + "Copied node configuration!");
         }
     }

@@ -31,8 +31,7 @@ public class Timing {
 
     public void stop(boolean printResults) {
         stop();
-        if (printResults)
-            sendResults();
+        if (printResults) sendResults();
     }
 
     public void sendResults() {

@@ -16,16 +16,23 @@ import javax.annotation.Nonnull;
 
 public class Thorium extends UnplaceableBlock implements Radioactive {
 
-    private static final ItemStack thorium = new CustomItem(Material.PAPER, "&fHint!",
-        "&a&oMake sure to first GEO-Scan the chunk in which you are", "&a&omining to discover Thorium!");
+    private static final ItemStack thorium =
+            new CustomItem(
+                    Material.PAPER,
+                    "&fHint!",
+                    "&a&oMake sure to first GEO-Scan the chunk in which you are",
+                    "&a&omining to discover Thorium!");
 
     public Thorium() {
-        super(Items.LITEXPANSION, Items.THORIUM, RecipeType.GEO_MINER, new ItemStack[] {
-                null, null, null,
-                null, thorium, null,
-                null, null, null
-            }
-        );
+        super(
+                Items.LITEXPANSION,
+                Items.THORIUM,
+                RecipeType.GEO_MINER,
+                new ItemStack[] {
+                    null, null, null,
+                    null, thorium, null,
+                    null, null, null
+                });
     }
 
     @Nonnull

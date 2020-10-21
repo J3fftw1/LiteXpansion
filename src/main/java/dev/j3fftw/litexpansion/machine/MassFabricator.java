@@ -32,9 +32,10 @@ import javax.annotation.Nullable;
 
 public class MassFabricator extends SlimefunItem implements InventoryBlock, EnergyNetComponent {
 
-    public static final RecipeType RECIPE_TYPE = new RecipeType(
-        new NamespacedKey(LiteXpansion.getInstance(), "mass_fabricator"), Items.MASS_FABRICATOR_MACHINE
-    );
+    public static final RecipeType RECIPE_TYPE =
+            new RecipeType(
+                    new NamespacedKey(LiteXpansion.getInstance(), "mass_fabricator"),
+                    Items.MASS_FABRICATOR_MACHINE);
 
     public static final int ENERGY_CONSUMPTION = 16_666;
     public static final int CAPACITY = ENERGY_CONSUMPTION * 3;
@@ -46,45 +47,58 @@ public class MassFabricator extends SlimefunItem implements InventoryBlock, Ener
 
     private static final Map<BlockPosition, Integer> progress = new HashMap<>();
 
-    private static final CustomItem progressItem = new CustomItem(Items.UU_MATTER.getType(), "&7Progress");
+    private static final CustomItem progressItem =
+            new CustomItem(Items.UU_MATTER.getType(), "&7Progress");
 
     private static final ItemStack plate = SlimefunItems.REINFORCED_PLATE;
     private static final ItemStack circuitBoard = SlimefunItems.ADVANCED_CIRCUIT_BOARD;
 
     public MassFabricator() {
-        super(Items.LITEXPANSION, Items.MASS_FABRICATOR_MACHINE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            plate, circuitBoard, plate,
-            circuitBoard, Items.MACHINE_BLOCK, circuitBoard,
-            plate, circuitBoard, plate
-        });
+        super(
+                Items.LITEXPANSION,
+                Items.MASS_FABRICATOR_MACHINE,
+                RecipeType.ENHANCED_CRAFTING_TABLE,
+                new ItemStack[] {
+                    plate, circuitBoard, plate,
+                    circuitBoard, Items.MACHINE_BLOCK, circuitBoard,
+                    plate, circuitBoard, plate
+                });
         setupInv();
     }
 
     private void setupInv() {
-        createPreset(this, "&5Mass Fabricator", blockMenuPreset -> {
-            for (int i = 0; i < 27; i++)
-                blockMenuPreset.addItem(i, ChestMenuUtils.getBackground(), ChestMenuUtils.getEmptyClickHandler());
+        createPreset(
+                this,
+                "&5Mass Fabricator",
+                blockMenuPreset -> {
+                    for (int i = 0; i < 27; i++)
+                        blockMenuPreset.addItem(
+                                i,
+                                ChestMenuUtils.getBackground(),
+                                ChestMenuUtils.getEmptyClickHandler());
 
-            for (int slot : INPUT_SLOTS)
-                blockMenuPreset.addItem(slot, null, (player, i, itemStack, clickAction) -> true);
+                    for (int slot : INPUT_SLOTS)
+                        blockMenuPreset.addItem(
+                                slot, null, (player, i, itemStack, clickAction) -> true);
 
-            Utils.putOutputSlot(blockMenuPreset, OUTPUT_SLOT);
+                    Utils.putOutputSlot(blockMenuPreset, OUTPUT_SLOT);
 
-            blockMenuPreset.addItem(PROGRESS_SLOT, progressItem);
-        });
+                    blockMenuPreset.addItem(PROGRESS_SLOT, progressItem);
+                });
     }
 
     @Override
     public void preRegister() {
-        this.addItemHandler(new BlockTicker() {
-            public void tick(Block b, SlimefunItem sf, Config data) {
-                MassFabricator.this.tick(b);
-            }
+        this.addItemHandler(
+                new BlockTicker() {
+                    public void tick(Block b, SlimefunItem sf, Config data) {
+                        MassFabricator.this.tick(b);
+                    }
 
-            public boolean isSynchronized() {
-                return false;
-            }
-        });
+                    public boolean isSynchronized() {
+                        return false;
+                    }
+                });
     }
 
     private void tick(@Nonnull Block b) {
@@ -101,10 +115,8 @@ public class MassFabricator extends SlimefunItem implements InventoryBlock, Ener
             return;
         }
 
-        if (!SlimefunUtils.isItemSimilar(input, Items.SCRAP, true))
-            input = null;
-        if (!SlimefunUtils.isItemSimilar(input2, Items.SCRAP, true))
-            input2 = null;
+        if (!SlimefunUtils.isItemSimilar(input, Items.SCRAP, true)) input = null;
+        if (!SlimefunUtils.isItemSimilar(input2, Items.SCRAP, true)) input2 = null;
 
         if (input == null && input2 == null) {
             return;
@@ -119,13 +131,15 @@ public class MassFabricator extends SlimefunItem implements InventoryBlock, Ener
 
         // Process first tick - remove an input and put it in map.
         if (currentProgress != PROGRESS_AMOUNT) {
-            if (input != null)
-                inv.consumeItem(INPUT_SLOTS[0]);
-            else
-                inv.consumeItem(INPUT_SLOTS[1]);
+            if (input != null) inv.consumeItem(INPUT_SLOTS[0]);
+            else inv.consumeItem(INPUT_SLOTS[1]);
             progress.put(pos, ++currentProgress);
-            ChestMenuUtils.updateProgressbar(inv, PROGRESS_SLOT, PROGRESS_AMOUNT - currentProgress,
-                PROGRESS_AMOUNT, progressItem);
+            ChestMenuUtils.updateProgressbar(
+                    inv,
+                    PROGRESS_SLOT,
+                    PROGRESS_AMOUNT - currentProgress,
+                    PROGRESS_AMOUNT,
+                    progressItem);
         } else {
             if (output != null && output.getAmount() > 0) {
                 output.setAmount(output.getAmount() + 1);
@@ -133,7 +147,8 @@ public class MassFabricator extends SlimefunItem implements InventoryBlock, Ener
                 inv.replaceExistingItem(OUTPUT_SLOT, Items.UU_MATTER.clone());
             }
             progress.remove(pos);
-            ChestMenuUtils.updateProgressbar(inv, PROGRESS_SLOT, PROGRESS_AMOUNT, PROGRESS_AMOUNT, progressItem);
+            ChestMenuUtils.updateProgressbar(
+                    inv, PROGRESS_SLOT, PROGRESS_AMOUNT, PROGRESS_AMOUNT, progressItem);
         }
     }
 

@@ -1,6 +1,5 @@
 package dev.j3fftw.litexpansion.items;
 
-
 import dev.j3fftw.litexpansion.Items;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
@@ -17,25 +16,35 @@ import org.bukkit.inventory.ItemStack;
 import javax.annotation.Nonnull;
 
 /**
- * The {@link Wrench} is a {@link SimpleSlimefunItem} that breaks
- * machines, cargo nodes, and capacitors instantly. Server owners
- * can manually configure if a wrench is required to break machines
- * and the chance that it fails.
+ * The {@link Wrench} is a {@link SimpleSlimefunItem} that breaks machines, cargo nodes, and
+ * capacitors instantly. Server owners can manually configure if a wrench is required to break
+ * machines and the chance that it fails.
  *
  * @author FluffyBear
  */
 public class Wrench extends SimpleSlimefunItem<ItemUseHandler> implements DamageableItem {
 
-    public static final ItemSetting<Boolean> machineBreakRequiresWrench = new ItemSetting<>("machine-break-requires" +
-        "-wrench", false);
-    public static final ItemSetting<Double> wrenchFailChance = new ItemSetting<>("wrench-failure-chance", 0.0);
+    public static final ItemSetting<Boolean> machineBreakRequiresWrench =
+            new ItemSetting<>("machine-break-requires" + "-wrench", false);
+    public static final ItemSetting<Double> wrenchFailChance =
+            new ItemSetting<>("wrench-failure-chance", 0.0);
 
     public Wrench() {
-        super(Items.LITEXPANSION, Items.WRENCH, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            SlimefunItems.COPPER_INGOT, null, SlimefunItems.COPPER_INGOT,
-            null, SlimefunItems.COPPER_INGOT, null,
-            null, SlimefunItems.COPPER_INGOT, null
-        });
+        super(
+                Items.LITEXPANSION,
+                Items.WRENCH,
+                RecipeType.ENHANCED_CRAFTING_TABLE,
+                new ItemStack[] {
+                    SlimefunItems.COPPER_INGOT,
+                    null,
+                    SlimefunItems.COPPER_INGOT,
+                    null,
+                    SlimefunItems.COPPER_INGOT,
+                    null,
+                    null,
+                    SlimefunItems.COPPER_INGOT,
+                    null
+                });
 
         addItemSetting(machineBreakRequiresWrench, wrenchFailChance);
     }

@@ -59,6 +59,4 @@ public class ThoriumResource implements GEOResource {
     public boolean isObtainableFromGEOMiner() {
         return true;
     }
-
-
 }

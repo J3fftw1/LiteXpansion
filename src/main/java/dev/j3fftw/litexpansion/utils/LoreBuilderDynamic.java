@@ -6,15 +6,15 @@ import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
- * This utility class provides a few handy methods and constants to build the lore of any
- * {@link SlimefunItemStack}. It is mostly used directly inside the class {@link SlimefunItems}.
- * <p>
- * Modified TheBusyBiscuit's {@link LoreBuilder} to calculate power input/output based on server tick rate
+ * This utility class provides a few handy methods and constants to build the lore of any {@link
+ * SlimefunItemStack}. It is mostly used directly inside the class {@link SlimefunItems}.
+ *
+ * <p>Modified TheBusyBiscuit's {@link LoreBuilder} to calculate power input/output based on server
+ * tick rate
  *
  * @see SlimefunItems
  */
 public final class LoreBuilderDynamic {
-
 
     public static String powerBuffer(double power) {
         return power(power, " Buffer");

@@ -75,5 +75,4 @@ public class GlowEnchant extends Enchantment {
         }
         return false;
     }
-
 }

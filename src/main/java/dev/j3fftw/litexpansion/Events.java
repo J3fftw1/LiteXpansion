@@ -32,12 +32,14 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerDamageDeal(EntityDamageByEntityEvent e) {
-      if (e.getDamager() instanceof Player) {
+        if (e.getDamager() instanceof Player) {
             Player p = (Player) e.getDamager();
             ItemStack itemInHand = p.getInventory().getItemInMainHand();
-            final NanoBlade nanoBlade = (NanoBlade) SlimefunItem.getByID(Items.NANO_BLADE.getItemId());
-            if (nanoBlade.isItem(itemInHand) && itemInHand.containsEnchantment(Enchantment.getByKey(Constants.GLOW_ENCHANT)) && nanoBlade.removeItemCharge(itemInHand, 10)
-            ) {
+            final NanoBlade nanoBlade =
+                    (NanoBlade) SlimefunItem.getByID(Items.NANO_BLADE.getItemId());
+            if (nanoBlade.isItem(itemInHand)
+                    && itemInHand.containsEnchantment(Enchantment.getByKey(Constants.GLOW_ENCHANT))
+                    && nanoBlade.removeItemCharge(itemInHand, 10)) {
                 e.setDamage(e.getDamage() * 1.75);
             }
         }
@@ -48,12 +50,13 @@ public class Events implements Listener {
         if (e.getEntity() instanceof Player && ((Player) e.getEntity()).getEquipment() != null) {
             Player p = (Player) e.getEntity();
             ItemStack chestplate = p.getEquipment().getChestplate();
-            final ElectricChestplate electricChestplate = (ElectricChestplate)
-                SlimefunItem.getByID(Items.ELECTRIC_CHESTPLATE.getItemId());
+            final ElectricChestplate electricChestplate =
+                    (ElectricChestplate)
+                            SlimefunItem.getByID(Items.ELECTRIC_CHESTPLATE.getItemId());
             if (chestplate != null
-                && electricChestplate.isItem(chestplate)
-                && electricChestplate.removeItemCharge(chestplate, (float) (e.getDamage() / 1.75))
-            ) {
+                    && electricChestplate.isItem(chestplate)
+                    && electricChestplate.removeItemCharge(
+                            chestplate, (float) (e.getDamage() / 1.75))) {
                 e.setCancelled(true);
             }
         }
@@ -61,8 +64,9 @@ public class Events implements Listener {
 
     @EventHandler
     public void onHungerDamage(EntityDamageEvent e) {
-        if (Items.FOOD_SYNTHESIZER == null || Items.FOOD_SYNTHESIZER.getItem().isDisabled()
-            || !(e.getEntity() instanceof Player)) {
+        if (Items.FOOD_SYNTHESIZER == null
+                || Items.FOOD_SYNTHESIZER.getItem().isDisabled()
+                || !(e.getEntity() instanceof Player)) {
             return;
         }
 
