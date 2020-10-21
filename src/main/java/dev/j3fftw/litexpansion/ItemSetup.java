@@ -145,11 +145,7 @@ final class ItemSetup {
 
         registerNonPlaceableItem(new SlimefunItemStack(Items.UNINSULATED_TIN_CABLE, 3), ManualMill.RECIPE_TYPE, Items.TIN_ITEM_CASING);
 
-        registerNonPlaceableItem(
-                Items.TIN_CABLE,
-                RecipeType.ENHANCED_CRAFTING_TABLE,
-                rubberItem,
-                Items.UNINSULATED_TIN_CABLE);
+        registerNonPlaceableItem(Items.TIN_CABLE, RecipeType.ENHANCED_CRAFTING_TABLE, rubberItem, Items.UNINSULATED_TIN_CABLE);
 
         registerNonPlaceableItem(
                 Items.COPPER_PLATE, ManualMill.RECIPE_TYPE, SlimefunItems.COPPER_INGOT);
