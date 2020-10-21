@@ -158,11 +158,7 @@ final class ItemSetup {
                 ManualMill.RECIPE_TYPE,
                 SlimefunItems.COPPER_INGOT);
 
-        registerNonPlaceableItem(
-                Items.COPPER_CABLE,
-                RecipeType.ENHANCED_CRAFTING_TABLE,
-                rubberItem,
-                Items.UNINSULATED_COPPER_CABLE);
+        registerNonPlaceableItem(Items.COPPER_CABLE, RecipeType.ENHANCED_CRAFTING_TABLE, rubberItem, Items.UNINSULATED_COPPER_CABLE);
 
         registerItem(
                 Items.RE_BATTERY,
