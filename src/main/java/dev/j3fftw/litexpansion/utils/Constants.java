@@ -1,7 +1,9 @@
 package dev.j3fftw.litexpansion.utils;
 
 import dev.j3fftw.litexpansion.LiteXpansion;
+
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+
 import org.bukkit.NamespacedKey;
 
 public final class Constants {
