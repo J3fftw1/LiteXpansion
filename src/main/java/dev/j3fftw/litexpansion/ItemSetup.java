@@ -143,10 +143,7 @@ final class ItemSetup {
 
         registerNonPlaceableItem(Items.TIN_ITEM_CASING, ManualMill.RECIPE_TYPE, Items.TIN_PLATE);
 
-        registerNonPlaceableItem(
-                new SlimefunItemStack(Items.UNINSULATED_TIN_CABLE, 3),
-                ManualMill.RECIPE_TYPE,
-                Items.TIN_ITEM_CASING);
+        registerNonPlaceableItem(new SlimefunItemStack(Items.UNINSULATED_TIN_CABLE, 3), ManualMill.RECIPE_TYPE, Items.TIN_ITEM_CASING);
 
         registerNonPlaceableItem(
                 Items.TIN_CABLE,
