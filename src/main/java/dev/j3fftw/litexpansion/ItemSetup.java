@@ -137,18 +137,7 @@ final class ItemSetup {
                 Items.REFINED_IRON);
 
         // Advanced Machine Block
-        registerItem(
-                Items.ADVANCED_MACHINE_BLOCK,
-                MetalForge.RECIPE_TYPE,
-                null,
-                Items.ADVANCED_ALLOY,
-                null,
-                Items.CARBON_PLATE,
-                Items.MACHINE_BLOCK,
-                Items.CARBON_PLATE,
-                null,
-                Items.CARBON_PLATE,
-                null);
+        registerItem(Items.ADVANCED_MACHINE_BLOCK, MetalForge.RECIPE_TYPE, null, Items.ADVANCED_ALLOY, null, Items.CARBON_PLATE, Items.MACHINE_BLOCK,Items.CARBON_PLATE, null, Items.CARBON_PLATE, null);
 
         registerNonPlaceableItem(Items.TIN_PLATE, MetalForge.RECIPE_TYPE, SlimefunItems.TIN_INGOT);
 

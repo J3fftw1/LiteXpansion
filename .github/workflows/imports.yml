@@ -25,5 +25,5 @@ jobs:
         files: '**/*.java'
         skipCommit: false
         commitMessage: "Cleaned up Imports"
-        args: "--replace --aosp"
+        args: "--replace --aosp --length 100"
         githubToken: ${{ secrets.GITHUB_TOKEN }}
