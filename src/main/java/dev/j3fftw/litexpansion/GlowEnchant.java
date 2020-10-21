@@ -14,63 +14,62 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class GlowEnchant extends Enchantment {
 
-    private final Set<String> ids = new HashSet<>();
+  private final Set<String> ids = new HashSet<>();
 
-    public GlowEnchant(@Nonnull NamespacedKey key, @Nonnull String[] applicableItems) {
-        super(key);
-        ids.addAll(Arrays.asList(applicableItems));
+  public GlowEnchant(@Nonnull NamespacedKey key, @Nonnull String[] applicableItems) {
+    super(key);
+    ids.addAll(Arrays.asList(applicableItems));
+  }
+
+  @Nonnull
+  @Override
+  @Deprecated
+  public String getName() {
+    return "LX_Glow";
+  }
+
+  @Override
+  public int getMaxLevel() {
+    return 1;
+  }
+
+  @Override
+  public int getStartLevel() {
+    return 1;
+  }
+
+  @Nonnull
+  @Override
+  public EnchantmentTarget getItemTarget() {
+    return EnchantmentTarget.ALL;
+  }
+
+  @Override
+  public boolean isTreasure() {
+    return false;
+  }
+
+  @Override
+  @Deprecated
+  public boolean isCursed() {
+    return false;
+  }
+
+  @Override
+  public boolean conflictsWith(@Nonnull Enchantment enchantment) {
+    return false;
+  }
+
+  @Override
+  public boolean canEnchantItem(ItemStack item) {
+    if (item.hasItemMeta()) {
+      final ItemMeta itemMeta = item.getItemMeta();
+      final Optional<String> id = SlimefunPlugin.getItemDataService().getItemData(itemMeta);
+
+      if (id.isPresent()) {
+        return ids.contains(id.get());
+      }
     }
-
-    @Nonnull
-    @Override
-    @Deprecated
-    public String getName() {
-        return "LX_Glow";
-    }
-
-    @Override
-    public int getMaxLevel() {
-        return 1;
-    }
-
-    @Override
-    public int getStartLevel() {
-        return 1;
-    }
-
-    @Nonnull
-    @Override
-    public EnchantmentTarget getItemTarget() {
-        return EnchantmentTarget.ALL;
-    }
-
-    @Override
-    public boolean isTreasure() {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isCursed() {
-        return false;
-    }
-
-    @Override
-    public boolean conflictsWith(@Nonnull Enchantment enchantment) {
-        return false;
-    }
-
-    @Override
-    public boolean canEnchantItem(ItemStack item) {
-        if (item.hasItemMeta()) {
-            final ItemMeta itemMeta = item.getItemMeta();
-            final Optional<String> id = SlimefunPlugin.getItemDataService().getItemData(itemMeta);
-
-            if (id.isPresent()) {
-                return ids.contains(id.get());
-            }
-        }
-        return false;
-    }
-
+    return false;
+  }
 }

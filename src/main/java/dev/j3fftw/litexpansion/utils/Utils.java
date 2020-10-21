@@ -15,45 +15,51 @@ import org.bukkit.inventory.ItemStack;
 
 public final class Utils {
 
-    private static final DecimalFormat powerFormat = new DecimalFormat("###,###.##",
-        DecimalFormatSymbols.getInstance(Locale.ROOT));
+  private static final DecimalFormat powerFormat =
+      new DecimalFormat("###,###.##", DecimalFormatSymbols.getInstance(Locale.ROOT));
 
-    private Utils() {}
+  private Utils() {}
 
-    public static String powerFormatAndFadeDecimals(double power) {
-        String formattedString = powerFormat.format(power);
-        if (formattedString.indexOf('.') != -1) {
-            return formattedString.substring(0, formattedString.indexOf('.')) + ChatColor.DARK_GRAY
-                + formattedString.substring(formattedString.indexOf('.')) + ChatColor.GRAY;
-        } else {
-            return formattedString;
-        }
+  public static String powerFormatAndFadeDecimals(double power) {
+    String formattedString = powerFormat.format(power);
+    if (formattedString.indexOf('.') != -1) {
+      return formattedString.substring(0, formattedString.indexOf('.'))
+          + ChatColor.DARK_GRAY
+          + formattedString.substring(formattedString.indexOf('.'))
+          + ChatColor.GRAY;
+    } else {
+      return formattedString;
     }
+  }
 
-    public static void putOutputSlot(BlockMenuPreset preset, int slot) {
-        preset.addItem(slot, null, new ChestMenu.AdvancedMenuClickHandler() {
+  public static void putOutputSlot(BlockMenuPreset preset, int slot) {
+    preset.addItem(
+        slot,
+        null,
+        new ChestMenu.AdvancedMenuClickHandler() {
 
-            @Override
-            public boolean onClick(Player p, int slot, ItemStack cursor, ClickAction action) {
-                return false;
-            }
+          @Override
+          public boolean onClick(Player p, int slot, ItemStack cursor, ClickAction action) {
+            return false;
+          }
 
-            @Override
-            public boolean onClick(InventoryClickEvent e, Player p, int slot, ItemStack cursor, ClickAction action) {
-                return cursor == null || cursor.getType() == Material.AIR;
-            }
+          @Override
+          public boolean onClick(
+              InventoryClickEvent e, Player p, int slot, ItemStack cursor, ClickAction action) {
+            return cursor == null || cursor.getType() == Material.AIR;
+          }
         });
-    }
+  }
 
-    public static double perTickToPerSecond(double power) {
-        if (Constants.CUSTOM_TICKER_DELAY <= 0) {
-            return (Constants.SERVER_TICK_RATE * power);
-        } else {
-            return (1 / ((double) Constants.CUSTOM_TICKER_DELAY / Constants.SERVER_TICK_RATE) * power);
-        }
+  public static double perTickToPerSecond(double power) {
+    if (Constants.CUSTOM_TICKER_DELAY <= 0) {
+      return (Constants.SERVER_TICK_RATE * power);
+    } else {
+      return (1 / ((double) Constants.CUSTOM_TICKER_DELAY / Constants.SERVER_TICK_RATE) * power);
     }
+  }
 
-    public static void send(Player p, String message) {
-        p.sendMessage(ChatColor.GRAY + "[LiteXpansion] " + ChatColors.color(message));
-    }
+  public static void send(Player p, String message) {
+    p.sendMessage(ChatColor.GRAY + "[LiteXpansion] " + ChatColors.color(message));
+  }
 }

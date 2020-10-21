@@ -15,34 +15,39 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class NanoBlade extends SimpleSlimefunItem<ItemUseHandler> implements Rechargeable {
 
-    public NanoBlade() {
-        super(Items.LITEXPANSION, Items.NANO_BLADE, MetalForge.RECIPE_TYPE, new ItemStack[] {
-                null, Items.MAG_THOR, null,
-                null, Items.MAG_THOR, null,
-                null, SlimefunItems.ADVANCED_CIRCUIT_BOARD, null
-            }
-        );
-    }
+  public NanoBlade() {
+    super(
+        Items.LITEXPANSION,
+        Items.NANO_BLADE,
+        MetalForge.RECIPE_TYPE,
+        new ItemStack[] {
+          null, Items.MAG_THOR, null,
+          null, Items.MAG_THOR, null,
+          null, SlimefunItems.ADVANCED_CIRCUIT_BOARD, null
+        });
+  }
 
-    @Override
-    public float getMaxItemCharge(ItemStack item) {
-        return 500;
-    }
+  @Override
+  public float getMaxItemCharge(ItemStack item) {
+    return 500;
+  }
 
-    @Nonnull
-    @Override
-    public ItemUseHandler getItemHandler() {
-        return event -> {
-            final ItemMeta nanoBladeMeta = event.getItem().getItemMeta();
-            final Enchantment enchantment = Enchantment.getByKey(Constants.GLOW_ENCHANT);
+  @Nonnull
+  @Override
+  public ItemUseHandler getItemHandler() {
+    return event -> {
+      final ItemMeta nanoBladeMeta = event.getItem().getItemMeta();
+      final Enchantment enchantment = Enchantment.getByKey(Constants.GLOW_ENCHANT);
 
-            if (!nanoBladeMeta.removeEnchant(enchantment)) {
-                nanoBladeMeta.addEnchant(enchantment, 1, false);
-                nanoBladeMeta.setDisplayName(ChatColor.DARK_GREEN + "Nano Blade" + ChatColor.GREEN + " (On)");
-            } else {
-                nanoBladeMeta.setDisplayName(ChatColor.DARK_GREEN + "Nano Blade" + ChatColor.RED + " (Off)");
-            }
-            event.getItem().setItemMeta(nanoBladeMeta);
-        };
-    }
+      if (!nanoBladeMeta.removeEnchant(enchantment)) {
+        nanoBladeMeta.addEnchant(enchantment, 1, false);
+        nanoBladeMeta.setDisplayName(
+            ChatColor.DARK_GREEN + "Nano Blade" + ChatColor.GREEN + " (On)");
+      } else {
+        nanoBladeMeta.setDisplayName(
+            ChatColor.DARK_GREEN + "Nano Blade" + ChatColor.RED + " (Off)");
+      }
+      event.getItem().setItemMeta(nanoBladeMeta);
+    };
+  }
 }

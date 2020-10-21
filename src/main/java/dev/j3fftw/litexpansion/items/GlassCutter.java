@@ -23,62 +23,71 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * The {@link GlassCutter} is a {@link SimpleSlimefunItem} that breaks
- * glass and glass panes quickly.
+ * The {@link GlassCutter} is a {@link SimpleSlimefunItem} that breaks glass and glass panes
+ * quickly.
  *
  * @author FluffyBear
  */
-public class GlassCutter extends SimpleSlimefunItem<ItemUseHandler> implements Listener, Rechargeable {
+public class GlassCutter extends SimpleSlimefunItem<ItemUseHandler>
+    implements Listener, Rechargeable {
 
-    public GlassCutter() {
-        super(Items.LITEXPANSION, Items.GLASS_CUTTER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            Items.REFINED_IRON, Items.REFINED_IRON, Items.REFINED_IRON,
-            new ItemStack(Material.SHEARS), Items.ADVANCED_CIRCUIT, new ItemStack(Material.SHEARS),
-            null, Items.CARBON_PLATE, null
+  public GlassCutter() {
+    super(
+        Items.LITEXPANSION,
+        Items.GLASS_CUTTER,
+        RecipeType.ENHANCED_CRAFTING_TABLE,
+        new ItemStack[] {
+          Items.REFINED_IRON,
+          Items.REFINED_IRON,
+          Items.REFINED_IRON,
+          new ItemStack(Material.SHEARS),
+          Items.ADVANCED_CIRCUIT,
+          new ItemStack(Material.SHEARS),
+          null,
+          Items.CARBON_PLATE,
+          null
         });
 
-        Bukkit.getPluginManager().registerEvents(this, LiteXpansion.getInstance());
+    Bukkit.getPluginManager().registerEvents(this, LiteXpansion.getInstance());
+  }
+
+  @Nonnull
+  public ItemUseHandler getItemHandler() {
+    return e -> e.setUseBlock(Event.Result.DENY);
+  }
+
+  @EventHandler
+  @SuppressWarnings("ConstantConditions")
+  public void onGlassCut(PlayerInteractEvent e) {
+    final Block block = e.getClickedBlock();
+    if (block == null) {
+      return;
     }
 
-    @Nonnull
-    public ItemUseHandler getItemHandler() {
-        return e -> e.setUseBlock(Event.Result.DENY);
-    }
+    final Material blockType = block.getType();
+    final Location blockLocation = block.getLocation();
 
-    @EventHandler
-    @SuppressWarnings("ConstantConditions")
-    public void onGlassCut(PlayerInteractEvent e) {
-        final Block block = e.getClickedBlock();
-        if (block == null) {
-            return;
-        }
-
-        final Material blockType = block.getType();
-        final Location blockLocation = block.getLocation();
-
-        if (e.getAction() == Action.LEFT_CLICK_BLOCK
-            && (blockType == Material.GLASS
+    if (e.getAction() == Action.LEFT_CLICK_BLOCK
+        && (blockType == Material.GLASS
             || blockType == Material.GLASS_PANE
             || blockType.name().endsWith("_GLASS")
-            || blockType.name().endsWith("_GLASS_PANE")
-        ) && isItem(e.getItem())
-            && SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), blockLocation,
-            ProtectableAction.BREAK_BLOCK)
-        ) {
-            e.setCancelled(true);
+            || blockType.name().endsWith("_GLASS_PANE"))
+        && isItem(e.getItem())
+        && SlimefunPlugin.getProtectionManager()
+            .hasPermission(e.getPlayer(), blockLocation, ProtectableAction.BREAK_BLOCK)) {
+      e.setCancelled(true);
 
-            final SlimefunItem slimefunItem = BlockStorage.check(block);
+      final SlimefunItem slimefunItem = BlockStorage.check(block);
 
-            if (slimefunItem == null && removeItemCharge(e.getItem(), 0.5F)) {
-                blockLocation.getWorld().dropItemNaturally(blockLocation,
-                    new ItemStack(blockType));
-                block.setType(Material.AIR);
-            }
-        }
+      if (slimefunItem == null && removeItemCharge(e.getItem(), 0.5F)) {
+        blockLocation.getWorld().dropItemNaturally(blockLocation, new ItemStack(blockType));
+        block.setType(Material.AIR);
+      }
     }
+  }
 
-    @Override
-    public float getMaxItemCharge(ItemStack itemStack) {
-        return 300;
-    }
+  @Override
+  public float getMaxItemCharge(ItemStack itemStack) {
+    return 300;
+  }
 }

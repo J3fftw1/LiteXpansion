@@ -25,107 +25,122 @@ import org.bukkit.inventory.ItemStack;
 
 public class MetalForge extends MultiBlockMachine {
 
-    public static final RecipeType RECIPE_TYPE = new RecipeType(
-        new NamespacedKey(LiteXpansion.getInstance(), "metal_forge"),
+  public static final RecipeType RECIPE_TYPE =
+      new RecipeType(
+          new NamespacedKey(LiteXpansion.getInstance(), "metal_forge"),
+          Items.METAL_FORGE,
+          "",
+          "&7Used to Forge Metals");
+
+  private static final ItemStack anvil = new ItemStack(Material.ANVIL);
+  private static final ItemStack ironBlock = new ItemStack(Material.IRON_BLOCK);
+
+  public MetalForge() {
+    super(
+        Items.LITEXPANSION,
         Items.METAL_FORGE,
-        "",
-        "&7Used to Forge Metals"
-    );
+        new ItemStack[] {
+          anvil,
+          new ItemStack(Material.STONE_BRICK_WALL),
+          anvil,
+          ironBlock,
+          new ItemStack(Material.DISPENSER),
+          ironBlock,
+          null,
+          new ItemStack(Material.DIAMOND_BLOCK),
+          null
+        },
+        new ItemStack[0],
+        BlockFace.DOWN);
+  }
 
-    private static final ItemStack anvil = new ItemStack(Material.ANVIL);
-    private static final ItemStack ironBlock = new ItemStack(Material.IRON_BLOCK);
+  @Nonnull
+  @Override
+  public List<ItemStack> getDisplayRecipes() {
+    final List<ItemStack> items = new ArrayList<>();
 
-    public MetalForge() {
-        super(Items.LITEXPANSION, Items.METAL_FORGE, new ItemStack[] {
-            anvil, new ItemStack(Material.STONE_BRICK_WALL), anvil,
-            ironBlock, new ItemStack(Material.DISPENSER), ironBlock,
-            null, new ItemStack(Material.DIAMOND_BLOCK), null
-        }, new ItemStack[0], BlockFace.DOWN);
+    for (int i = 0; i < recipes.size() - 1; i += 2) {
+      items.add(recipes.get(i)[0]);
+      items.add(recipes.get(i + 1)[0]);
     }
 
-    @Nonnull
-    @Override
-    public List<ItemStack> getDisplayRecipes() {
-        final List<ItemStack> items = new ArrayList<>();
+    return items;
+  }
 
-        for (int i = 0; i < recipes.size() - 1; i += 2) {
-            items.add(recipes.get(i)[0]);
-            items.add(recipes.get(i + 1)[0]);
+  protected Inventory createVirtualInventory(Inventory inv) {
+    Inventory fakeInv = Bukkit.createInventory(null, 9, "Fake Inventory");
+
+    for (int j = 0; j < inv.getContents().length; j++) {
+      ItemStack stack =
+          inv.getContents()[j] != null && inv.getContents()[j].getAmount() > 1
+              ? new CustomItem(inv.getContents()[j], inv.getContents()[j].getAmount() - 1)
+              : null;
+      fakeInv.setItem(j, stack);
+    }
+
+    return fakeInv;
+  }
+
+  @Override
+  public void onInteract(Player p, Block b) {
+    Block dispBlock = b.getRelative(BlockFace.DOWN);
+    Dispenser disp = (Dispenser) dispBlock.getState();
+    Inventory inv = disp.getInventory();
+    final List<ItemStack[]> inputs = RecipeType.getRecipeInputList(this);
+
+    for (int i = 0; i < inputs.size(); i++) {
+      if (canCraft(inv, inputs, i)) {
+        ItemStack output = RecipeType.getRecipeOutputList(this, inputs.get(i)).clone();
+
+        if (Slimefun.hasUnlocked(p, output, true)) {
+          final Inventory outputInv = findOutputInventory(output, dispBlock, inv);
+
+          if (outputInv != null) {
+            craft(p, b, inv, inputs.get(i), output, outputInv);
+          } else {
+            SlimefunPlugin.getLocalization().sendMessage(p, "machines.full-inventory", true);
+          }
         }
-
-        return items;
+        return;
+      }
     }
 
-    protected Inventory createVirtualInventory(Inventory inv) {
-        Inventory fakeInv = Bukkit.createInventory(null, 9, "Fake Inventory");
+    SlimefunPlugin.getLocalization().sendMessage(p, "machines.unknown-material", true);
+  }
 
+  private void craft(
+      Player p, Block b, Inventory inv, ItemStack[] recipe, ItemStack output, Inventory outputInv) {
+    for (ItemStack removing : recipe) {
+      if (removing != null) {
+        InvUtils.removeItem(
+            inv,
+            removing.getAmount(),
+            true,
+            stack -> SlimefunUtils.isItemSimilar(stack, removing, true));
+      }
+    }
+
+    outputInv.addItem(output);
+    p.getWorld().playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1, 1);
+
+    Block diamondBlock = b.getRelative(BlockFace.DOWN, 2);
+    diamondBlock.setType(Material.AIR);
+  }
+
+  private boolean canCraft(Inventory inv, List<ItemStack[]> inputs, int i) {
+    for (ItemStack converting : inputs.get(i)) {
+      if (converting != null) {
         for (int j = 0; j < inv.getContents().length; j++) {
-            ItemStack stack = inv.getContents()[j] != null && inv.getContents()[j].getAmount() > 1 ?
-                new CustomItem(inv.getContents()[j], inv.getContents()[j].getAmount() - 1) : null;
-            fakeInv.setItem(j, stack);
+          if (j == (inv.getContents().length - 1)
+              && !SlimefunUtils.isItemSimilar(converting, inv.getContents()[j], true)) {
+            return false;
+          } else if (SlimefunUtils.isItemSimilar(inv.getContents()[j], converting, true)) {
+            break;
+          }
         }
-
-        return fakeInv;
+      }
     }
 
-    @Override
-    public void onInteract(Player p, Block b) {
-        Block dispBlock = b.getRelative(BlockFace.DOWN);
-        Dispenser disp = (Dispenser) dispBlock.getState();
-        Inventory inv = disp.getInventory();
-        final List<ItemStack[]> inputs = RecipeType.getRecipeInputList(this);
-
-        for (int i = 0; i < inputs.size(); i++) {
-            if (canCraft(inv, inputs, i)) {
-                ItemStack output = RecipeType.getRecipeOutputList(this, inputs.get(i)).clone();
-
-                if (Slimefun.hasUnlocked(p, output, true)) {
-                    final Inventory outputInv = findOutputInventory(output, dispBlock, inv);
-
-                    if (outputInv != null) {
-                        craft(p, b, inv, inputs.get(i), output, outputInv);
-                    } else {
-                        SlimefunPlugin.getLocalization().sendMessage(p, "machines.full-inventory", true);
-                    }
-                }
-                return;
-            }
-        }
-
-        SlimefunPlugin.getLocalization().sendMessage(p, "machines.unknown-material", true);
-    }
-
-    private void craft(Player p, Block b, Inventory inv, ItemStack[] recipe, ItemStack output, Inventory outputInv) {
-        for (ItemStack removing : recipe) {
-            if (removing != null) {
-                InvUtils.removeItem(inv, removing.getAmount(), true, stack ->
-                    SlimefunUtils.isItemSimilar(stack, removing, true));
-            }
-        }
-
-        outputInv.addItem(output);
-        p.getWorld().playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1, 1);
-
-        Block diamondBlock = b.getRelative(BlockFace.DOWN, 2);
-        diamondBlock.setType(Material.AIR);
-    }
-
-    private boolean canCraft(Inventory inv, List<ItemStack[]> inputs, int i) {
-        for (ItemStack converting : inputs.get(i)) {
-            if (converting != null) {
-                for (int j = 0; j < inv.getContents().length; j++) {
-                    if (j == (inv.getContents().length - 1)
-                        && !SlimefunUtils.isItemSimilar(converting,
-                        inv.getContents()[j], true)) {
-                        return false;
-                    } else if (SlimefunUtils.isItemSimilar(inv.getContents()[j], converting, true)) {
-                        break;
-                    }
-                }
-            }
-        }
-
-        return true;
-    }
-
+    return true;
+  }
 }
