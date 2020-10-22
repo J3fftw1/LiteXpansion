@@ -2,16 +2,16 @@ package dev.j3fftw.litexpansion.machine;
 
 import dev.j3fftw.litexpansion.Items;
 import dev.j3fftw.litexpansion.LiteXpansion;
+
 import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlockMachine;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Nonnull;
+
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.api.Slimefun;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.InvUtils;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -23,32 +23,48 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+
 public class MetalForge extends MultiBlockMachine {
 
-    public static final RecipeType RECIPE_TYPE = new RecipeType(
-        new NamespacedKey(LiteXpansion.getInstance(), "metal_forge"),
-        Items.METAL_FORGE,
-        "",
-        "&7Used to Forge Metals"
-    );
+    public static final RecipeType RECIPE_TYPE =
+            new RecipeType(
+                    new NamespacedKey(LiteXpansion.getInstance(), "metal_forge"),
+                    Items.METAL_FORGE,
+                    "",
+                    "&7Used to Forge Metals");
 
     private static final ItemStack anvil = new ItemStack(Material.ANVIL);
     private static final ItemStack ironBlock = new ItemStack(Material.IRON_BLOCK);
 
     public MetalForge() {
-        super(Items.LITEXPANSION, Items.METAL_FORGE, new ItemStack[] {
-            anvil, new ItemStack(Material.STONE_BRICK_WALL), anvil,
-            ironBlock, new ItemStack(Material.DISPENSER), ironBlock,
-            null, new ItemStack(Material.DIAMOND_BLOCK), null
-        }, new ItemStack[0], BlockFace.DOWN);
+        super(
+                Items.LITEXPANSION,
+                Items.METAL_FORGE,
+                new ItemStack[] {
+                    anvil,
+                    new ItemStack(Material.STONE_BRICK_WALL),
+                    anvil,
+                    ironBlock,
+                    new ItemStack(Material.DISPENSER),
+                    ironBlock,
+                    null,
+                    new ItemStack(Material.DIAMOND_BLOCK),
+                    null
+                },
+                new ItemStack[0],
+                BlockFace.DOWN);
     }
 
     protected Inventory createVirtualInventory(Inventory inv) {
         Inventory fakeInv = Bukkit.createInventory(null, 9, "Fake Inventory");
 
         for (int j = 0; j < inv.getContents().length; j++) {
-            ItemStack stack = inv.getContents()[j] != null && inv.getContents()[j].getAmount() > 1 ?
-                new CustomItem(inv.getContents()[j], inv.getContents()[j].getAmount() - 1) : null;
+            ItemStack stack =
+                    inv.getContents()[j] != null && inv.getContents()[j].getAmount() > 1
+                            ? new CustomItem(
+                                    inv.getContents()[j], inv.getContents()[j].getAmount() - 1)
+                            : null;
             fakeInv.setItem(j, stack);
         }
 
@@ -72,7 +88,8 @@ public class MetalForge extends MultiBlockMachine {
                     if (outputInv != null) {
                         craft(p, b, inv, inputs.get(i), output, outputInv);
                     } else {
-                        SlimefunPlugin.getLocalization().sendMessage(p, "machines.full-inventory", true);
+                        SlimefunPlugin.getLocalization()
+                                .sendMessage(p, "machines.full-inventory", true);
                     }
                 }
                 return;
@@ -82,11 +99,20 @@ public class MetalForge extends MultiBlockMachine {
         SlimefunPlugin.getLocalization().sendMessage(p, "machines.unknown-material", true);
     }
 
-    private void craft(Player p, Block b, Inventory inv, ItemStack[] recipe, ItemStack output, Inventory outputInv) {
+    private void craft(
+            Player p,
+            Block b,
+            Inventory inv,
+            ItemStack[] recipe,
+            ItemStack output,
+            Inventory outputInv) {
         for (ItemStack removing : recipe) {
             if (removing != null) {
-                InvUtils.removeItem(inv, removing.getAmount(), true, stack ->
-                    SlimefunUtils.isItemSimilar(stack, removing, true));
+                InvUtils.removeItem(
+                        inv,
+                        removing.getAmount(),
+                        true,
+                        stack -> SlimefunUtils.isItemSimilar(stack, removing, true));
             }
         }
 
@@ -102,10 +128,11 @@ public class MetalForge extends MultiBlockMachine {
             if (converting != null) {
                 for (int j = 0; j < inv.getContents().length; j++) {
                     if (j == (inv.getContents().length - 1)
-                        && !SlimefunUtils.isItemSimilar(converting,
-                        inv.getContents()[j], true)) {
+                            && !SlimefunUtils.isItemSimilar(
+                                    converting, inv.getContents()[j], true)) {
                         return false;
-                    } else if (SlimefunUtils.isItemSimilar(inv.getContents()[j], converting, true)) {
+                    } else if (SlimefunUtils.isItemSimilar(
+                            inv.getContents()[j], converting, true)) {
                         break;
                     }
                 }
@@ -114,5 +141,4 @@ public class MetalForge extends MultiBlockMachine {
 
         return true;
     }
-
 }

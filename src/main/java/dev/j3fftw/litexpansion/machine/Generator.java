@@ -1,22 +1,30 @@
 package dev.j3fftw.litexpansion.machine;
 
 import dev.j3fftw.litexpansion.Items;
+
 import io.github.thebusybiscuit.slimefun4.implementation.items.electric.generators.CoalGenerator;
-import javax.annotation.Nonnull;
+
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineFuel;
+
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public class Generator extends CoalGenerator {
 
     public Generator() {
-        super(Items.LITEXPANSION, Items.GENERATOR, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            null, Items.RE_BATTERY, null,
-            null, Items.MACHINE_BLOCK, null,
-            null, new ItemStack(Material.FURNACE), null
-        });
+        super(
+                Items.LITEXPANSION,
+                Items.GENERATOR,
+                RecipeType.ENHANCED_CRAFTING_TABLE,
+                new ItemStack[] {
+                    null, Items.RE_BATTERY, null,
+                    null, Items.MACHINE_BLOCK, null,
+                    null, new ItemStack(Material.FURNACE), null
+                });
     }
 
     @Nonnull
@@ -91,7 +99,6 @@ public class Generator extends CoalGenerator {
         for (Material mat : Tag.WOOL.getValues()) {
             registerFuel(new MachineFuel(1, new ItemStack(mat)));
         }
-
     }
 
     @Override

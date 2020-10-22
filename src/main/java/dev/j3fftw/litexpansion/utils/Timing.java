@@ -2,6 +2,7 @@ package dev.j3fftw.litexpansion.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.Nonnull;
 
 public class Timing {
@@ -30,8 +31,7 @@ public class Timing {
 
     public void stop(boolean printResults) {
         stop();
-        if (printResults)
-            sendResults();
+        if (printResults) sendResults();
     }
 
     public void sendResults() {

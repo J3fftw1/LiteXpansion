@@ -2,13 +2,17 @@ package dev.j3fftw.litexpansion.resources;
 
 import dev.j3fftw.litexpansion.Items;
 import dev.j3fftw.litexpansion.LiteXpansion;
+
 import io.github.thebusybiscuit.slimefun4.api.geo.GEOResource;
-import java.util.concurrent.ThreadLocalRandom;
-import javax.annotation.Nonnull;
+
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.concurrent.ThreadLocalRandom;
+
+import javax.annotation.Nonnull;
 
 public class ThoriumResource implements GEOResource {
 
@@ -55,6 +59,4 @@ public class ThoriumResource implements GEOResource {
     public boolean isObtainableFromGEOMiner() {
         return true;
     }
-
-
 }

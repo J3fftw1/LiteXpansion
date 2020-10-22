@@ -4,9 +4,9 @@ import dev.j3fftw.litexpansion.armor.ElectricChestplate;
 import dev.j3fftw.litexpansion.items.FoodSynthesizer;
 import dev.j3fftw.litexpansion.utils.Constants;
 import dev.j3fftw.litexpansion.weapons.NanoBlade;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -16,6 +16,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class Events implements Listener {
 
@@ -32,11 +35,11 @@ public class Events implements Listener {
         if (e.getDamager() instanceof Player) {
             Player p = (Player) e.getDamager();
             ItemStack itemInHand = p.getInventory().getItemInMainHand();
-            final NanoBlade nanoBlade = (NanoBlade) SlimefunItem.getByID(Items.NANO_BLADE.getItemId());
+            final NanoBlade nanoBlade =
+                    (NanoBlade) SlimefunItem.getByID(Items.NANO_BLADE.getItemId());
             if (nanoBlade.isItem(itemInHand)
-                && itemInHand.containsEnchantment(Enchantment.getByKey(Constants.GLOW_ENCHANT))
-                && nanoBlade.removeItemCharge(itemInHand, 10)
-            ) {
+                    && itemInHand.containsEnchantment(Enchantment.getByKey(Constants.GLOW_ENCHANT))
+                    && nanoBlade.removeItemCharge(itemInHand, 10)) {
                 e.setDamage(e.getDamage() * 1.75);
             }
         }
@@ -47,12 +50,13 @@ public class Events implements Listener {
         if (e.getEntity() instanceof Player && ((Player) e.getEntity()).getEquipment() != null) {
             Player p = (Player) e.getEntity();
             ItemStack chestplate = p.getEquipment().getChestplate();
-            final ElectricChestplate electricChestplate = (ElectricChestplate)
-                SlimefunItem.getByID(Items.ELECTRIC_CHESTPLATE.getItemId());
+            final ElectricChestplate electricChestplate =
+                    (ElectricChestplate)
+                            SlimefunItem.getByID(Items.ELECTRIC_CHESTPLATE.getItemId());
             if (chestplate != null
-                && electricChestplate.isItem(chestplate)
-                && electricChestplate.removeItemCharge(chestplate, (float) (e.getDamage() / 1.75))
-            ) {
+                    && electricChestplate.isItem(chestplate)
+                    && electricChestplate.removeItemCharge(
+                            chestplate, (float) (e.getDamage() / 1.75))) {
                 e.setCancelled(true);
             }
         }
@@ -60,8 +64,9 @@ public class Events implements Listener {
 
     @EventHandler
     public void onHungerDamage(EntityDamageEvent e) {
-        if (Items.FOOD_SYNTHESIZER == null || Items.FOOD_SYNTHESIZER.getItem().isDisabled()
-            || !(e.getEntity() instanceof Player)) {
+        if (Items.FOOD_SYNTHESIZER == null
+                || Items.FOOD_SYNTHESIZER.getItem().isDisabled()
+                || !(e.getEntity() instanceof Player)) {
             return;
         }
 
