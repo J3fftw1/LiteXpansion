@@ -4,13 +4,19 @@ import dev.j3fftw.litexpansion.Items;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.items.electric.gadgets.SolarHelmet;
 import javax.annotation.Nonnull;
+import org.bukkit.inventory.ItemStack;
+
+
+
+
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
+
 
 public class AdvancedSolarHelmet extends SolarHelmet {
 
